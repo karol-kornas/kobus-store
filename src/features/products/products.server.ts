@@ -1,0 +1,76 @@
+import { wooFetch } from "@/lib/wooFetch";
+import { wpApi } from "@/lib/wordpress";
+import { Product } from "@/types/product";
+
+type GetProductsByCategoryLiteParams = {
+  categoryId: number;
+  limit: number;
+};
+
+export async function getProductsByCategoryLite({ categoryId, limit }: GetProductsByCategoryLiteParams) {
+  const { data } = await wpApi.get("/headless/v1/products", {
+    params: {
+      categoryId,
+      limit,
+    },
+  });
+
+  return data;
+}
+
+type GetProductsByIdsLiteParams = {
+  ids: number[];
+  limit: number;
+};
+
+export async function getProductsByIdsLite({ ids, limit }: GetProductsByIdsLiteParams) {
+  if (!ids.length) {
+    return { products: [] };
+  }
+  const { data } = await wpApi.get("/headless/v1/products/by-ids", {
+    params: {
+      ids: ids.join(","),
+      limit,
+    },
+  });
+
+  return data;
+}
+
+const sortMap: Record<string, { orderby?: string; order?: "asc" | "desc" }> = {
+  default: {},
+  latest: { orderby: "date", order: "desc" },
+  price_asc: { orderby: "price", order: "asc" },
+  price_desc: { orderby: "price", order: "desc" },
+  popularity: { orderby: "popularity", order: "desc" },
+};
+
+export type GetProductsOptions = {
+  page?: number;
+  orderby?: string;
+  min_price?: string;
+  max_price?: string;
+};
+
+export async function getProductsByCategory(categoryId: number, options: GetProductsOptions = {}) {
+  const sort = sortMap[options.orderby ?? "default"] ?? {};
+  const { data, headers } = await wooFetch<Product[]>(
+    "/products",
+    {
+      category: categoryId,
+      per_page: 12,
+      page: options.page || 1,
+      min_price: options.min_price,
+      max_price: options.max_price,
+      ...sort,
+    },
+    { revalidate: 60 }
+  );
+
+  return {
+    items: data,
+    totalPages: Number(headers.get("x-wp-totalpages")) || 1,
+    totalItems: Number(headers.get("x-wp-total")) || 0,
+    page: options.page || 1,
+  };
+}

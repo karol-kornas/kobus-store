@@ -1,0 +1,70 @@
+"use client";
+
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/providers/AuthContext";
+import { Button } from "@/components/ui/button/Button";
+import { Input } from "@/components/ui/input/Input";
+import { Checkbox } from "@/components/ui/checkbox/Checkbox";
+import Link from "next/link";
+import { FormField } from "@/components/ui/formField/FormField";
+import { FormError } from "@/components/ui/form/formError/FormError";
+import { LoginFormValues, loginSchema } from "@/features/auth/schemas/login.schema";
+
+export function LoginForm() {
+  const router = useRouter();
+  const { login } = useAuth();
+
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+  });
+
+  const onSubmit = async (data: LoginFormValues) => {
+    try {
+      await login({ ...data, remember: data.remember ?? false });
+      router.push("/account");
+    } catch (err) {
+      setError("root", {
+        message: (err as Error).message,
+      });
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+      <FormField
+        label="Nazwa użytkownika lub adres e-mail"
+        htmlFor="login"
+        required
+        error={errors.login?.message}
+      >
+        <Input id="login" type="text" required {...register("login")} />
+      </FormField>
+
+      <FormField label="Hasło" htmlFor="password" required error={errors.password?.message}>
+        <Input id="password" type="password" {...register("password")} />
+      </FormField>
+
+      <div className="py-2">
+        <Checkbox id="remember" label="Zapamiętaj mnie" {...register("remember")} />
+      </div>
+
+      <FormError message={errors.root?.message} variant="auth" />
+
+      <Button isLoading={isSubmitting}>Zaloguj się</Button>
+
+      <div>
+        <Link href="/forgot-password" className="hover:opacity-85 transition-opacity">
+          Nie pamiętasz hasła?
+        </Link>
+      </div>
+    </form>
+  );
+}

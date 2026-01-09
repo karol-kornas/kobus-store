@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@utility container {
+    margin-inline: auto;
+    padding-inline: 0.75rem;
+
+    @media (min-width: 768px) {
+      padding-inline: 1.25rem;
+    }
+
+    @media (min-width: 1024px) {
+      padding-inline: 1.5rem;
+    }
+}
+
+@theme {
+    --color-cream: #f8f6f2;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #404040;
+  --input-bg: 0 0% 100%;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-mulish);
+  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-playfairDisplay);
+}
+
+@layer base {
+  body {
+    background: var(--background);
+    color: var(--foreground);
+  }
+}
+
