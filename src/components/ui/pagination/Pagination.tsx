@@ -1,4 +1,8 @@
-import Link from "next/link";
+"use client";
+
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
+import { Spinner } from "../spinner/Spinner";
 
 interface Props {
   currentPage: number;
@@ -8,6 +12,9 @@ interface Props {
 }
 
 export function Pagination({ currentPage, totalPages, basePath, searchParams = {} }: Props) {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+
   if (totalPages <= 1) return null;
 
   const createPageLink = (page: number) => {
@@ -23,8 +30,14 @@ export function Pagination({ currentPage, totalPages, basePath, searchParams = {
     return `${basePath}?${params.toString()}`;
   };
 
+  const goTo = (href: string) => {
+    startTransition(() => {
+      router.push(href);
+    });
+  };
+
   const getPages = () => {
-    const delta = 1; // ile stron po bokach aktualnej
+    const delta = 1;
     const range: number[] = [];
     const rangeWithDots: (number | "...")[] = [];
     let last: number | undefined;
@@ -52,12 +65,24 @@ export function Pagination({ currentPage, totalPages, basePath, searchParams = {
 
   const pages = getPages();
 
+  const linkClass = "px-3 py-2 border transition-colors focus:outline-none focus:ring-1 focus:ring-black/30";
+
   return (
-    <nav className="flex items-center justify-center gap-2 mt-12 flex-wrap">
+    <nav className="relative flex items-center justify-center gap-2 mt-12 flex-wrap">
       {currentPage > 1 && (
-        <Link href={createPageLink(currentPage - 1)} className="px-3 py-2 border rounded">
+        <a
+          href={createPageLink(currentPage - 1)}
+          role="link"
+          aria-label="Poprzednia strona"
+          aria-disabled={isPending}
+          onClick={(e) => {
+            e.preventDefault();
+            if (!isPending) goTo(createPageLink(currentPage - 1));
+          }}
+          className={`${linkClass} border-neutral-100 hover:border-black`}
+        >
           ←
-        </Link>
+        </a>
       )}
 
       {pages.map((page, index) =>
@@ -66,22 +91,45 @@ export function Pagination({ currentPage, totalPages, basePath, searchParams = {
             …
           </span>
         ) : (
-          <Link
+          <a
             key={page}
             href={createPageLink(page)}
-            className={`px-3 py-2 border rounded ${
-              page === currentPage ? "bg-black text-white" : "hover:bg-neutral-100"
+            role="link"
+            aria-current={page === currentPage ? "page" : undefined}
+            aria-disabled={isPending}
+            onClick={(e) => {
+              e.preventDefault();
+              if (!isPending) goTo(createPageLink(page));
+            }}
+            className={`${linkClass} ${
+              page === currentPage ? "border-black font-medium" : "border-neutral-100 hover:border-black"
             }`}
           >
             {page}
-          </Link>
+          </a>
         )
       )}
 
       {currentPage < totalPages && (
-        <Link href={createPageLink(currentPage + 1)} className="px-3 py-2 border rounded">
+        <a
+          href={createPageLink(currentPage + 1)}
+          role="link"
+          aria-label="Następna strona"
+          aria-disabled={isPending}
+          onClick={(e) => {
+            e.preventDefault();
+            if (!isPending) goTo(createPageLink(currentPage + 1));
+          }}
+          className={`${linkClass} border-neutral-100 hover:border-black`}
+        >
           →
-        </Link>
+        </a>
+      )}
+
+      {isPending && (
+        <div className="absolute inset-0 bg-background/75 flex items-center justify-center pointer-events-none">
+          <Spinner />
+        </div>
       )}
     </nav>
   );

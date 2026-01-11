@@ -31,6 +31,10 @@ export async function CategoryProducts({ categorySlug, searchParams, categoryPro
 
   return (
     <>
+      <div className="text-neutral-400 text-sm font-sans mt-1 mb-2">
+        Liczba produktów: {products.totalItems}
+      </div>
+
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
         {products.items.map((product: Product) => (
           <ProductCard key={product.id} product={product} />

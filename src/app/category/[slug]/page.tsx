@@ -44,7 +44,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
         <CategoryBreadcrumbs categoryPromise={category} />
       </Suspense>
 
-      <div className="grid xl:grid-cols-[18.625rem_1fr] 2xl:grid-cols-[22.625rem_1fr] gap-4 md:gap-10 mt-8">
+      <div className="grid xl:grid-cols-[18.625rem_1fr] 2xl:grid-cols-[22.625rem_1fr] gap-4 md:gap-10 mt-6 lg:mt-8">
         <div className="hidden xl:block">
           <CategorySidebar categories={categoriesTree} />
         </div>
@@ -53,7 +53,10 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
             <CategoryHeader categoryPromise={category} />
           </Suspense>
 
-          <Suspense fallback={<ProductsSkeleton />}>
+          <Suspense
+            key={`${searchParamsOpt.page}-${searchParamsOpt.orderby}-${searchParamsOpt.min_price}-${searchParamsOpt.max_price}`}
+            fallback={<ProductsSkeleton />}
+          >
             <CategoryProducts categorySlug={slug} categoryPromise={category} searchParams={searchParamsOpt} />
           </Suspense>
         </div>
