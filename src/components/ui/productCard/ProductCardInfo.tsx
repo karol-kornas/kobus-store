@@ -8,9 +8,7 @@ type Props = {
 export function ProductCardInfo({ name, price, isOnSale, regularPrice }: Props) {
   return (
     <>
-      <h3 className="hover:opacity-85 transition-opacity duration-300 font-medium h-12 line-clamp-2">
-        {name}
-      </h3>
+      <h3 className="hover:opacity-85 font-medium h-12 line-clamp-2">{name}</h3>
 
       <div className="flex gap-2 font-semibold">
         {price} zł

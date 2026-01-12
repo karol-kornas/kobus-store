@@ -19,7 +19,10 @@ const playfairDisplay = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Oficjalny sklep Pana Kobusa - zadbaj o miłość i związki",
+  title: {
+    default: "Oficjalny sklep Pana Kobusa - zadbaj o miłość i związki",
+    template: "%s - Oficjalny sklep Pana Kobusa",
+  },
   description:
     "Ciekawe pomysły na prezenty! W sklepie znajdziesz autorskie książki Kobusa, audiobooki, ebooki, gry karciane, quizy, ubrania i wiele innych...",
 };

@@ -14,7 +14,7 @@ export function normalizeWpUrl(url: string) {
       pathname = pathname.replace("/koszyk/", "/cart/"); // przykłady
       pathname = pathname.replace("/konto/", "/account/");
 
-      return pathname;
+      return pathname.replace(/\/$/, "");
     }
 
     return url;

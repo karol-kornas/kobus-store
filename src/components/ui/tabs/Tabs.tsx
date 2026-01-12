@@ -33,7 +33,7 @@ export function Tabs({ items, initialActiveId, children }: Props) {
               key={item.id}
               onClick={() => handleTabClick(item.id)}
               className={`
-                relative pb-3 text-lg font-display transition-colors cursor-pointer
+                relative pb-3 text-lg font-display transition-colors cursor-pointer hover:opacity-85
                 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2
                 ${isActive ? "text-foreground font-medium" : "text-muted-foreground hover:text-foreground"}
               `}

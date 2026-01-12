@@ -12,6 +12,7 @@ import { BreadcrumbsSkeleton } from "@/components/ui/breadcrumb/BreadcrumbsSkele
 import { CategoryHeader } from "./CategoryHeader";
 import { CategoryHeaderSkeleton } from "./CategoryHeaderSkeleton";
 import { CategoryValidator } from "./CategoryValidator";
+import { getSeo } from "@/lib/wp/seo";
 
 type PageProps = {
   params: {
@@ -24,6 +25,28 @@ type PageProps = {
     max_price?: string;
   };
 };
+
+export async function generateMetadata({ params }: PageProps) {
+  const { slug } = await params;
+  const category = await getCategoryBySlug(slug);
+
+  if (!category) return {};
+
+  const seo = await getSeo({
+    type: "product_category",
+    id: category.id,
+  });
+
+  return {
+    title: seo.title,
+    description: seo.description,
+    openGraph: {
+      title: seo.og_title,
+      description: seo.og_description,
+      images: seo.og_image ? [seo.og_image] : [],
+    },
+  };
+}
 
 export default async function CategoryPage({ params, searchParams }: PageProps) {
   const { slug } = await params;
