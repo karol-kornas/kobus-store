@@ -37,7 +37,7 @@ export async function CategoryProducts({ categorySlug, searchParams, categoryPro
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
         {products.items.map((product: Product) => (
-          <ProductCard key={product.id} product={product} />
+          <ProductCard key={product.id} product={product} categorySlug={category.slug} />
         ))}
       </div>
 

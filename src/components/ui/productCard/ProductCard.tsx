@@ -7,14 +7,16 @@ import { getProductLabels } from "@/features/products/getProductsLabels";
 
 type Props = {
   product: Product;
+  categorySlug?: string;
 };
 
-export function ProductCard({ product }: Props) {
+export function ProductCard({ product, categorySlug }: Props) {
   const image = product.images[0];
   const labels = getProductLabels(product);
+  const href = categorySlug ? `/product/${product.slug}?cat=${categorySlug}` : `/product/${product.slug}`;
   return (
     <article className="relative">
-      <Link href={`/produkt/${product.slug}`} className="flex flex-col gap-3">
+      <Link href={href} className="flex flex-col gap-3">
         <ProductCardImage src={image?.src} alt={image?.alt || product.name}>
           <ProductLabels className="absolute bottom-0 left-0" labels={labels} />
         </ProductCardImage>

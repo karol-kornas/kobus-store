@@ -1,7 +1,7 @@
 export function BreadcrumbsSkeleton() {
   return (
     <nav aria-label="Breadcrumb">
-      <ol className="flex flex-wrap items-center gap-2 text-sm">
+      <ol className="flex flex-wrap items-center gap-2 text-sm pt-8">
         <SkeletonItem width="w-20" />
 
         <SkeletonItem width="w-28" />

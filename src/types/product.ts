@@ -18,4 +18,6 @@ export type Product = {
     name: string;
     slug: string;
   }[];
+  lowest_price_30_days?: string | null;
+  short_description: string;
 };

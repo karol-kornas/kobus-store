@@ -1,4 +1,3 @@
-import { notFound } from "next/navigation";
 import { getCategoryBySlug } from "@/features/categories/categories.server";
 import { getMenu } from "@/features/menu/menu.server";
 import { MenuItem } from "@/components/layout/navigation/navigation.types";
@@ -12,7 +11,8 @@ import { BreadcrumbsSkeleton } from "@/components/ui/breadcrumb/BreadcrumbsSkele
 import { CategoryHeader } from "./CategoryHeader";
 import { CategoryHeaderSkeleton } from "./CategoryHeaderSkeleton";
 import { CategoryValidator } from "./CategoryValidator";
-import { getSeo } from "@/lib/wp/seo";
+import { getSeo } from "@/features/seo/seo.server";
+import { mapSeoToMetadata } from "@/features/seo/seo.helpers";
 
 type PageProps = {
   params: {
@@ -30,22 +30,18 @@ export async function generateMetadata({ params }: PageProps) {
   const { slug } = await params;
   const category = await getCategoryBySlug(slug);
 
-  if (!category) return {};
+  if (!category) {
+    return {
+      title: "Nie znaleziono kategorii",
+    };
+  }
 
   const seo = await getSeo({
     type: "product_category",
     id: category.id,
   });
 
-  return {
-    title: seo.title,
-    description: seo.description,
-    openGraph: {
-      title: seo.og_title,
-      description: seo.og_description,
-      images: seo.og_image ? [seo.og_image] : [],
-    },
-  };
+  return mapSeoToMetadata(seo);
 }
 
 export default async function CategoryPage({ params, searchParams }: PageProps) {
@@ -58,7 +54,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
   const category = getCategoryBySlug(slug);
 
   return (
-    <div className="container py-8">
+    <div className="container">
       <Suspense fallback={null}>
         <CategoryValidator categoryPromise={category} />
       </Suspense>

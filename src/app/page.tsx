@@ -1,15 +1,13 @@
-import { getSeo } from "@/lib/wp/seo";
 import { HeroSlider } from "@/components/sections/heroSlider/HeroSlider";
 import { getHomeHeroSlider, getHomeSections } from "@/features/home/home.server";
 import { SectionsRenderer } from "@/components/sectionsRenderer/SectionsRenderer";
+import { getSeo } from "@/features/seo/seo.server";
+import { mapSeoToMetadata } from "@/features/seo/seo.helpers";
 
 export async function generateMetadata() {
   const seo = await getSeo({ type: "home" });
 
-  return {
-    title: seo.title,
-    description: seo.description,
-  };
+  return mapSeoToMetadata(seo);
 }
 
 export default async function HomePage() {

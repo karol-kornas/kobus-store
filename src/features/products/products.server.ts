@@ -74,3 +74,9 @@ export async function getProductsByCategory(categoryId: number, options: GetProd
     page: options.page || 1,
   };
 }
+
+export async function getProductBySlug(slug: string) {
+  const { data } = await wooFetch<Product[]>("/products", { slug }, { revalidate: 60 });
+
+  return data[0] ?? null;
+}

@@ -25,6 +25,12 @@ export const metadata: Metadata = {
   },
   description:
     "Ciekawe pomysły na prezenty! W sklepie znajdziesz autorskie książki Kobusa, audiobooki, ebooki, gry karciane, quizy, ubrania i wiele innych...",
+  openGraph: {
+    title: {
+      default: "Oficjalny sklep Pana Kobusa - zadbaj o miłość i związki",
+      template: "%s - Oficjalny sklep Pana Kobusa",
+    },
+  },
 };
 
 export default async function RootLayout({
