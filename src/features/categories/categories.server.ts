@@ -1,8 +1,8 @@
 import { wooFetch } from "@/lib/wooFetch";
 import { ProductCategory } from "@/types/productCategory";
+import { cache } from "react";
 
-export async function getCategoryBySlug(slug: string) {
+export const getCategoryBySlug = cache(async (slug: string) => {
   const { data } = await wooFetch<ProductCategory[]>("/products/categories", { slug }, { revalidate: 300 });
-
-  return data[0] || null;
-}
+  return data[0] ?? null;
+});

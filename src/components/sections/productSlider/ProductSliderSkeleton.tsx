@@ -38,7 +38,7 @@ export function ProductSliderSkeleton({ productsLength }: Props) {
   );
 }
 
-function SliderPaginationSkeleton() {
+export function SliderPaginationSkeleton() {
   return (
     <div className="flex justify-center gap-2 mt-8">
       {Array.from({ length: 2 }).map((_, i) => (

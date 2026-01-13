@@ -1,26 +1,13 @@
 "use client";
 
-import Image from "next/image";
 import { Button } from "@/components/ui/button/Button";
 import { useState } from "react";
 import PreviewModal from "@/components/ui/previewModal/PreviewModal";
 import { ImageWithSkeleton } from "@/components/ui/imageWithSkeleton/ImageWithSkeleton";
+import { AdditionalService } from "@/types/product";
 
 type Props = {
-  additionalServices:
-    | {
-        id: number;
-        name: string;
-        price: number;
-        thumbnail?: string;
-        thumbnail_width?: number;
-        thumbnail_height?: number;
-        preview_image?: string;
-        preview_image_width?: number;
-        preview_image_height?: number;
-        add_to_cart_url: string;
-      }[]
-    | undefined;
+  additionalServices: AdditionalService[];
 };
 
 type PreviewImage = {
@@ -34,7 +21,7 @@ export function ProductAdditionalServices({ additionalServices }: Props) {
   const [open, setOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState<PreviewImage>(null);
   return (
-    additionalServices && (
+    additionalServices.length > 0 && (
       <div className="mt-6">
         <p className="font-bold uppercase text-sm">Uszlachetnij swój egzemplarz</p>
         <div className="overflow-x-auto mt-6">

@@ -20,18 +20,20 @@ export type Product = {
   }[];
   lowest_price_30_days?: string | null;
   short_description?: string;
-  additional_services?: [
-    {
-      id: number;
-      name: string;
-      price: number;
-      thumbnail?: string;
-      thumbnail_width?: number;
-      thumbnail_height?: number;
-      preview_image?: string;
-      preview_image_width?: number;
-      preview_image_height?: number;
-      add_to_cart_url: string;
-    }
-  ];
+  description?: string;
+  additional_services: AdditionalService[];
+  stock_quantity: number;
+};
+
+export type AdditionalService = {
+  id: number;
+  name: string;
+  price: number;
+  thumbnail?: string;
+  thumbnail_width?: number;
+  thumbnail_height?: number;
+  preview_image?: string;
+  preview_image_width?: number;
+  preview_image_height?: number;
+  add_to_cart_url: string;
 };

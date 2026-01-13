@@ -17,6 +17,8 @@ const buttonVariants = cva(
         ghost: "bg-transparent text-blue-600 hover:bg-blue-50 focus:ring-blue-600",
         danger: "bg-red-600 text-white hover:bg-red-700 focus:ring-red-600",
         white: "bg-white border border-white text-[#262626] hover:bg-transparent hover:text-white",
+        special:
+          "bg-[#fa5453] border border-[#fa5453] text-white hover:bg-white hover:text-[#fa5453] focus:ring-neutral-500",
       },
       size: {
         sm: "h-8 px-4 text-sm",
