@@ -10,8 +10,8 @@ export type Product = {
     id: number;
     src: string;
     alt: string;
-    width?: number;
-    height?: number;
+    width: number;
+    height: number;
   }[];
   categories: {
     id: number;
@@ -19,5 +19,19 @@ export type Product = {
     slug: string;
   }[];
   lowest_price_30_days?: string | null;
-  short_description: string;
+  short_description?: string;
+  additional_services?: [
+    {
+      id: number;
+      name: string;
+      price: number;
+      thumbnail?: string;
+      thumbnail_width?: number;
+      thumbnail_height?: number;
+      preview_image?: string;
+      preview_image_width?: number;
+      preview_image_height?: number;
+      add_to_cart_url: string;
+    }
+  ];
 };

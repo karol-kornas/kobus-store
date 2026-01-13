@@ -6,6 +6,7 @@ import { ProductBreadcrumbs } from "./ProductBreadcrumbs";
 import { ProductGallery } from "./ProductGallery";
 import { ProductLabels } from "@/components/ui/productLabels/ProductLabels";
 import { getProductLabels } from "@/features/products/getProductsLabels";
+import { ProductAdditionalServices } from "./ProductAdditionalServices";
 
 type PageProps = {
   params: {
@@ -45,8 +46,6 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
     lowest = product.regular_price;
   }
 
-  console.log(product);
-
   return (
     <div className="container">
       <ProductBreadcrumbs
@@ -55,13 +54,15 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
         productCategories={product.categories}
       />
 
-      <div className="grid grid-cols-1 lg:grid-cols-[44%_1fr] mt-8 gap-10">
+      <div className="grid grid-cols-1 lg:grid-cols-[44%_1fr] mt-8 gap-8">
         <div className="w-full">
           <ProductGallery
             images={product.images.map((img) => ({
               id: img.id,
               src: img.src,
               alt: img.alt,
+              width: img.width,
+              height: img.height,
             }))}
             productName={product.name}
           />
@@ -80,10 +81,15 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
           {product.on_sale && lowest && (
             <p className="text-sm text-neutral-400">Najniższa cena w okresie 30 dni: {lowest} zł.</p>
           )}
-          <div
-            className="pt-3 text-sm **:mt-3 [&_h2]:font-display [&_h2]:text-xl [&_h2]:font-semibold [&_h3]:font-display [&_h3]:text-lg [&_h3]:font-semibold [&_ul]:list-disc [&_ul]:list-inside [&_ul]:mb-4 [&_ul]:marker:text-neutral-300"
-            dangerouslySetInnerHTML={{ __html: product.short_description }}
-          ></div>
+          {product.short_description && (
+            <div
+              className="pt-3 leading-relaxed text-sm [&_p]:mt-3 [&_h2]:font-display [&_h2]:text-xl [&_h2]:font-semibold [&_h3]:font-display [&_h3]:text-lg [&_h3]:font-semibold [&_ul]:list-disc [&_ul]:list-inside [&_ul]:mb-4 [&_ul]:marker:text-neutral-300"
+              dangerouslySetInnerHTML={{ __html: product.short_description }}
+            ></div>
+          )}
+          <ProductAdditionalServices additionalServices={product.additional_services} />
+
+          <div className="py-10"></div>
         </div>
       </div>
     </div>

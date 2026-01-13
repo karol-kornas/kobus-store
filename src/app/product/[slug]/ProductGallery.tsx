@@ -1,19 +1,20 @@
 "use client";
 
 import { useState, useRef } from "react";
-import Image from "next/image";
+import { ImageWithSkeleton } from "@/components/ui/imageWithSkeleton/ImageWithSkeleton";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Thumbs, A11y, Keyboard } from "swiper/modules";
+import { Pagination, A11y, Keyboard } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
 
 import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/thumbs";
+import "swiper/css/pagination";
 
 type ProductImage = {
   id: number;
   src: string;
   alt: string;
+  width: number;
+  height: number;
 };
 
 type Props = {
@@ -22,7 +23,7 @@ type Props = {
 };
 
 export function ProductGallery({ images, productName }: Props) {
-  const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
   const mainSwiperRef = useRef<SwiperType | null>(null);
 
   if (!images.length) return null;
@@ -32,65 +33,70 @@ export function ProductGallery({ images, productName }: Props) {
       {/* Main slider */}
       <div className="relative w-full">
         <Swiper
-          modules={[Navigation, Thumbs, A11y, Keyboard]}
+          style={
+            {
+              "--swiper-pagination-color": "var(--foreground)",
+              "--swiper-pagination-bullet-inactive-color": "var(--foreground)",
+              "--swiper-pagination-bullet-width": "0.75rem",
+              "--swiper-pagination-bullet-height": "0.75rem",
+              "--swiper-pagination-bottom": "2rem",
+            } as React.CSSProperties
+          }
+          modules={[Pagination, A11y, Keyboard]}
           keyboard={{ enabled: true }}
-          thumbs={{
-            swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
-          }}
+          pagination={{ el: ".swiper-pagination", clickable: true }}
           autoHeight
           onInit={(swiper) => (mainSwiperRef.current = swiper)}
+          onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
           className="w-full"
           aria-live="polite"
         >
           {images.map((image, index) => (
-            <SwiperSlide key={`${image.id}-${index}`} className="">
-              <div className="relative overflow-hidden">
-                <Image
-                  src={image.src}
-                  alt={image.alt || `${productName} – zdjęcie ${index + 1}`}
-                  width={660}
-                  height={660}
-                  className="w-full h-auto object-contain"
-                  sizes="(min-width: 1024px) 660px, 100vw"
-                  priority={index === 0}
-                />
-              </div>
+            <SwiperSlide key={`${image.id}-${index}`}>
+              <ImageWithSkeleton
+                src={image.src}
+                alt={image.alt || `${productName} - zdjęcie ${index + 1}`}
+                width={image.width ?? 660}
+                height={image.height ?? 660}
+                className="w-full h-auto object-contain"
+                sizes="(min-width: 1024px) 660px, 100vw"
+              />
             </SwiperSlide>
           ))}
+
+          {/* Pagination tylko na mobile */}
+          <div className="swiper-pagination static! w-full! lg:hidden flex justify-center mt-4"></div>
         </Swiper>
       </div>
+
+      {/* Thumbnails – grid (tylko desktop) */}
       {images.length > 1 && (
-        <div className="">
-          <Swiper
-            slidesPerView={4}
-            spaceBetween={8}
-            onSwiper={setThumbsSwiper}
-            modules={[Thumbs, A11y, Keyboard]}
-            watchSlidesProgress
-            className=""
-          >
-            {images.map((image, index) => (
-              <SwiperSlide key={`${image.id}-${index}`} className="w-28 h-auto! group">
-                {({ isActive }) => (
-                  <button
-                    type="button"
-                    aria-label={`Pokaż zdjęcie ${index + 1}`}
-                    aria-current={isActive}
-                    className="relative cursor-pointer hover:opacity-85 aspect-square w-full overflow-hidden border-b border-transparent 
-                  focus:outline-none focus:ring-2 focus:ring-primary group-[.swiper-slide-thumb-active]:border-black!"
-                  >
-                    <Image
-                      src={image.src}
-                      alt={image.alt || productName}
-                      fill
-                      className="object-cover"
-                      sizes="160px"
-                    />
-                  </button>
-                )}
-              </SwiperSlide>
-            ))}
-          </Swiper>
+        <div className="hidden lg:grid grid-cols-4 gap-2">
+          {images.map((image, index) => {
+            const isActive = index === activeIndex;
+
+            return (
+              <button
+                key={`${image.id}-thumb-${index}`}
+                type="button"
+                aria-label={`Pokaż zdjęcie ${index + 1}`}
+                aria-current={isActive}
+                onClick={() => mainSwiperRef.current?.slideTo(index)}
+                className={`relative aspect-square overflow-hidden border cursor-pointer
+                  ${isActive ? "border-black" : "border-transparent"}
+                  hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-primary`}
+              >
+                <ImageWithSkeleton
+                  src={image.src}
+                  alt={image.alt || productName}
+                  fill
+                  className="object-cover"
+                  wrapClassName="aspect-square overflow-hidden"
+                  sizes="160px"
+                />
+              </button>
+            );
+          })}
         </div>
       )}
     </div>

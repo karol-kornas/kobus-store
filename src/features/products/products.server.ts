@@ -1,6 +1,7 @@
 import { wooFetch } from "@/lib/wooFetch";
 import { wpApi } from "@/lib/wordpress";
 import { Product } from "@/types/product";
+import { cache } from "react";
 
 type GetProductsByCategoryLiteParams = {
   categoryId: number;
@@ -75,8 +76,7 @@ export async function getProductsByCategory(categoryId: number, options: GetProd
   };
 }
 
-export async function getProductBySlug(slug: string) {
+export const getProductBySlug = cache(async (slug: string) => {
   const { data } = await wooFetch<Product[]>("/products", { slug }, { revalidate: 60 });
-
   return data[0] ?? null;
-}
+});
