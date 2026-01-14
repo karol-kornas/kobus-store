@@ -1,6 +1,6 @@
 type Props = {
   name: string;
-  price: string;
+  price: number;
   isOnSale: boolean;
   regularPrice?: string;
 };
