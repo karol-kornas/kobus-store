@@ -10,6 +10,7 @@ import { ProductAdditionalServices } from "./ProductAdditionalServices";
 import QuantitySelector from "@/components/ui/quantitySelector/QuantitySelector";
 import { Button } from "@/components/ui/button/Button";
 import { ShoppingBag } from "lucide-react";
+import { ProductVariants } from "./ProductVariants";
 
 type PageProps = {
   params: {
@@ -42,7 +43,7 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
 
   if (!product) notFound();
 
-  console.log(product);
+  // console.log(product);
 
   const labels = getProductLabels(product);
   let lowest = product.lowest_price_30_days;
@@ -86,6 +87,7 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
           {product.on_sale && lowest && (
             <p className="text-sm text-neutral-400">Najniższa cena w okresie 30 dni: {lowest} zł.</p>
           )}
+          <ProductVariants product={product} />
           {product.short_description && (
             <div
               className="pt-3 flex flex-col gap-3 leading-relaxed text-sm [&_h2]:font-display [&_h2]:text-xl [&_h2]:font-semibold [&_h3]:font-display [&_h3]:text-lg [&_h3]:font-semibold [&_ul]:list-disc [&_ul]:pl-4 [&_ul]:marker:text-neutral-300"

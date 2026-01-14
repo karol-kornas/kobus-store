@@ -2,7 +2,7 @@ export type Product = {
   id: number;
   slug: string;
   name: string;
-  price: string;
+  price: number;
   regular_price: string;
   sale_price: string;
   on_sale: boolean;
@@ -22,6 +22,7 @@ export type Product = {
   short_description?: string;
   description?: string;
   additional_services: AdditionalService[];
+  product_variants: ProductVariant[];
   stock_quantity: number;
 };
 
@@ -29,11 +30,21 @@ export type AdditionalService = {
   id: number;
   name: string;
   price: number;
-  thumbnail?: string;
-  thumbnail_width?: number;
-  thumbnail_height?: number;
-  preview_image?: string;
-  preview_image_width?: number;
-  preview_image_height?: number;
+  thumbnail: string | null;
+  thumbnail_width: number | null;
+  thumbnail_height: number | null;
+  preview_image: string | null;
+  preview_image_width: number | null;
+  preview_image_height: number | null;
   add_to_cart_url: string;
+};
+
+export type ProductVariant = {
+  id: number;
+  name: string;
+  slug: string;
+  price: number;
+  thumbnail: string | null;
+  thumbnail_width: number | null;
+  thumbnail_height: number | null;
 };
