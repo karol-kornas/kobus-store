@@ -1,7 +1,7 @@
 import { ProductLabel } from "@/types/productLabel";
 
 type Props = {
-  className: string;
+  className?: string;
   labels: ProductLabel[];
 };
 

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Mulish, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
-import { Header } from "@/components/layout/header/Header";
+import { Header } from "@/components/layouts/header/Header";
 import { getMenu } from "@/features/menu/menu.server";
 import { Providers } from "@/providers/Providers";
 

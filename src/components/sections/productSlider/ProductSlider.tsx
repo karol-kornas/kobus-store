@@ -1,7 +1,7 @@
 import { ProductSliderSkeleton } from "./ProductSliderSkeleton";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
-import { ProductCard } from "@/components/ui/productCard/ProductCard";
+import { ProductCard } from "@/components/products/productCard/ProductCard";
 import { Product } from "@/types/product";
 
 type Props = {

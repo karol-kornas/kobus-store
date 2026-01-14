@@ -2,7 +2,7 @@
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import { ProductCardSkeleton } from "@/components/ui/productCard/ProductCardSkeleton";
+import { ProductCardSkeleton } from "@/components/products/productCard/ProductCardSkeleton";
 
 interface Props {
   productsLength: number;

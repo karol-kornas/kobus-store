@@ -1,18 +1,19 @@
 import { getCategoryBySlug } from "@/features/categories/categories.server";
 import { getMenu } from "@/features/menu/menu.server";
-import { MenuItem } from "@/components/layout/navigation/navigation.types";
-import { CategorySidebar } from "./CategorySidebar";
-
-import { CategoryProducts } from "./CategoryProducts";
 import { Suspense } from "react";
-import { ProductsSkeleton } from "./ProductsSkeleton";
-import { CategoryBreadcrumbs } from "./CategoryBreadcrumbs";
 import { BreadcrumbsSkeleton } from "@/components/ui/breadcrumb/BreadcrumbsSkeleton";
-import { CategoryHeader } from "./CategoryHeader";
-import { CategoryHeaderSkeleton } from "./CategoryHeaderSkeleton";
 import { CategoryValidator } from "./CategoryValidator";
 import { getSeo } from "@/features/seo/seo.server";
 import { mapSeoToMetadata } from "@/features/seo/seo.helpers";
+import { CategorySidebarSkeleton } from "@/components/category/categorySidebar/CategorySidebarSkeleton";
+import { CategorySidebar } from "@/components/category/categorySidebar/CategorySidebar";
+import { SidebarLayout } from "@/components/layouts/sidebarLayout/SidebarLayout";
+import { extractCategoriesTree } from "@/features/menu/menu.helpers";
+import { CategoryHeader } from "@/components/category/categoryHeader/CategoryHeader";
+import { CategoryHeaderSkeleton } from "@/components/category/categoryHeader/CategoryHeaderSkeleton";
+import { ProductsListingSkeleton } from "@/components/products/productsListing/ProductsListingSkeleton";
+import { CategoryBreadcrumbs } from "@/components/category/categoryBreadcrumbs/CategoryBreadcrumbs";
+import { CategoryProducts } from "@/components/category/categoryProducts/CategoryProducts";
 
 type PageProps = {
   params: {
@@ -33,6 +34,7 @@ export async function generateMetadata({ params }: PageProps) {
   if (!category) {
     return {
       title: "Nie znaleziono kategorii",
+      robots: "noindex",
     };
   }
 
@@ -63,28 +65,31 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
         <CategoryBreadcrumbs categoryPromise={category} />
       </Suspense>
 
-      <div className="grid xl:grid-cols-[18.625rem_1fr] 2xl:grid-cols-[22.625rem_1fr] gap-4 md:gap-10 mt-6 lg:mt-8">
-        <div className="hidden xl:block">
-          <CategorySidebar categories={categoriesTree} />
-        </div>
-        <div>
-          <Suspense fallback={<CategoryHeaderSkeleton />}>
-            <CategoryHeader categoryPromise={category} />
+      <SidebarLayout
+        sidebar={
+          <Suspense fallback={<CategorySidebarSkeleton />}>
+            <CategorySidebar categories={categoriesTree} />
           </Suspense>
+        }
+        content={
+          <>
+            <Suspense fallback={<CategoryHeaderSkeleton />}>
+              <CategoryHeader categoryPromise={category} />
+            </Suspense>
 
-          <Suspense
-            key={`${searchParamsOpt.page}-${searchParamsOpt.orderby}-${searchParamsOpt.min_price}-${searchParamsOpt.max_price}`}
-            fallback={<ProductsSkeleton />}
-          >
-            <CategoryProducts categorySlug={slug} categoryPromise={category} searchParams={searchParamsOpt} />
-          </Suspense>
-        </div>
-      </div>
+            <Suspense
+              key={`${searchParamsOpt.page}-${searchParamsOpt.orderby}-${searchParamsOpt.min_price}-${searchParamsOpt.max_price}`}
+              fallback={<ProductsListingSkeleton />}
+            >
+              <CategoryProducts
+                categorySlug={slug}
+                categoryPromise={category}
+                searchParams={searchParamsOpt}
+              />
+            </Suspense>
+          </>
+        }
+      />
     </div>
   );
-}
-
-function extractCategoriesTree(menu: MenuItem[]) {
-  const productsItem = menu.find((item) => item.title === "Produkty");
-  return productsItem?.children ?? [];
 }
