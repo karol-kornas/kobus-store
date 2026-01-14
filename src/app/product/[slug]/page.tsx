@@ -13,6 +13,7 @@ import { ProductPrice } from "@/components/productDetail/productPrice/ProductPri
 import { ProductShortDescription } from "@/components/productDetail/productShortDescription/ProductShortDescription";
 import { ProductActions } from "@/components/productDetail/productActions/ProductActions";
 import { ProductDescription } from "@/components/productDetail/productDescription/ProductDescription";
+import { BenefitsSection } from "@/components/sections/benefitsSection/BenefitsSection";
 
 type PageProps = {
   params: {
@@ -48,37 +49,44 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
   console.log(product);
 
   return (
-    <ProductLayout
-      breadcrumbs={
-        <ProductBreadcrumbs
-          categorySlug={cat}
-          productName={product.name}
-          productCategories={product.categories}
-        />
-      }
-      gallery={
-        <ProductGallery
-          images={product.images.map((img) => ({
-            id: img.id,
-            src: img.src,
-            alt: img.alt,
-            width: img.width,
-            height: img.height,
-          }))}
-          productName={product.name}
-        />
-      }
-      summary={
-        <>
-          <ProductHeader product={product} />
-          <ProductPrice product={product} />
-          <ProductVariants product={product} />
-          <ProductShortDescription product={product} />
-          <ProductAdditionalServices additionalServices={product.additional_services} />
-          <ProductActions product={product} />
-        </>
-      }
-      description={<ProductDescription product={product} />}
-    />
+    <>
+      <ProductLayout
+        breadcrumbs={
+          <ProductBreadcrumbs
+            categorySlug={cat}
+            productName={product.name}
+            productCategories={product.categories}
+          />
+        }
+        gallery={
+          <ProductGallery
+            images={product.images.map((img) => ({
+              id: img.id,
+              src: img.src,
+              alt: img.alt,
+              width: img.width,
+              height: img.height,
+            }))}
+            productName={product.name}
+          />
+        }
+        summary={
+          <>
+            <ProductHeader product={product} />
+            <ProductPrice product={product} />
+            <ProductVariants product={product} />
+            <ProductShortDescription product={product} />
+            <ProductAdditionalServices additionalServices={product.additional_services} />
+            <ProductActions product={product} />
+          </>
+        }
+        description={
+          <>
+            <ProductDescription product={product} />
+          </>
+        }
+      />
+      <BenefitsSection />
+    </>
   );
 }
