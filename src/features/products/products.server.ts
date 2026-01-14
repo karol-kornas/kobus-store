@@ -77,6 +77,6 @@ export async function getProductsByCategory(categoryId: number, options: GetProd
 }
 
 export const getProductBySlug = cache(async (slug: string) => {
-  const { data } = await wooFetch<Product[]>("/products", { slug }, { revalidate: 0 });
+  const { data } = await wooFetch<Product[]>("/products", { slug }, { revalidate: 60 });
   return data[0] ?? null;
 });
