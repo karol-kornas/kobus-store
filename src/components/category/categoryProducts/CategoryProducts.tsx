@@ -35,7 +35,7 @@ export async function CategoryProducts({ categoryPromise, searchParams }: Props)
       basePath={`/category/${category.slug}`}
       searchParams={{ page, orderby, min_price, max_price }}
     >
-      <ProductsGrid products={products.items} />
+      <ProductsGrid products={products.items} categorySlug={category.slug} />
     </ProductsListing>
   );
 }
