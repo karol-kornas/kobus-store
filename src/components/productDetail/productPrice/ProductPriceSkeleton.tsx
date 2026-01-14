@@ -1,8 +1,10 @@
+import { Skeleton } from "@/components/ui/skeleton/Skeleton";
+
 export function ProductPriceSkeleton() {
   return (
     <>
-      <div className="h-7.5 w-1/3 mt-4 bg-gray-200"></div>
-      <div className="h-4.5 w-1/2 bg-gray-200 mt-1"></div>
+      <Skeleton className="h-7.5 w-1/3 mt-4" />
+      <Skeleton className="h-4.5 w-1/2 mt-1" />
     </>
   );
 }

@@ -1,11 +1,13 @@
+import { Skeleton } from "@/components/ui/skeleton/Skeleton";
+
 export function ProductHeaderSkeleton() {
   return (
     <>
       <div className="flex gap-2">
-        <div className="h-6.25 w-20 bg-gray-200" />
-        <div className="h-6.25 w-24 bg-gray-200" />
+        <Skeleton className="h-6.25 w-20" />
+        <Skeleton className="h-6.25 w-24" />
       </div>
-      <div className="h-9 w-3/4 bg-gray-200 mt-3" />
+      <Skeleton className="h-18 w-3/4 mt-3" />
     </>
   );
 }

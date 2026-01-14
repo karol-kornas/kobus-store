@@ -1,6 +1,8 @@
+import { Skeleton } from "../skeleton/Skeleton";
+
 export function BreadcrumbsSkeleton() {
   return (
-    <nav aria-label="Breadcrumb">
+    <nav>
       <ol className="flex flex-wrap items-center gap-2 text-sm pt-8">
         <SkeletonItem width="w-20" />
 
@@ -14,12 +16,12 @@ export function BreadcrumbsSkeleton() {
 function SkeletonItem({ width, isLast = false }: { width: string; isLast?: boolean }) {
   return (
     <li className="flex items-center gap-2">
-      <span className={`h-4 ${width} rounded bg-gray-200 animate-pulse`} />
+      <Skeleton className={`h-4 ${width}`} />
       {!isLast && <Separator />}
     </li>
   );
 }
 
 function Separator() {
-  return <span className="text-gray-300">/</span>;
+  return <span className="text-gray-200">/</span>;
 }
