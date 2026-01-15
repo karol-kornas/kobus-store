@@ -79,7 +79,7 @@ export function HeroSlider({ slides }: Props) {
             <SwiperSlide key={i}>
               <div className="flex justify-center relative w-full h-[58vh] min-h-108 max-h-144 md:max-h-full md:h-170.75">
                 {item.image && (
-                  <div className="absolute inset-0 z-[-1]">
+                  <div className="absolute size-full inset-0">
                     {/* MOBILE */}
                     <Image
                       src={item.imageMobile}
@@ -126,38 +126,37 @@ export function HeroSlider({ slides }: Props) {
                         el.pause();
                       }
                     }}
-                    className="absolute inset-0 w-full h-full object-cover z-[-1]"
+                    className="absolute inset-0 size-full object-cover"
                     loop
                     muted
                     playsInline
                   />
                 )}
 
-                {item.isHtmlText && (
-                  <>
-                    <div className="absolute inset-0 bg-linear-to-b from-transparent to-black/65"></div>
-                    <div
-                      className="text-white flex items-center justify-end pb-16 md:pb-28.5 px-3 flex-col absolute inset-0 size-full text-center gap-2"
-                      data-swiper-parallax-x="-40%"
-                    >
-                      <strong className="block text-[0.875rem] font-normal tracking-widest font-display uppercase leading-[1.1] max-w-[20rem] sm:max-w-130">
-                        {item.label}
-                      </strong>
-                      <h2
-                        className="text-[1.8125rem] max-w-[20rem] sm:max-w-130 md:text-[2.875rem] leading-[1.1] font-serif "
-                        dangerouslySetInnerHTML={{ __html: item.title }}
-                      />
+                <div className="absolute inset-0 size-full bg-swiper-slide opacity-75"></div>
 
-                      <p className="text-[0.875rem] max-w-[20rem] sm:max-w-130 md:text-[1.125rem] font-display">
-                        {item.description}
-                      </p>
-                      {item.link && (
-                        <ButtonLink href={normalizeWpUrl(item.link)} variant="white" className="mt-4">
-                          {item.buttonText ? item.buttonText : "Sprawdź"}
-                        </ButtonLink>
-                      )}
-                    </div>
-                  </>
+                {item.isHtmlText && (
+                  <div
+                    className="text-white flex items-center justify-end pb-16 md:pb-28.5 px-3 flex-col absolute inset-0 size-full text-center gap-2"
+                    data-swiper-parallax-x="-40%"
+                  >
+                    <strong className="block text-[0.875rem] font-normal tracking-widest font-display uppercase leading-[1.1] max-w-[20rem] sm:max-w-130">
+                      {item.label}
+                    </strong>
+                    <h2
+                      className="text-[1.8125rem] max-w-[20rem] sm:max-w-130 md:text-[2.875rem] leading-[1.1] font-serif "
+                      dangerouslySetInnerHTML={{ __html: item.title }}
+                    />
+
+                    <p className="text-[0.875rem] max-w-[20rem] sm:max-w-130 md:text-[1.125rem] font-display">
+                      {item.description}
+                    </p>
+                    {item.link && (
+                      <ButtonLink href={normalizeWpUrl(item.link)} variant="white" className="mt-4">
+                        {item.buttonText ? item.buttonText : "Sprawdź"}
+                      </ButtonLink>
+                    )}
+                  </div>
                 )}
               </div>
             </SwiperSlide>
