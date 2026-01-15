@@ -79,7 +79,7 @@ export function HeroSlider({ slides }: Props) {
             <SwiperSlide key={i}>
               <div className="flex justify-center relative w-full h-[58vh] min-h-108 max-h-144 md:max-h-full md:h-170.75">
                 {item.image && (
-                  <div className="absolute inset-0">
+                  <div className="absolute inset-0 z-[-1]">
                     {/* MOBILE */}
                     <Image
                       src={item.imageMobile}
@@ -126,7 +126,7 @@ export function HeroSlider({ slides }: Props) {
                         el.pause();
                       }
                     }}
-                    className="absolute inset-0 w-full h-full object-cover"
+                    className="absolute inset-0 w-full h-full object-cover z-[-1]"
                     loop
                     muted
                     playsInline
