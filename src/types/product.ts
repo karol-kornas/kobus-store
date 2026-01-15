@@ -24,6 +24,8 @@ export type Product = {
   additional_services: AdditionalService[];
   product_variants: ProductVariant[];
   stock_quantity: number;
+  upsell_ids: number[];
+  cross_sell_ids: number[];
 };
 
 export type AdditionalService = {

@@ -42,7 +42,7 @@ export function SliderPaginationSkeleton() {
   return (
     <div className="flex justify-center gap-2 mt-8">
       {Array.from({ length: 2 }).map((_, i) => (
-        <div key={i} className="h-3 w-3 rounded-full bg-neutral-500 animate-pulse" />
+        <div key={i} className="h-3 w-3 rounded-full bg-gray-200 animate-pulse" />
       ))}
     </div>
   );

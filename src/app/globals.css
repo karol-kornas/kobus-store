@@ -58,14 +58,12 @@
   animation: scaleIn 0.2s ease-out;
 }
 
-@layer utilities {
-  .no-spinner::-webkit-outer-spin-button,
-  .no-spinner::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
+.no-spinner::-webkit-outer-spin-button,
+.no-spinner::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
-  .no-spinner {
-    -moz-appearance: textfield;
-  }
+.no-spinner {
+  -moz-appearance: textfield;
 }

@@ -45,7 +45,7 @@ export function NavigationSub({ item, openId }: Props) {
                 transition: { staggerChildren: 0.05, delayChildren: 0.3 },
               },
             }}
-            className="container mx-auto max-xl:px-6 py-4 xl:py-6"
+            className="container mx-auto max-xl:px-6 py-4 xl:py-6 "
           >
             <ul className="grid divide-y dark:divide-neutral-700 divide-neutral-200 xl:divide-y-0 grid-cols-1 xl:grid-cols-6 gap-4 xl:gap-14">
               {item.children.map((el, i) => (

@@ -1,9 +1,10 @@
 export type ManualProductsSectionData = {
-  id: string;
-  type: "manual_products_section";
+  id?: string;
+  type?: "manual_products_section";
   title: string;
+  titleClassName?: string;
   products: number[];
-  cta: {
+  cta?: {
     label: string;
     url: string;
   };

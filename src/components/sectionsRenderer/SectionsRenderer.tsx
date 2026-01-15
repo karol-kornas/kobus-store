@@ -4,9 +4,16 @@ import { ProductsTabsSectionData } from "@/components/sections/productsTabsSecti
 import { CategoriesSection } from "@/components/sections/categoriesSection/CategoriesSection";
 import { ManualProductsSectionData } from "../sections/manualProductsSection/manualProductsSection.type";
 import { ManualProductsSection } from "../sections/manualProductsSection/ManualProductsSection";
+import { BenefitsSection } from "../sections/benefitsSection/BenefitsSection";
+import { BenefitsSectionSectionData } from "../sections/benefitsSection/benefitsSection.type";
 
 interface Props {
-  sections: (CategoriesSectionData | ProductsTabsSectionData | ManualProductsSectionData)[];
+  sections: (
+    | CategoriesSectionData
+    | ProductsTabsSectionData
+    | ManualProductsSectionData
+    | BenefitsSectionSectionData
+  )[];
 }
 
 export function SectionsRenderer({ sections }: Props) {
@@ -22,6 +29,9 @@ export function SectionsRenderer({ sections }: Props) {
 
           case "manual_products_section":
             return <ManualProductsSection key={section.id} section={section} />;
+
+          case "benefits_section":
+            return <BenefitsSection key={section.id} />;
 
           default:
             return null;

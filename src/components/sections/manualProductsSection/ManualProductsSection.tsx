@@ -11,6 +11,8 @@ type Props = {
 };
 
 export function ManualProductsSection({ section }: Props) {
+  const hasProducts = Array.isArray(section.products) && section.products.length > 0;
+
   const { ref, inView } = useInView({
     triggerOnce: true,
     rootMargin: "200px",
@@ -19,13 +21,18 @@ export function ManualProductsSection({ section }: Props) {
   const { data, isLoading, isError } = useProductsByIdsLite(
     { ids: section.products },
     {
-      enabled: inView,
+      enabled: inView && hasProducts,
     }
   );
+
+  if (!hasProducts) return null;
+
   return (
     <section ref={ref} className="pt-10">
       <div className="container">
-        <h3 className="font-display text-[1.625rem] font-semibold">{section.title}</h3>
+        <h3 className={`${section.titleClassName} font-display text-[1.625rem] font-semibold`}>
+          {section.title}
+        </h3>
 
         <ProductSlider products={data?.products ?? []} isError={isError} isLoading={isLoading} />
 

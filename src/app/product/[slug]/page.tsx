@@ -14,6 +14,8 @@ import { ProductShortDescription } from "@/components/productDetail/productShort
 import { ProductActions } from "@/components/productDetail/productActions/ProductActions";
 import { ProductDescription } from "@/components/productDetail/productDescription/ProductDescription";
 import { BenefitsSection } from "@/components/sections/benefitsSection/BenefitsSection";
+import { ProductUpsell } from "@/components/productDetail/productUpsell/ProductUpsell";
+import { ProductCrossSell } from "@/components/productDetail/productCrossSell/ProductCrossSell";
 
 type PageProps = {
   params: {
@@ -45,8 +47,6 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
   const product = await getProductBySlug(slug);
 
   if (!product) notFound();
-
-  console.log(product);
 
   return (
     <>
@@ -86,7 +86,11 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
           </>
         }
       />
-      <BenefitsSection />
+      <div className="flex flex-col gap-5">
+        <BenefitsSection />
+        <ProductUpsell productIds={product.upsell_ids} />
+        <ProductCrossSell productIds={product.cross_sell_ids} />
+      </div>
     </>
   );
 }
