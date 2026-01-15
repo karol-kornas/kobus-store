@@ -59,6 +59,8 @@ export function ProductGallery({ images, productName }: Props) {
                 height={image.height ?? 660}
                 className="w-full h-auto object-contain"
                 sizes="(min-width: 1024px) 660px, 100vw"
+                loading={index === 0 ? "eager" : "lazy"}
+                fetchPriority={index === 0 ? "high" : "auto"}
               />
             </SwiperSlide>
           ))}
