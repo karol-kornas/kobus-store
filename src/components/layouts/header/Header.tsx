@@ -51,8 +51,6 @@ export function Header({ menu }: Props) {
           </div>
         </div>
       </header>
-
-      <MobileMenu items={menu} />
     </MobileMenuContext.Provider>
   );
 }
