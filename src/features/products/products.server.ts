@@ -1,5 +1,5 @@
 import { wooFetch } from "@/lib/wooFetch";
-import { wpApi } from "@/lib/wordpress";
+import { wpFetch } from "@/lib/wpFetch";
 import { Product } from "@/types/product";
 import { cache } from "react";
 
@@ -9,11 +9,11 @@ type GetProductsByCategoryLiteParams = {
 };
 
 export async function getProductsByCategoryLite({ categoryId, limit }: GetProductsByCategoryLiteParams) {
-  const { data } = await wpApi.get("/headless/v1/products", {
-    params: {
-      categoryId,
-      limit,
-    },
+  const data = await wpFetch("/headless/v1/products", {
+    categoryId,
+    limit,
+  }, {
+    revalidate: 300,
   });
 
   return data;
@@ -28,11 +28,12 @@ export async function getProductsByIdsLite({ ids, limit }: GetProductsByIdsLiteP
   if (!ids.length) {
     return { products: [] };
   }
-  const { data } = await wpApi.get("/headless/v1/products/by-ids", {
-    params: {
-      ids: ids.join(","),
-      limit,
-    },
+
+  const data = await wpFetch("/headless/v1/products/by-ids", {
+    ids: ids.join(","),
+    limit,
+  }, {
+    revalidate: 300,
   });
 
   return data;
