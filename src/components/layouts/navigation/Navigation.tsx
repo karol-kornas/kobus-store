@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import { normalizeWpUrl } from "@/utils/normalizeWpUrl";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { NavigationSub } from "./NavigationSub";
-import { usePathname } from "next/navigation";
 import { MenuItem } from "@/types/menu";
+import { useMobileMenu } from "@/context/MobileMenuContext";
 
 interface Props {
   items: MenuItem[];
@@ -15,8 +15,8 @@ interface Props {
 }
 
 export function Navigation({ items, classNav }: Props) {
-  const pathname = usePathname();
   const [openId, setOpenId] = useState<number | null>(null);
+  const { closeMobileMenu } = useMobileMenu();
 
   const toggleMenu = (id: number) => {
     if (openId === id) {
@@ -31,11 +31,6 @@ export function Navigation({ items, classNav }: Props) {
   useClickOutside(menuRef, () => {
     setOpenId(null);
   });
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setOpenId(null);
-  }, [pathname]);
 
   return (
     <nav className={classNav}>
@@ -53,6 +48,9 @@ export function Navigation({ items, classNav }: Props) {
                   if (hasChildren) {
                     e.preventDefault();
                     toggleMenu(item.id);
+                  } else {
+                    setOpenId(null);
+                    closeMobileMenu();
                   }
                 }}
                 className={`relative w-full xl:w-auto justify-between px-4 xl:px-0 py-3 hover:after:scale-x-100 after:transition-transform 
@@ -71,7 +69,7 @@ export function Navigation({ items, classNav }: Props) {
                 )}
               </Link>
 
-              {hasChildren && <NavigationSub item={item} openId={openId} />}
+              {hasChildren && <NavigationSub item={item} openId={openId} setOpenId={setOpenId} />}
             </li>
           );
         })}

@@ -4,11 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { HeaderActions } from "./HeaderActions";
 import { Hamburger } from "@/components/icons/Hamburger";
-import { useMediaQuery } from "usehooks-ts";
 import { useState } from "react";
 import { HeaderFeatures } from "./HeaderFeatures";
 import { MenuItem } from "@/types/menu";
 import { Navigation } from "../navigation/Navigation";
+
+import { MobileMenuContext } from "@/context/MobileMenuContext";
 import { MobileMenu } from "../mobileMenu/MobileMenu";
 
 interface Props {
@@ -16,13 +17,15 @@ interface Props {
 }
 
 export function Header({ menu }: Props) {
-  const isMobile = useMediaQuery("(max-width: 1280px)", {
-    initializeWithValue: false,
-  });
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <>
+    <MobileMenuContext.Provider
+      value={{
+        isOpenMobileMenu: isOpen,
+        closeMobileMenu: () => setIsOpen(false),
+      }}
+    >
       <header className="relative z-10 border-b-2 dark:border-neutral-800 border-neutral-200 text-black dark:text-white">
         <HeaderFeatures />
         <div className="bg-white dark:bg-black">
@@ -39,14 +42,14 @@ export function Header({ menu }: Props) {
               <Image className="max-xl:w-40" src="/logo.svg" alt="Kobus Store" width={200} height={82} />
             </Link>
 
-            {!isMobile && <Navigation classNav="hidden xl:flex" items={menu} />}
+            <Navigation classNav="hidden xl:flex" items={menu} />
 
             <HeaderActions />
           </div>
         </div>
       </header>
 
-      <MobileMenu items={menu} isOpen={isOpen} setIsOpen={setIsOpen} isMobile={isMobile} />
-    </>
+      <MobileMenu items={menu} />
+    </MobileMenuContext.Provider>
   );
 }
