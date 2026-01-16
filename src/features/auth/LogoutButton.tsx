@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useAuth } from "@/providers/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 
 export function LogoutButton() {
   const router = useRouter();

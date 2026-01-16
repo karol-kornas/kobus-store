@@ -15,7 +15,7 @@ export async function wooStoreFetch<T>(
     ...options,
     headers: {
       "Content-Type": "application/json",
-      ...(options.cookies ? { cookie: options.cookies } : {}),
+      ...(options.cookies ? { Cookie: options.cookies } : {}),
       ...options.headers,
     },
     cache: "no-store",

@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/providers/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button/Button";
 import { Input } from "@/components/ui/input/Input";
 import { Checkbox } from "@/components/ui/checkbox/Checkbox";

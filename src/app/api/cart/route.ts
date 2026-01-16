@@ -15,9 +15,17 @@ export async function GET(req: NextRequest) {
       res.headers.set("set-cookie", setCookie);
     }
 
+    const nonce = headers.get("nonce");
+    if (nonce) {
+      res.headers.set("nonce", nonce);
+    }
+
     return res;
-  } catch (err) {
+  } catch (err: unknown) {
     console.error("GET /api/cart error:", err);
-    return NextResponse.json({ error: "Failed to fetch cart" }, { status: 500 });
+
+    const message = err instanceof Error ? err.message : "Failed to fetch cart";
+
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

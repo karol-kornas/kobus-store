@@ -1,5 +1,5 @@
 "use client";
-import { useAuth } from "@/providers/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 import { Heart, Search, ShoppingBag, UserRound } from "lucide-react";
 import Link from "next/link";
 

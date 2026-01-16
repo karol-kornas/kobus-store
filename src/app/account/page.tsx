@@ -1,4 +1,3 @@
-import { AuthCheckButton } from "@/features/auth/AuthCheckButton";
 import { AccountGuard } from "@/features/auth/guards/AccountGuard";
 import { LogoutButton } from "@/features/auth/LogoutButton";
 import NeedPasswordReset from "./NeedPasswordReset";
@@ -12,7 +11,6 @@ export default function AccountPage() {
         <NeedPasswordReset />
 
         <LogoutButton />
-        <AuthCheckButton />
       </div>
     </AccountGuard>
   );

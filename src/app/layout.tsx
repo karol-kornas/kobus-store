@@ -50,7 +50,6 @@ export default async function RootLayout({
             Przejdź do treści
           </a>
           <Header menu={menu} />
-          <div id="mobile-menu-portal-root"></div>
 
           <main id="main-content">{children}</main>
         </Providers>

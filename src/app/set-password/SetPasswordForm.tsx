@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input/Input";
 import { Button } from "@/components/ui/button/Button";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/providers/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 import { FormField } from "@/components/ui/formField/FormField";
 import { FormError } from "@/components/ui/form/formError/FormError";
 import { SetPasswordFormValues, setPasswordSchema } from "@/features/auth/schemas/setPassword.schema";

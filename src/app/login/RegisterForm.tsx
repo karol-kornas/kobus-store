@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input/Input";
 import { RegisterFormValues, registerSchema } from "../../features/auth/schemas/register.schema";
 import { Checkbox } from "@/components/ui/checkbox/Checkbox";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/providers/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 import { FormField } from "@/components/ui/formField/FormField";
 import { FormError } from "@/components/ui/form/formError/FormError";
 

@@ -1,18 +1,10 @@
 "use client";
 
 import { createPortal } from "react-dom";
-import { useEffect, useState } from "react";
 
 export function MobileMenuPortal({ children }: { children: React.ReactNode }) {
-  const [mounted, setMounted] = useState(false);
+  const el = typeof window !== "undefined" ? document.getElementById("mobile-menu-portal-root") : null;
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
-
-  const el = document.getElementById("mobile-menu-portal-root");
   if (!el) return null;
 
   return createPortal(children, el);

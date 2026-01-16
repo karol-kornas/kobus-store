@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { X } from "lucide-react";
 import Link from "next/link";
-import { MobileMenuPortal } from "./MobileMenuPortal";
 import { Navigation } from "../navigation/Navigation";
 import { MenuItem } from "@/types/menu";
 import { useMobileMenu } from "@/context/MobileMenuContext";
@@ -15,7 +14,7 @@ export default function MobileMenu({ items }: Props) {
   const { isOpenMobileMenu, closeMobileMenu } = useMobileMenu();
 
   return (
-    <MobileMenuPortal>
+    <>
       {/* BACKDROP */}
       <motion.div
         className="fixed inset-0 bg-black/40 z-40 xl:hidden"
@@ -54,6 +53,6 @@ export default function MobileMenu({ items }: Props) {
           <Navigation items={items} />
         </div>
       </motion.aside>
-    </MobileMenuPortal>
+    </>
   );
 }
