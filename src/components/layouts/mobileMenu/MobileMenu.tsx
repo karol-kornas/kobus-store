@@ -11,7 +11,7 @@ interface Props {
   items: MenuItem[];
 }
 
-export function MobileMenu({ items }: Props) {
+export default function MobileMenu({ items }: Props) {
   const { isOpenMobileMenu, closeMobileMenu } = useMobileMenu();
 
   return (
