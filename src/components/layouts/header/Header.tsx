@@ -8,9 +8,12 @@ import { useState } from "react";
 import { HeaderFeatures } from "./HeaderFeatures";
 import { MenuItem } from "@/types/menu";
 import { Navigation } from "../navigation/Navigation";
-
 import { MobileMenuContext } from "@/context/MobileMenuContext";
-import { MobileMenu } from "../mobileMenu/MobileMenu";
+import dynamic from "next/dynamic";
+
+const MobileMenu = dynamic(() => import("../mobileMenu/MobileMenu"), {
+  ssr: false,
+});
 
 interface Props {
   menu: MenuItem[];
