@@ -11,6 +11,7 @@ export function HeaderActions() {
     <div className="flex items-center gap-2 sm:gap-4">
       <button
         type="button"
+        aria-label="Wyszukaj"
         className="flex text-sm uppercase size-10 lg:w-auto lg:px-4 lg:h-10 items-center justify-center gap-4 dark:bg-neutral-800 bg-cream rounded-full transition-opacity hover:opacity-60 cursor-pointer"
       >
         <span className="hidden lg:block">Czego szukasz?</span>
