@@ -1,3 +1,5 @@
+import { Variation } from "@/components/productDetail/productVariations/productVariations";
+
 export type Product = {
   id: number;
   slug: string;
@@ -26,6 +28,7 @@ export type Product = {
   stock_quantity: number;
   upsell_ids: number[];
   cross_sell_ids: number[];
+  variations: Variation[];
 };
 
 export type AdditionalService = {

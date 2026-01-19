@@ -9,7 +9,7 @@ export async function wooFetch<T>(
   params?: Record<string, string | number | boolean | null | undefined>,
   options?: {
     revalidate?: number;
-  }
+  },
 ): Promise<{
   data: T;
   headers: Headers;

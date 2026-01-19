@@ -1,3 +1,4 @@
+import { Variation } from "@/components/productDetail/productVariations/productVariations";
 import { CartImage } from "./cartImage";
 import { CartItemTotals } from "./cartItemTotals";
 import { CartPrices } from "./cartPrices";
@@ -11,4 +12,5 @@ export interface CartItem {
   images: CartImage[];
   prices: CartPrices;
   totals: CartItemTotals;
+  variation: Variation[];
 }

@@ -10,12 +10,24 @@ export default function CartView() {
   if (isSyncing && !items.length) return <p>Ładowanie...</p>;
   if (!items.length) return <p>Koszyk pusty</p>;
 
+  console.log(items);
+
   return (
     <div>
       <ul>
         {items.map((item) => (
           <li key={item.key}>
-            <strong>{item.name}</strong> — {item.quantity}
+            <strong>{item.name}</strong>
+            {item.variation?.length > 0 && (
+              <div className="text-sm opacity-70">
+                {item.variation.map((v) => (
+                  <div key={v.raw_attribute}>
+                    {v.attribute}: {v.value}
+                  </div>
+                ))}
+              </div>
+            )}{" "}
+            — {item.quantity}
             <button onClick={() => updateItem(item.key, item.quantity - 1)} disabled={isMutating}>
               -
             </button>
