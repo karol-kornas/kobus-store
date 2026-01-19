@@ -16,7 +16,7 @@ export async function getProductsByCategoryLite({ categoryId, limit }: GetProduc
       limit,
     },
     {
-      revalidate: 300,
+      revalidate: 0,
     },
   );
 
@@ -40,7 +40,7 @@ export async function getProductsByIdsLite({ ids, limit }: GetProductsByIdsLiteP
       limit,
     },
     {
-      revalidate: 300,
+      revalidate: 0,
     },
   );
 
@@ -86,6 +86,6 @@ export async function getProductsByCategory(categoryId: number, options: GetProd
 }
 
 export const getProductBySlug = cache(async (slug: string) => {
-  const { data } = await wooFetch<Product[]>("/products", { slug }, { revalidate: 60 });
+  const { data } = await wooFetch<Product[]>("/products", { slug }, { revalidate: 0 });
   return data[0] ?? null;
 });
