@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useCallback, useState } from "react";
 import { AuthUser } from "@/features/auth/auth.types";
 import {
   getMe,
@@ -13,12 +13,25 @@ import { AuthContext } from "./AuthContext";
 import { SetPasswordFormValues } from "@/features/auth/schemas/setPassword.schema";
 import { RegisterFormValues } from "@/features/auth/schemas/register.schema";
 import { LoginFormValues } from "@/features/auth/schemas/login.schema";
+import { useCart, useCartItems } from "@/features/cart/hooks/cart.hooks";
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<AuthUser | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+import { getCart, mergeCartApi } from "@/features/cart/cart.client";
+import { getGuestCartSnapshot } from "@/features/cart/cart.helpers";
+
+export function AuthProvider({
+  children,
+  initialUser,
+}: {
+  children: React.ReactNode;
+  initialUser: AuthUser | null;
+}) {
+  const [isLoading, setIsLoading] = useState(false);
+  const [user, setUser] = useState<AuthUser | null>(initialUser);
+  const { fetchCart } = useCart();
+  const cartItems = useCartItems();
 
   const fetchUser = useCallback(async () => {
+    setIsLoading(true);
     try {
       const me = await getMe();
       setUser(me);
@@ -29,23 +42,33 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  useEffect(() => {
-    fetchUser();
-  }, [fetchUser]);
-
   const login = async (data: LoginFormValues) => {
+    const guestSnapshot = getGuestCartSnapshot(cartItems);
+    const guestHadItems = guestSnapshot.length > 0;
+
     await loginApi(data);
     await fetchUser();
+
+    if (!guestHadItems) {
+      await fetchCart();
+      return;
+    }
+
+    await getCart();
+    await mergeCartApi(guestSnapshot);
+    await fetchCart();
   };
 
   const logout = async () => {
     await logoutApi();
     setUser(null);
+    await fetchCart();
   };
 
   const registerUser = async (data: RegisterFormValues) => {
     await registerUserApi(data);
     await fetchUser();
+    await fetchCart();
   };
 
   const setPassword = async (data: SetPasswordFormValues) => {

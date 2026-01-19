@@ -26,7 +26,10 @@ export function Header({ menu }: Props) {
     <MobileMenuContext.Provider
       value={{
         isOpenMobileMenu: isOpen,
-        closeMobileMenu: () => setIsOpen(false),
+        closeMobileMenu: () => {
+          document.body.style.overflow = "";
+          setIsOpen(false);
+        },
       }}
     >
       <header className="relative z-10 border-b-2 dark:border-neutral-800 border-neutral-200 text-black dark:text-white">
@@ -35,7 +38,10 @@ export function Header({ menu }: Props) {
           <div className="container flex items-center justify-between py-4 xl:py-7 gap-4">
             <button
               className="size-10 flex items-center justify-center xl:hidden"
-              onClick={() => setIsOpen(true)}
+              onClick={() => {
+                document.body.style.overflow = "hidden";
+                setIsOpen(true);
+              }}
             >
               <Hamburger size="28" />
               <span className="sr-only">Otwórz menu</span>
@@ -51,6 +57,8 @@ export function Header({ menu }: Props) {
           </div>
         </div>
       </header>
+
+      <MobileMenu items={menu} />
     </MobileMenuContext.Provider>
   );
 }

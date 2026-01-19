@@ -9,12 +9,16 @@ type GetProductsByCategoryLiteParams = {
 };
 
 export async function getProductsByCategoryLite({ categoryId, limit }: GetProductsByCategoryLiteParams) {
-  const data = await wpFetch("/headless/v1/products", {
-    categoryId,
-    limit,
-  }, {
-    revalidate: 300,
-  });
+  const data = await wpFetch(
+    "/headless/v1/products",
+    {
+      categoryId,
+      limit,
+    },
+    {
+      revalidate: 300,
+    },
+  );
 
   return data;
 }
@@ -29,12 +33,16 @@ export async function getProductsByIdsLite({ ids, limit }: GetProductsByIdsLiteP
     return { products: [] };
   }
 
-  const data = await wpFetch("/headless/v1/products/by-ids", {
-    ids: ids.join(","),
-    limit,
-  }, {
-    revalidate: 300,
-  });
+  const data = await wpFetch(
+    "/headless/v1/products/by-ids",
+    {
+      ids: ids.join(","),
+      limit,
+    },
+    {
+      revalidate: 300,
+    },
+  );
 
   return data;
 }
@@ -66,7 +74,7 @@ export async function getProductsByCategory(categoryId: number, options: GetProd
       max_price: options.max_price,
       ...sort,
     },
-    { revalidate: 60 }
+    { revalidate: 60 },
   );
 
   return {

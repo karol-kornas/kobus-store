@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { wooStoreFetch } from "@/lib/wooStoreFetch";
+
+import { wooFetchWithNonce } from "@/lib/wooWithNonce";
 
 export async function POST(req: NextRequest) {
   try {
@@ -10,18 +11,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Missing key or quantity" }, { status: 400 });
     }
 
-    const nonce = req.headers.get("nonce");
+    const cookies = req.headers.get("cookie") ?? undefined;
 
-    const { data, headers } = await wooStoreFetch("/cart/update-item", {
+    const { data, headers } = await wooFetchWithNonce("/cart/update-item", {
       method: "POST",
-      cookies: req.headers.get("cookie") ?? undefined,
-      headers: {
-        ...(nonce ? { Nonce: nonce } : {}),
-      },
-      body: JSON.stringify({
-        key,
-        quantity,
-      }),
+      cookies,
+      body: JSON.stringify({ key, quantity }),
     });
 
     const res = NextResponse.json(data);

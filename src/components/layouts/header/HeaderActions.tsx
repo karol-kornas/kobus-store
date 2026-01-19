@@ -1,11 +1,13 @@
 "use client";
 import { useAuth } from "@/context/AuthContext";
+import { useCartCount } from "@/features/cart/hooks/cart.hooks";
 import { Heart, Search, ShoppingBag, UserRound } from "lucide-react";
 import Link from "next/link";
 
 export function HeaderActions() {
   const { isAuthenticated, isLoading } = useAuth();
   const userLink = isLoading || isAuthenticated ? "/account" : "/login";
+  const count = useCartCount();
 
   return (
     <div className="flex items-center gap-2 sm:gap-4">
@@ -34,11 +36,14 @@ export function HeaderActions() {
         <span className="sr-only">Ulubione</span>
       </Link>
       <Link
-        href="/koszyk"
+        href="/cart"
         title="Koszyk"
-        className="flex items-center justify-center transition-opacity hover:opacity-60"
+        className="relative flex items-center justify-center transition-opacity hover:opacity-60"
       >
         <ShoppingBag width={26} height={26} />
+        <span className="absolute flex justify-center items-center font-bold -top-2.5 -right-2.5 bg-red-500 text-white size-6 rounded-full">
+          {count}
+        </span>
         <span className="sr-only">Koszyk</span>
       </Link>
     </div>

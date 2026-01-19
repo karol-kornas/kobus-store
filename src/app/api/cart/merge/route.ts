@@ -1,34 +1,24 @@
 import { NextResponse } from "next/server";
 import { headers } from "next/headers";
-import { registerSchema } from "@/features/auth/schemas/register.schema";
-import { z } from "zod";
 import { wpAuthFetchRaw } from "@/lib/wpAuthFetchRaw";
 
 export async function POST(req: Request) {
   const body = await req.json();
-
-  const parsed = registerSchema.safeParse(body);
-
-  if (!parsed.success) {
-    return NextResponse.json(
-      {
-        error: "Invalid input",
-        issues: z.treeifyError(parsed.error),
-      },
-      { status: 400 },
-    );
-  }
-
   const incomingHeaders = await headers();
   const origin = incomingHeaders.get("origin");
+  const cookie = incomingHeaders.get("cookie");
 
-  const res = await wpAuthFetchRaw("/headless/v1/auth/register", {
-    method: "POST",
-    body: parsed.data,
-    headers: {
-      Origin: origin ?? "",
+  const res = await wpAuthFetchRaw(
+    "/headless/v1/cart/merge",
+    {
+      method: "POST",
+      body,
+      headers: {
+        Origin: origin ?? "",
+      },
     },
-  });
+    cookie,
+  );
 
   const data = await res.json();
 

@@ -1,43 +1,38 @@
-import { wpApi } from "@/lib/wordpress";
 import { NextResponse } from "next/server";
-import { AxiosError } from "axios";
 import { headers } from "next/headers";
+import { wpAuthFetchRaw } from "@/lib/wpAuthFetchRaw";
 
 export async function POST() {
-  try {
-    const incomingHeaders = await headers();
-    const origin = incomingHeaders.get("origin");
-    const cookie = incomingHeaders.get("cookie");
+  const incomingHeaders = await headers();
+  const origin = incomingHeaders.get("origin");
+  const cookie = incomingHeaders.get("cookie");
 
-    const res = await wpApi.post(
-      "/headless/v1/auth/logout",
-      {},
-      {
-        headers: {
-          Origin: origin ?? "",
-          Cookie: cookie ?? "",
-        },
-      }
-    );
+  const res = await wpAuthFetchRaw(
+    "/headless/v1/auth/logout",
+    {
+      method: "POST",
+      headers: {
+        Origin: origin ?? "",
+      },
+    },
+    cookie,
+  );
 
-    const response = NextResponse.json(res.data);
+  let data = null;
 
-    const setCookies = res.headers["set-cookie"];
-
-    if (Array.isArray(setCookies)) {
-      setCookies.forEach((cookie) => {
-        response.headers.append("Set-Cookie", cookie);
-      });
-    } else if (typeof setCookies === "string") {
-      response.headers.append("Set-Cookie", setCookies);
-    }
-
-    return response;
-  } catch (err) {
-    const error = err as AxiosError;
-
-    return NextResponse.json(error.response?.data ?? { error: "Logout failed" }, {
-      status: error.response?.status ?? 500,
-    });
+  const contentType = res.headers.get("content-type");
+  if (contentType?.includes("application/json")) {
+    data = await res.json();
   }
+
+  const response = NextResponse.json(data, {
+    status: res.status,
+  });
+
+  const setCookie = res.headers.get("set-cookie");
+  if (setCookie) {
+    response.headers.set("Set-Cookie", setCookie);
+  }
+
+  return response;
 }

@@ -4,7 +4,11 @@ import "./globals.css";
 
 import { Header } from "@/components/layouts/header/Header";
 import { getMenu } from "@/features/menu/menu.server";
-import { Providers } from "@/providers/Providers";
+import { getCartServer } from "@/features/cart/cart.server";
+import { CartStoreProvider } from "@/stores/CartStoreProvider";
+import { getMeServer } from "@/features/auth/auth.server";
+import { QueryProvider } from "@/providers/QueryProvider";
+import { AuthProvider } from "@/context/AuthProvider";
 
 const mulish = Mulish({
   variable: "--font-mulish",
@@ -39,20 +43,28 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const menu = await getMenu("headless_header");
+  const cart = await getCartServer();
+  const user = await getMeServer();
+
   return (
     <html lang="pl">
       <body className={`${mulish.variable} ${playfairDisplay.variable} antialiased font-sans`}>
-        <Providers>
-          <a
-            href="#main-content"
-            className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 bg-background p-2 z-50"
-          >
-            Przejdź do treści
-          </a>
-          <Header menu={menu} />
+        <QueryProvider>
+          <CartStoreProvider initialCart={cart}>
+            <AuthProvider initialUser={user}>
+              <a
+                href="#main-content"
+                className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 bg-background p-2 z-50"
+              >
+                Przejdź do treści
+              </a>
+              <Header menu={menu} />
+              <div id="mobile-menu-portal-root"></div>
 
-          <main id="main-content">{children}</main>
-        </Providers>
+              <main id="main-content">{children}</main>
+            </AuthProvider>
+          </CartStoreProvider>
+        </QueryProvider>
       </body>
     </html>
   );

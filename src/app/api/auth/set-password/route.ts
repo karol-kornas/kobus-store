@@ -1,10 +1,8 @@
-import { wpApi } from "@/lib/wordpress";
-import { AxiosError } from "axios";
 import { NextResponse } from "next/server";
 import { headers } from "next/headers";
-
 import { z } from "zod";
 import { setPasswordSchema } from "@/features/auth/schemas/setPassword.schema";
+import { wpAuthFetchRaw } from "@/lib/wpAuthFetchRaw";
 
 export async function POST(req: Request) {
   const body = await req.json();
@@ -17,7 +15,7 @@ export async function POST(req: Request) {
         error: "Invalid input",
         issues: z.treeifyError(parsed.error),
       },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -26,27 +24,33 @@ export async function POST(req: Request) {
   const incomingHeaders = await headers();
   const origin = incomingHeaders.get("origin");
 
-  try {
-    const res = await wpApi.post(
-      "/headless/v1/auth/set-password",
-      {
-        login,
-        key,
-        password,
-      },
-      {
-        headers: {
-          Origin: origin ?? "",
-        },
-      }
-    );
+  const res = await wpAuthFetchRaw("/headless/v1/auth/set-password", {
+    method: "POST",
+    body: {
+      login,
+      key,
+      password,
+    },
+    headers: {
+      Origin: origin ?? "",
+    },
+  });
 
-    return NextResponse.json(res.data);
-  } catch (err) {
-    const error = err as AxiosError;
+  let data = null;
 
-    return NextResponse.json(error.response?.data ?? { error: "Set password failed" }, {
-      status: error.response?.status ?? 500,
-    });
+  const contentType = res.headers.get("content-type");
+  if (contentType?.includes("application/json")) {
+    data = await res.json();
   }
+
+  const response = NextResponse.json(data, {
+    status: res.status,
+  });
+
+  const setCookie = res.headers.get("set-cookie");
+  if (setCookie) {
+    response.headers.set("Set-Cookie", setCookie);
+  }
+
+  return response;
 }

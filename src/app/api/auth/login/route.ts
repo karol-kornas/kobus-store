@@ -1,38 +1,33 @@
-import { wpApi } from "@/lib/wordpress";
-import { AxiosError } from "axios";
 import { NextResponse } from "next/server";
 import { headers } from "next/headers";
+import { wpAuthFetchRaw } from "@/lib/wpAuthFetchRaw";
 
 export async function POST(req: Request) {
   const body = await req.json();
   const incomingHeaders = await headers();
   const origin = incomingHeaders.get("origin");
 
-  try {
-    const res = await wpApi.post("/headless/v1/auth/login", body, {
-      headers: {
-        Origin: origin ?? "",
-      },
-    });
+  const res = await wpAuthFetchRaw("/headless/v1/auth/login", {
+    method: "POST",
+    body,
+    headers: {
+      Origin: origin ?? "",
+    },
+  });
 
-    const response = NextResponse.json(res.data);
+  const data = await res.json();
 
-    const setCookies = res.headers["set-cookie"];
+  const response = NextResponse.json(data, {
+    status: res.status,
+  });
 
-    if (Array.isArray(setCookies)) {
-      setCookies.forEach((cookie) => {
-        response.headers.append("Set-Cookie", cookie);
-      });
-    } else if (typeof setCookies === "string") {
-      response.headers.append("Set-Cookie", setCookies);
-    }
+  const setCookie = res.headers.get("set-cookie");
 
-    return response;
-  } catch (err) {
-    const error = err as AxiosError;
-
-    return NextResponse.json(error.response?.data ?? { error: "Login failed" }, {
-      status: error.response?.status ?? 500,
-    });
+  if (setCookie) {
+    response.headers.set("Set-Cookie", setCookie);
   }
+
+  console.log("LOGIN SET-COOKIE:", res.headers.get("set-cookie"));
+
+  return response;
 }
