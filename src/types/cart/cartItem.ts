@@ -1,16 +1,24 @@
-import { Variation } from "@/components/productDetail/productVariations/productVariations";
-import { CartImage } from "./cartImage";
-import { CartItemTotals } from "./cartItemTotals";
-import { CartPrices } from "./cartPrices";
-
-export interface CartItem {
+export type CartItem = {
   key: string;
   id: number;
   name: string;
   quantity: number;
-  permalink: string;
-  images: CartImage[];
-  prices: CartPrices;
-  totals: CartItemTotals;
-  variation: Variation[];
-}
+  images: {
+    id: number;
+    src: string;
+    alt: string;
+  }[];
+  price: number | null;
+  regular_price: number | null;
+  sale_price: number | null;
+  variations?: CartItemVariation[];
+  totals: {
+    line_total: number | null;
+  };
+};
+
+export type CartItemVariation = {
+  raw_attribute: string;
+  attribute: string;
+  value: string;
+};

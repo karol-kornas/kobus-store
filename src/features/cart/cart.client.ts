@@ -1,14 +1,14 @@
 import { apiClient } from "@/lib/apiClient";
-import { Cart } from "@/types/cart/cart";
+import { ApiCart } from "@/types/cart/apiCart";
 import { CartMergeItem } from "@/types/cart/cartMergeItem";
 
-export async function getCart(): Promise<Cart> {
-  const res = await apiClient.get<Cart>("/api/cart");
+export async function getCart(): Promise<ApiCart> {
+  const res = await apiClient.get<ApiCart>("/api/cart");
   return res.data;
 }
 
-export async function addToCart(id: number, quantity = 1): Promise<Cart> {
-  const res = await apiClient.post<Cart>("/api/cart/add", {
+export async function addToCart(id: number, quantity = 1): Promise<ApiCart> {
+  const res = await apiClient.post<ApiCart>("/api/cart/add", {
     id,
     quantity,
   });
@@ -16,13 +16,13 @@ export async function addToCart(id: number, quantity = 1): Promise<Cart> {
   return res.data;
 }
 
-export async function removeFromCart(key: string): Promise<Cart> {
-  const res = await apiClient.post<Cart>("/api/cart/remove", { key });
+export async function removeFromCart(key: string): Promise<ApiCart> {
+  const res = await apiClient.post<ApiCart>("/api/cart/remove", { key });
   return res.data;
 }
 
-export async function updateCartItem(key: string, quantity: number): Promise<Cart> {
-  const res = await apiClient.post<Cart>("/api/cart/update", {
+export async function updateCartItem(key: string, quantity: number): Promise<ApiCart> {
+  const res = await apiClient.post<ApiCart>("/api/cart/update", {
     key,
     quantity,
   });
@@ -30,17 +30,17 @@ export async function updateCartItem(key: string, quantity: number): Promise<Car
   return res.data;
 }
 
-export async function bootstrapCart(): Promise<Cart> {
-  const res = await apiClient.post<Cart>("/api/cart/bootstrap");
+export async function bootstrapCart(): Promise<ApiCart> {
+  const res = await apiClient.post<ApiCart>("/api/cart/bootstrap");
   return res.data;
 }
 
-export async function mergeCartApi(items: CartMergeItem[]): Promise<Cart> {
+export async function mergeCartApi(items: CartMergeItem[]): Promise<ApiCart> {
   const payload = {
     merge_id: crypto.randomUUID(),
     items,
   };
 
-  const res = await apiClient.post<Cart>("/api/cart/merge", payload);
+  const res = await apiClient.post<ApiCart>("/api/cart/merge", payload);
   return res.data;
 }

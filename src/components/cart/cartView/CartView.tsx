@@ -1,10 +1,11 @@
 "use client";
 
 import { useCart, useCartItems, useCartTotals } from "@/features/cart/hooks/cart.hooks";
+import { formatPrice } from "@/utils/formatPrice";
 
 export default function CartView() {
   const items = useCartItems();
-  const totals = useCartTotals();
+  const { totalPrice, currency } = useCartTotals();
   const { updateItem, removeItem, isSyncing, isMutating } = useCart();
 
   if (isSyncing && !items.length) return <p>Ładowanie...</p>;
@@ -15,17 +16,7 @@ export default function CartView() {
       <ul>
         {items.map((item) => (
           <li key={item.key}>
-            <strong>{item.name}</strong>
-            {item.variation?.length > 0 && (
-              <div className="text-sm opacity-70">
-                {item.variation.map((v) => (
-                  <div key={v.raw_attribute}>
-                    {v.attribute}: {v.value}
-                  </div>
-                ))}
-              </div>
-            )}{" "}
-            — {item.quantity}
+            <strong>{item.name}</strong>— {item.quantity}
             <button onClick={() => updateItem(item.key, item.quantity - 1)} disabled={isMutating}>
               -
             </button>
@@ -40,7 +31,7 @@ export default function CartView() {
       </ul>
 
       <p>
-        <strong>Suma:</strong> {totals.formattedTotal}
+        <strong>Suma:</strong> {formatPrice(totalPrice, currency)}
       </p>
     </div>
   );

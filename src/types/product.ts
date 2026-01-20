@@ -1,12 +1,10 @@
-import { Variation } from "@/components/productDetail/productVariations/productVariations";
-
 export type Product = {
   id: number;
   slug: string;
   name: string;
-  price: number;
-  regular_price: string;
-  sale_price: string;
+  price: number | null;
+  regular_price: number | null;
+  sale_price: number | null;
   on_sale: boolean;
   images: {
     id: number;
@@ -20,7 +18,7 @@ export type Product = {
     name: string;
     slug: string;
   }[];
-  lowest_price_30_days?: string | null;
+  lowest_price_30_days?: number | null;
   short_description?: string;
   description?: string;
   additional_services: AdditionalService[];
@@ -48,8 +46,21 @@ export type ProductVariant = {
   id: number;
   name: string;
   slug: string;
-  price: number;
+  price: number | null;
   thumbnail: string | null;
   thumbnail_width: number | null;
   thumbnail_height: number | null;
+};
+
+export type VariationAttribute = {
+  slug: string;
+  label: string;
+  value: string;
+};
+
+export type Variation = {
+  id: number;
+  price: number;
+  attributes: VariationAttribute[];
+  is_in_stock: boolean;
 };

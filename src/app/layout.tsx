@@ -9,6 +9,8 @@ import { CartStoreProvider } from "@/stores/CartStoreProvider";
 import { getMeServer } from "@/features/auth/auth.server";
 import { QueryProvider } from "@/providers/QueryProvider";
 import { AuthProvider } from "@/context/AuthProvider";
+import { AddToCartDrawer } from "@/components/cart/addToCartDrawer/AddToCartDrawer";
+import { mapCart } from "@/features/cart/cart.mapper";
 
 const mulish = Mulish({
   variable: "--font-mulish",
@@ -46,11 +48,13 @@ export default async function RootLayout({
   const cart = await getCartServer();
   const user = await getMeServer();
 
+  console.log(cart);
+
   return (
     <html lang="pl">
       <body className={`${mulish.variable} ${playfairDisplay.variable} antialiased font-sans`}>
         <QueryProvider>
-          <CartStoreProvider initialCart={cart}>
+          <CartStoreProvider initialCart={mapCart(cart)}>
             <AuthProvider initialUser={user}>
               <a
                 href="#main-content"
@@ -62,6 +66,8 @@ export default async function RootLayout({
               <div id="mobile-menu-portal-root"></div>
 
               <main id="main-content">{children}</main>
+
+              <AddToCartDrawer />
             </AuthProvider>
           </CartStoreProvider>
         </QueryProvider>

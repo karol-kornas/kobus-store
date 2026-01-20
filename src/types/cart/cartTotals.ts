@@ -1,8 +1,8 @@
 export interface CartTotals {
-  total_items: string;
-  total_shipping: string;
-  total_price: string;
-  total_tax: string;
+  total_items: number;
+  total_shipping: number | null;
+  total_price: number | null;
+  total_tax: number | null;
   currency_code: string;
   currency_symbol: string;
   currency_suffix: string;

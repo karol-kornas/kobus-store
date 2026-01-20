@@ -5,6 +5,7 @@ import { useState } from "react";
 import PreviewModal from "@/components/ui/previewModal/PreviewModal";
 import { ImageWithSkeleton } from "@/components/ui/imageWithSkeleton/ImageWithSkeleton";
 import { AdditionalService } from "@/types/product";
+import { formatPrice } from "@/utils/formatPrice";
 
 type Props = {
   additionalServices: AdditionalService[];
@@ -47,7 +48,7 @@ export function ProductAdditionalServices({ additionalServices }: Props) {
                 <h3 className="uppercase text-sm leading-tight mt-3 pr-3">{el.name}</h3>
 
                 <div className="mt-auto pt-2">
-                  <div className="font-bold">+{el.price} zł</div>
+                  <div className="font-bold">+{formatPrice(el.price)}</div>
                   {el.preview_image && (
                     <a
                       href="#"

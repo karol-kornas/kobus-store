@@ -1,12 +1,4 @@
-export type Variation = {
-  id: number;
-  price: number;
-  attributes: Record<string, string>;
-  raw_attribute?: string;
-  attribute?: string;
-  is_in_stock: boolean;
-  value?: string;
-};
+import { Variation } from "@/types/product";
 
 type Props = {
   variations: Variation[];
@@ -15,18 +7,21 @@ type Props = {
 };
 
 export function ProductVariations({ variations, onSelect, selectedId }: Props) {
-  if (!variations || variations.length == 0) return;
+  if (!variations || variations.length === 0) return null;
 
-  const sizeAttribute = "attribute_pa_rozmiar";
+  const attributeLabel = variations[0]?.attributes[0]?.label ?? "Wariant";
 
   return (
     <div className="flex flex-col md:flex-row items-center gap-4 w-full">
-      <p className="font-semibold">Rozmiar:</p>
+      <p className="font-semibold">{attributeLabel}:</p>
 
       <div className="flex gap-2 flex-wrap">
         {variations.map((variation) => {
-          const label = variation.attributes[sizeAttribute];
+          const mainAttribute = variation.attributes[0];
 
+          if (!mainAttribute) return null;
+
+          const label = mainAttribute.value;
           const isSelected = selectedId === variation.id;
           const isDisabled = !variation.is_in_stock;
 

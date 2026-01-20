@@ -3,10 +3,10 @@
 import { Button } from "@/components/ui/button/Button";
 import QuantitySelector from "@/components/ui/quantitySelector/QuantitySelector";
 import { useCart } from "@/features/cart/hooks/cart.hooks";
-import { Product } from "@/types/product";
+import { Product, Variation } from "@/types/product";
 import { ShoppingBag } from "lucide-react";
 import { useState } from "react";
-import { ProductVariations, Variation } from "../productVariations/productVariations";
+import { ProductVariations } from "../productVariations/productVariations";
 
 type Props = {
   product: Product;

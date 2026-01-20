@@ -48,6 +48,8 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
 
   if (!product) notFound();
 
+  console.log(product);
+
   return (
     <>
       <ProductLayout

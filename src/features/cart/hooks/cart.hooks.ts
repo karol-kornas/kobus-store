@@ -5,21 +5,29 @@ export function useCart() {
   const isMutating = useCartStore((s) => s.isMutating);
   const isSyncing = useCartStore((s) => s.isSyncing);
   const error = useCartStore((s) => s.error);
+  const isDrawerOpen = useCartStore((s) => s.isDrawerOpen);
+  const drawerProduct = useCartStore((s) => s.drawerProduct);
 
   const fetchCart = useCartStore((s) => s.fetchCart);
   const addItem = useCartStore((s) => s.addItem);
   const removeItem = useCartStore((s) => s.removeItem);
   const updateItem = useCartStore((s) => s.updateItem);
+  const openDrawer = useCartStore((s) => s.openDrawer);
+  const closeDrawer = useCartStore((s) => s.closeDrawer);
 
   return {
     cart,
     isMutating,
     isSyncing,
     error,
+    isDrawerOpen,
+    drawerProduct,
     fetchCart,
     addItem,
     removeItem,
     updateItem,
+    openDrawer,
+    closeDrawer,
   };
 }
 
@@ -40,22 +48,13 @@ export function useCartTotals() {
       totalPrice: 0,
       currency: "PLN",
       currencySymbol: "zł",
-      formattedTotal: "0 zł",
     };
   }
 
-  const totalItems = Number(totals.total_items);
-  const totalPrice = Number(totals.total_price) / 100;
-  const currency = totals.currency_code;
-  const currencySymbol = totals.currency_symbol;
-
-  const formattedTotal = `${totalPrice.toFixed(2).replace(".", ",")} ${currencySymbol}`;
-
   return {
-    totalItems,
-    totalPrice,
-    currency,
-    currencySymbol,
-    formattedTotal,
+    totalItems: totals.total_items,
+    totalPrice: totals.total_price,
+    currency: totals.currency_code,
+    currencySymbol: totals.currency_symbol,
   };
 }
