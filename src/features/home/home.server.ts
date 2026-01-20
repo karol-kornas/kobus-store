@@ -17,5 +17,5 @@ export async function getHomeHeroSlider() {
 }
 
 export async function getHomeSections() {
-  return wpFetch<HomeSectionsResponse>("/headless/v1/home/sections", { revalidate: 0 });
+  return wpFetch<HomeSectionsResponse>("/headless/v1/home/sections", { revalidate: 300 });
 }
