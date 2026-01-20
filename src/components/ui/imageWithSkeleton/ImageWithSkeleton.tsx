@@ -6,6 +6,10 @@ import clsx from "clsx";
 
 type Props = Omit<ImageProps, "alt" | "src"> & {
   src?: string | null;
+  srcset?: string;
+  sizes?: string;
+  width?: number;
+  height?: number;
   alt: string;
   skeletonClassName?: string;
   wrapClassName?: string;
@@ -14,6 +18,10 @@ type Props = Omit<ImageProps, "alt" | "src"> & {
 
 export function ImageWithSkeleton({
   src,
+  srcset,
+  sizes,
+  width,
+  height,
   alt,
   skeletonClassName,
   wrapClassName,
@@ -39,7 +47,20 @@ export function ImageWithSkeleton({
         <div className={clsx("absolute inset-0 bg-gray-200 animate-pulse z-[-1]", skeletonClassName)} />
       )}
 
-      <Image {...props} src={src} alt={alt} onLoad={() => setLoaded(true)} className={className} />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        width={width || undefined}
+        height={height || undefined}
+        src={src}
+        srcSet={srcset || undefined}
+        sizes={sizes || undefined}
+        alt={alt}
+        className={className}
+        loading="lazy"
+        onLoad={() => setLoaded(true)}
+      />
+
+      {/* <Image {...props} src={src} alt={alt} onLoad={() => setLoaded(true)} className={className} /> */}
     </div>
   );
 }

@@ -3,7 +3,11 @@ export type Category = {
   slug: string;
   name: string;
   image: {
-    url: string;
+    id: number;
+    src: string;
+    srcset?: string;
+    sizes?: string;
+    alt: string;
     width: number;
     height: number;
   };

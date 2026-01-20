@@ -9,6 +9,8 @@ export type Product = {
   images: {
     id: number;
     src: string;
+    srcset?: string;
+    sizes?: string;
     alt: string;
     width: number;
     height: number;

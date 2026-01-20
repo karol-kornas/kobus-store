@@ -9,7 +9,11 @@ type Props = {
 export function CategoryCard({ category }: Props) {
   return (
     <Link href={`category/${category.slug}`} className="relative hover:opacity-95 transition-opacity">
-      <CategoryCardImage src={category.image.url} />
+      <CategoryCardImage
+        src={category.image.src}
+        srcset={category.image.srcset}
+        alt={category.image.alt || category.name}
+      />
       <span className="block relative leading-tight md:text-lg font-display uppercase py-3 font-bold z-1">
         {category.name}
       </span>

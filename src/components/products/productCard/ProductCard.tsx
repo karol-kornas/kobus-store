@@ -17,7 +17,7 @@ export function ProductCard({ product, categorySlug }: Props) {
   return (
     <article className="relative">
       <Link href={href} className="flex flex-col gap-3">
-        <ProductCardImage src={image?.src} alt={image?.alt || product.name}>
+        <ProductCardImage src={image?.src} srcset={image?.srcset} alt={image?.alt || product.name}>
           <ProductLabels className="absolute bottom-0 left-0" labels={labels} />
         </ProductCardImage>
 

@@ -8,14 +8,7 @@ import type { Swiper as SwiperType } from "swiper";
 
 import "swiper/css";
 import "swiper/css/pagination";
-
-type ProductImage = {
-  id: number;
-  src: string;
-  alt: string;
-  width: number;
-  height: number;
-};
+import { ProductImage } from "@/types/productImage";
 
 type Props = {
   images: ProductImage[];
@@ -27,6 +20,8 @@ export function ProductGallery({ images, productName }: Props) {
   const mainSwiperRef = useRef<SwiperType | null>(null);
 
   if (!images.length) return null;
+
+  console.log(images);
 
   return (
     <div className="flex flex-col gap-4" aria-label={`Galeria zdjęć produktu ${productName}`}>
@@ -54,6 +49,7 @@ export function ProductGallery({ images, productName }: Props) {
             <SwiperSlide key={`${image.id}-${index}`}>
               <ImageWithSkeleton
                 src={image.src}
+                srcset={image.srcset}
                 alt={image.alt || `${productName} - zdjęcie ${index + 1}`}
                 width={image.width ?? 660}
                 height={image.height ?? 660}
@@ -87,9 +83,10 @@ export function ProductGallery({ images, productName }: Props) {
               >
                 <ImageWithSkeleton
                   src={image.src}
+                  srcset={image.srcset}
                   alt={image.alt || productName}
                   fill
-                  className="object-cover"
+                  className="absolute inset-0 size-full object-cover"
                   wrapClassName="aspect-square overflow-hidden"
                   sizes="160px"
                 />

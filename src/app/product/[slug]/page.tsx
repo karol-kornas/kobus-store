@@ -48,8 +48,6 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
 
   if (!product) notFound();
 
-  console.log(product);
-
   return (
     <>
       <ProductLayout
@@ -60,18 +58,7 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
             productCategories={product.categories}
           />
         }
-        gallery={
-          <ProductGallery
-            images={product.images.map((img) => ({
-              id: img.id,
-              src: img.src,
-              alt: img.alt,
-              width: img.width,
-              height: img.height,
-            }))}
-            productName={product.name}
-          />
-        }
+        gallery={<ProductGallery images={product.images} productName={product.name} />}
         summary={
           <div className="sticky top-6 z-1">
             <ProductHeader product={product} />

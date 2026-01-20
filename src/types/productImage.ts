@@ -1,6 +1,9 @@
 export type ProductImage = {
-  url: string;
+  id: number;
+  src: string;
+  srcset?: string;
+  sizes?: string;
+  alt: string;
   width: number;
   height: number;
-  alt: string;
 };

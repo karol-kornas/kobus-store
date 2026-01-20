@@ -5,11 +5,12 @@ import { useState } from "react";
 
 type Props = {
   src: string;
+  srcset?: string;
   alt: string;
   children?: React.ReactNode;
 };
 
-export function ProductCardImage({ src, alt, children }: Props) {
+export function ProductCardImage({ src, srcset, alt, children }: Props) {
   const [loaded, setLoaded] = useState(false);
 
   return (
@@ -26,15 +27,25 @@ export function ProductCardImage({ src, alt, children }: Props) {
       )}
 
       {src && (
-        <Image
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
           src={src}
+          srcSet={srcset || undefined}
+          sizes="(max-width: 768px) 50vw, 360px"
           alt={alt}
-          fill
-          className={`
-          object-contain group-hover:opacity-90
-        `}
+          className="absolute top-0 left-0 size-full object-contain group-hover:opacity-90"
+          loading="lazy"
           onLoad={() => setLoaded(true)}
         />
+        // <Image
+        //   src={src}
+        //   alt={alt}
+        //   fill
+        //   className={`
+        //   object-contain group-hover:opacity-90
+        // `}
+        //   onLoad={() => setLoaded(true)}
+        // />
       )}
 
       {children && children}
