@@ -37,9 +37,9 @@ export function ProductActions({ product }: Props) {
           className="w-full gap-3 uppercase"
           isLoading={isMutating}
           disabled={hasVariations && !selectedVariation}
-          onClick={() => {
+          onClick={async () => {
             const idToAdd = hasVariations ? selectedVariation!.id : product.id;
-            addItem(idToAdd, quantity);
+            await addItem(idToAdd, quantity);
             setQuantity(1);
           }}
         >

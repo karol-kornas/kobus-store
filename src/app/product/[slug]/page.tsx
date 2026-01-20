@@ -71,14 +71,14 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
           />
         }
         summary={
-          <>
+          <div className="sticky top-6 z-1">
             <ProductHeader product={product} />
             <ProductPrice product={product} />
             <ProductVariants product={product} />
             <ProductShortDescription product={product} />
             <ProductAdditionalServices additionalServices={product.additional_services} />
             <ProductActions product={product} />
-          </>
+          </div>
         }
         description={
           <>

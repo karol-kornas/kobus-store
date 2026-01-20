@@ -15,7 +15,7 @@ type Props = {
 };
 
 export function ProductVariations({ variations, onSelect, selectedId }: Props) {
-  if (!variations || variations.length === 0) return;
+  if (!variations || variations.length == 0) return;
 
   const sizeAttribute = "attribute_pa_rozmiar";
 
