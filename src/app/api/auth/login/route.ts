@@ -27,7 +27,5 @@ export async function POST(req: Request) {
     response.headers.set("Set-Cookie", setCookie);
   }
 
-  console.log("LOGIN SET-COOKIE:", res.headers.get("set-cookie"));
-
   return response;
 }

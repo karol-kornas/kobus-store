@@ -19,7 +19,7 @@ export function Breadcrumbs({ items }: Props) {
                   {item.label}
                 </Link>
               ) : (
-                <span aria-current="page" className="font-medium text-black">
+                <span aria-current="page" className="font-medium text-[#956e50]">
                   {item.label}
                 </span>
               )}

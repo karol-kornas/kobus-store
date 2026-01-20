@@ -10,8 +10,6 @@ export default function CartView() {
   if (isSyncing && !items.length) return <p>Ładowanie...</p>;
   if (!items.length) return <p>Koszyk pusty</p>;
 
-  console.log(items);
-
   return (
     <div>
       <ul>

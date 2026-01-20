@@ -14,18 +14,23 @@ type Props = {
 
 export function ProductActions({ product }: Props) {
   const { addItem, isMutating } = useCart();
+  const [quantity, setQuantity] = useState<number>(1);
   const [selectedVariation, setSelectedVariation] = useState<Variation | null>(null);
   const hasVariations = product.variations?.length > 0;
 
   return (
-    <div>
+    <div className="mt-8">
       <ProductVariations
         variations={product.variations}
         selectedId={selectedVariation?.id}
         onSelect={setSelectedVariation}
       />
       <div className="flex flex-col md:flex-row justify-between items-center gap-6 mt-8">
-        <QuantitySelector max={product.stock_quantity ?? Infinity} />
+        <QuantitySelector
+          max={product.stock_quantity ?? Infinity}
+          quantity={quantity}
+          setQuantity={setQuantity}
+        />
         <Button
           size={"lg"}
           variant="special"
@@ -34,8 +39,8 @@ export function ProductActions({ product }: Props) {
           disabled={hasVariations && !selectedVariation}
           onClick={() => {
             const idToAdd = hasVariations ? selectedVariation!.id : product.id;
-
-            addItem(idToAdd, 1);
+            addItem(idToAdd, quantity);
+            setQuantity(1);
           }}
         >
           <ShoppingBag size={18} />
