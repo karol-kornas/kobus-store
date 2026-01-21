@@ -24,6 +24,7 @@ export function ProductCardImage({ src, srcset, loading, alt, children }: Props)
           bg-neutral-200
           dark:bg-neutral-700
           animate-pulse
+          z-[-1]
         `}
         />
       )}
@@ -35,11 +36,7 @@ export function ProductCardImage({ src, srcset, loading, alt, children }: Props)
           srcSet={srcset || undefined}
           sizes="(max-width: 768px) 50vw, 360px"
           alt={alt}
-          className={clsx(
-            "absolute top-0 left-0 size-full object-contain transition-opacity",
-            !loaded && "opacity-0",
-            loaded && "group-hover:opacity-90",
-          )}
+          className="absolute top-0 left-0 size-full object-contain transition-opacity group-hover:opacity-90"
           loading={loading ?? "lazy"}
           onLoad={() => setLoaded(true)}
         />

@@ -9,6 +9,7 @@ type Props = Omit<ImageProps, "alt" | "src"> & {
   srcset?: string;
   sizes?: string;
   loading?: "lazy" | "eager" | undefined;
+  fetchPriority?: "high" | "low" | "auto";
   width?: number;
   height?: number;
   alt: string;
@@ -22,6 +23,7 @@ export function ImageWithSkeleton({
   srcset,
   sizes,
   loading,
+  fetchPriority,
   width,
   height,
   alt,
@@ -57,9 +59,11 @@ export function ImageWithSkeleton({
         srcSet={srcset || undefined}
         sizes={sizes || undefined}
         alt={alt}
-        className={clsx(!loaded && "opacity-0", className)}
-        loading={loading ?? "lazy"}
+        className={className}
+        loading={loading || "lazy"}
+        fetchPriority={fetchPriority || "auto"}
         onLoad={() => setLoaded(true)}
+        decoding="async"
       />
 
       {/* <Image {...props} src={src} alt={alt} onLoad={() => setLoaded(true)} className={className} /> */}

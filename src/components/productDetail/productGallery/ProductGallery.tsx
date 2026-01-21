@@ -41,7 +41,6 @@ export function ProductGallery({ images, productName }: Props) {
           onInit={(swiper) => (mainSwiperRef.current = swiper)}
           onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
           className="w-full"
-          aria-live="polite"
         >
           {images.map((image, index) => (
             <SwiperSlide key={`${image.id}-${index}`}>
