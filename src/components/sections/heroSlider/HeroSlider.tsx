@@ -78,7 +78,33 @@ export function HeroSlider({ slides }: Props) {
           return (
             <SwiperSlide key={i}>
               <div className="flex justify-center relative w-full h-[58vh] min-h-108 max-h-144 md:max-h-full md:h-170.75">
-                {item.video && activeIndex === i && (
+                {item.image && (
+                  <div className="absolute inset-0">
+                    {/* MOBILE */}
+                    <Image
+                      src={item.imageMobile}
+                      alt=""
+                      fill
+                      priority={i === 0}
+                      fetchPriority={i === 0 ? "high" : "auto"}
+                      className="object-cover md:hidden"
+                      sizes="100vw"
+                    />
+
+                    {/* DESKTOP */}
+                    <Image
+                      src={item.image}
+                      alt=""
+                      fill
+                      priority={i === 0}
+                      fetchPriority={i === 0 ? "high" : "auto"}
+                      className="object-cover hidden md:block"
+                      sizes="100vw"
+                    />
+                  </div>
+                )}
+
+                {/* {item.video && activeIndex === i && (
                   <video
                     ref={(el) => {
                       if (!el) return;
@@ -105,7 +131,7 @@ export function HeroSlider({ slides }: Props) {
                     muted
                     playsInline
                   />
-                )}
+                )} */}
 
                 {item.isHtmlText && (
                   <>
