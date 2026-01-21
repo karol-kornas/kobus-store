@@ -68,6 +68,7 @@ export function HeroSlider({ slides }: Props) {
                       loop
                       muted
                       playsInline
+                      preload="none"
                     />
                   )}
 
