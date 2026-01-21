@@ -29,6 +29,7 @@ export type Product = {
   upsell_ids: number[];
   cross_sell_ids: number[];
   variations: Variation[];
+  featured: boolean;
 };
 
 export type AdditionalService = {

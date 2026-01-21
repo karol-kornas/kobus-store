@@ -25,6 +25,7 @@ export type ApiCartItem = {
   images?: {
     id: number;
     src: string;
+    srcset: string;
     name: string;
   }[];
   variation?: {

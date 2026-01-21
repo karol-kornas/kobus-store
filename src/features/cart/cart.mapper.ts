@@ -29,6 +29,7 @@ function mapCartItem(item: ApiCartItem) {
       item.images?.map((img) => ({
         id: img.id,
         src: img.src,
+        srcset: img.srcset,
         alt: img.name,
       })) ?? [],
     variations: item.variation ?? [],

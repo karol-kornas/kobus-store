@@ -6,6 +6,7 @@ export type CartItem = {
   images: {
     id: number;
     src: string;
+    srcset: string;
     alt: string;
   }[];
   price: number | null;

@@ -5,9 +5,14 @@ import { X } from "lucide-react";
 import { Button, ButtonLink } from "@/components/ui/button/Button";
 import Image from "next/image";
 import { useCart } from "@/features/cart/hooks/cart.hooks";
+import { Hot } from "@/components/icons/hot";
+import { ImageWithSkeleton } from "@/components/ui/imageWithSkeleton/ImageWithSkeleton";
+import { formatPrice } from "@/utils/formatPrice";
 
 export function AddToCartDrawer() {
   const { isDrawerOpen, drawerProduct, closeDrawer } = useCart();
+
+  console.log(drawerProduct);
 
   return (
     <AnimatePresence>
@@ -33,7 +38,7 @@ export function AddToCartDrawer() {
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-semibold">Dodano do koszyka</h2>
-              <button onClick={closeDrawer}>
+              <button onClick={closeDrawer} className="cursor-pointer">
                 <X />
               </button>
             </div>
@@ -42,25 +47,32 @@ export function AddToCartDrawer() {
             {drawerProduct && (
               <div className="flex gap-4 mb-6">
                 {drawerProduct.images?.[0]?.src && (
-                  <Image
+                  <ImageWithSkeleton
                     src={drawerProduct.images[0].src}
-                    alt={drawerProduct.name}
-                    width={80}
-                    height={80}
-                    className="rounded object-cover"
+                    srcset={drawerProduct.images[0].srcset}
+                    alt={drawerProduct.images[0].alt || drawerProduct.name}
+                    fill
+                    className="absolute inset-0 size-full object-cover"
+                    wrapClassName="w-24 aspect-3/4 overflow-hidden flex-none"
+                    sizes="96px"
                   />
                 )}
 
                 <div>
-                  <p className="font-medium">{drawerProduct.name}</p>
+                  <p className="font-bold leading-tight">{drawerProduct.name}</p>
                   {drawerProduct.variations && drawerProduct.variations.length > 0 && (
-                    <p className="text-muted-foreground text-sm">
-                      {drawerProduct.variations.map((v) => `${v.attribute}: ${v.value}`).join(", ")}
-                    </p>
+                    <div className="mt-1">
+                      {drawerProduct.variations.map((v) => (
+                        <p key={v.raw_attribute} className="text-sm">
+                          {v.attribute}: <strong>{v.value}</strong>
+                        </p>
+                      ))}
+                    </div>
                   )}
                   <p className="flex gap-2">
-                    {drawerProduct.price} zł
-                    {drawerProduct.sale_price && drawerProduct.regular_price && (
+                    <strong className="text-lg">{formatPrice(drawerProduct.price)}</strong>
+
+                    {drawerProduct.sale_price !== drawerProduct.regular_price && (
                       <span className="font-normal line-through text-neutral-400">
                         {drawerProduct.regular_price} zł
                       </span>
