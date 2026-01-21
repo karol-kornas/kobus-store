@@ -13,9 +13,11 @@ type Props = {
 
 type PreviewImage = {
   src: string;
-  alt: string;
+  srcset?: string;
+  sizes?: string;
   width: number;
   height: number;
+  alt: string;
 } | null;
 
 export function ProductAdditionalServices({ additionalServices }: Props) {
@@ -34,12 +36,13 @@ export function ProductAdditionalServices({ additionalServices }: Props) {
                 {el.thumbnail && (
                   <>
                     <ImageWithSkeleton
-                      src={el.thumbnail}
+                      src={el.thumbnail.src}
+                      srcset={el.thumbnail.srcset}
                       alt={el.name}
                       className="w-10"
                       wrapClassName="w-10"
-                      width={el.thumbnail_width ?? 40}
-                      height={el.thumbnail_height ?? 40}
+                      width={el.thumbnail.width ?? 40}
+                      height={el.thumbnail.height ?? 40}
                       sizes="40px"
                     />
                   </>
@@ -54,12 +57,12 @@ export function ProductAdditionalServices({ additionalServices }: Props) {
                       href="#"
                       onClick={(e) => {
                         e.preventDefault();
-                        if (el.preview_image) {
+                        if (el.preview_image.src) {
                           setPreviewImage({
-                            src: el.preview_image,
+                            src: el.preview_image.src,
                             alt: el.name,
-                            width: el.preview_image_width ?? 800,
-                            height: el.preview_image_height ?? 800,
+                            width: el.preview_image.width ?? 800,
+                            height: el.preview_image.height ?? 800,
                           });
                           setOpen(true);
                         }

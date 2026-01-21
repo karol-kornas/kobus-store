@@ -16,9 +16,12 @@ export function ProductVariants({ product }: Props) {
     name: product.name,
     slug: product.slug,
     price: product.price,
-    thumbnail: product.images[0].src,
-    thumbnail_width: product.images[0].width,
-    thumbnail_height: product.images[0].height,
+    thumbnail: {
+      src: product.images[0].src,
+      srcset: product.images[0].srcset,
+      width: product.images[0].width,
+      height: product.images[0].height,
+    },
   };
 
   const allVariants = [currentVariant, ...product.product_variants];
@@ -45,12 +48,13 @@ export function ProductVariants({ product }: Props) {
               `}
             >
               <ImageWithSkeleton
-                src={variant.thumbnail}
+                src={variant.thumbnail.src}
+                srcset={variant.thumbnail.srcset}
                 alt={variant.name}
-                width={variant.thumbnail_width ?? 200}
-                height={variant.thumbnail_height ?? 200}
-                sizes="160px"
-                className="object-contain"
+                width={variant.thumbnail.width ?? 200}
+                height={variant.thumbnail.height ?? 200}
+                sizes="120px"
+                className="object-cover size-full"
                 wrapClassName="relative flex items-center justify-center overflow-hidden aspect-3/4"
               />
             </VariantWrapper>
@@ -81,9 +85,7 @@ function VariantWrapper({ isCurrent, href, children, className, title }: Variant
   return (
     <Link href={href} className={className}>
       {children}
-      <span className="absolute bottom-0 text-center left-0 transition duration-250 translate-y-full group-hover:translate-y-0 bg-neutral-800 text-white p-1 leading-none text-xs">
-        {title}
-      </span>
+      <span className="sr-only">{title}</span>
     </Link>
   );
 }

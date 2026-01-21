@@ -35,12 +35,22 @@ export type AdditionalService = {
   id: number;
   name: string;
   price: number;
-  thumbnail: string | null;
-  thumbnail_width: number | null;
-  thumbnail_height: number | null;
-  preview_image: string | null;
-  preview_image_width: number | null;
-  preview_image_height: number | null;
+  thumbnail: {
+    src: string | null;
+    srcset?: string;
+    sizes?: string;
+    width: number;
+    height: number;
+    alt: string;
+  };
+  preview_image: {
+    src: string | null;
+    srcset?: string;
+    sizes?: string;
+    width: number;
+    height: number;
+    alt: string;
+  };
   add_to_cart_url: string;
 };
 
@@ -49,9 +59,13 @@ export type ProductVariant = {
   name: string;
   slug: string;
   price: number | null;
-  thumbnail: string | null;
-  thumbnail_width: number | null;
-  thumbnail_height: number | null;
+  thumbnail: {
+    src: string | null;
+    srcset?: string;
+    sizes?: string;
+    width: number;
+    height: number;
+  };
 };
 
 export type VariationAttribute = {

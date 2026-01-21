@@ -64,11 +64,11 @@ export function HeroSlider({ slides }: Props) {
         fadeEffect={{
           crossFade: true,
         }}
-        autoplay={{
-          delay: 10000,
-          pauseOnMouseEnter: true,
-          disableOnInteraction: false,
-        }}
+        // autoplay={{
+        //   delay: 10000,
+        //   pauseOnMouseEnter: true,
+        //   disableOnInteraction: false,
+        // }}
         pagination={{ clickable: true, dynamicBullets: true }}
         onInit={(swiper) => setActiveIndex(swiper.activeIndex)}
         onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}

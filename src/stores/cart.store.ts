@@ -51,8 +51,8 @@ export const createCartStore = (initialCart: Cart | null) =>
       try {
         const data = await addToCart(id, quantity);
         const mapped = mapCart(data);
-        const lastItem = mapped.items[mapped.items.length - 1];
-        set({ cart: mapped, isDrawerOpen: true, drawerProduct: lastItem });
+        const addedItem = mapped.items.find((item) => item.id === id);
+        set({ cart: mapped, isDrawerOpen: true, drawerProduct: addedItem });
       } catch (err) {
         set({ error: "Failed to add item" });
       } finally {

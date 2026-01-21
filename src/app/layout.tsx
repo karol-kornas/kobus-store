@@ -44,9 +44,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const menu = await getMenu("headless_header");
-  const cart = await getCartServer();
-  const user = await getMeServer();
+  const [menu, cart, user] = await Promise.all([getMenu("headless_header"), getCartServer(), getMeServer()]);
 
   return (
     <html lang="pl">
