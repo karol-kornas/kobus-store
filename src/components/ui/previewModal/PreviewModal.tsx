@@ -46,7 +46,7 @@ export default function PreviewModal({
       aria-modal
       role="dialog"
     >
-      <div className="relative bg-white max-w-5xl mx-4 animate-scaleIn" onClick={(e) => e.stopPropagation()}>
+      <div className="relative max-w-5xl mx-4 animate-scaleIn" onClick={(e) => e.stopPropagation()}>
         <button
           onClick={onClose}
           aria-label="Zamknij podgląd"
@@ -55,15 +55,15 @@ export default function PreviewModal({
           <X size="32" />
         </button>
 
-        <div className="relative w-full max-h-[80vh] bg-white overflow-hidden shadow-xl">
-          <ImageWithSkeleton
-            src={imageUrl}
-            alt={imageAlt}
-            width={imageWidth}
-            height={imageHeight}
-            sizes="(max-width: 768px) 100vw, 80vw"
-          />
-        </div>
+        <ImageWithSkeleton
+          src={imageUrl}
+          alt={imageAlt}
+          width={imageWidth}
+          height={imageHeight}
+          className="max-h-[80vh] max-w-[90vw] w-auto h-auto object-contain"
+          wrapClassName="relative flex bg-white items-center justify-center max-h-[80vh] max-w-[90vw]"
+          sizes="(max-width: 768px) 100vw, 80vw"
+        />
       </div>
     </div>
   );

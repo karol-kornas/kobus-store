@@ -47,9 +47,7 @@ export function ImageWithSkeleton({
 
   return (
     <div className={clsx("relative", wrapClassName)}>
-      {!loaded && (
-        <div className={clsx("absolute inset-0 bg-gray-200 animate-pulse z-[-1]", skeletonClassName)} />
-      )}
+      {!loaded && <div className={clsx("absolute inset-0 bg-gray-200 animate-pulse", skeletonClassName)} />}
 
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img

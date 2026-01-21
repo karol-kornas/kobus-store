@@ -1,4 +1,5 @@
 import { ImageWithSkeleton } from "@/components/ui/imageWithSkeleton/ImageWithSkeleton";
+import { SmartImage } from "@/components/ui/smartImage/SmartImage";
 import { Product, ProductVariant } from "@/types/product";
 import Link from "next/link";
 
@@ -47,15 +48,13 @@ export function ProductVariants({ product }: Props) {
                 flex items-center
               `}
             >
-              <ImageWithSkeleton
+              <SmartImage
                 src={variant.thumbnail.src}
-                srcset={variant.thumbnail.srcset}
+                srcSet={variant.thumbnail.srcset}
+                sizes="160px"
                 alt={variant.name}
-                width={variant.thumbnail.width ?? 200}
-                height={variant.thumbnail.height ?? 200}
-                sizes="120px"
-                className="object-cover size-full"
-                wrapClassName="relative flex items-center justify-center overflow-hidden aspect-3/4"
+                wrapClassName="w-full aspect-3/4"
+                className="absolute inset-0 w-full h-full object-cover"
               />
             </VariantWrapper>
           );

@@ -9,6 +9,7 @@ import type { Swiper as SwiperType } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
 import { ProductImage } from "@/types/productImage";
+import { SmartImage } from "@/components/ui/smartImage/SmartImage";
 
 type Props = {
   images: ProductImage[];
@@ -43,15 +44,15 @@ export function ProductGallery({ images, productName }: Props) {
           className="w-full"
         >
           {images.map((image, index) => (
-            <SwiperSlide key={`${image.id}-${index}`}>
-              <ImageWithSkeleton
+            <SwiperSlide key={`${image.id}-${index}`} className="text-center">
+              <SmartImage
                 src={image.src}
-                srcset={image.srcset}
-                alt={image.alt || `${productName} - zdjęcie ${index + 1}`}
+                srcSet={image.srcset}
                 width={image.width ?? 660}
                 height={image.height ?? 660}
-                className="w-full h-auto object-contain"
                 sizes="(min-width: 1024px) 660px, 94vw"
+                alt={image.alt || `${productName} - zdjęcie ${index + 1}`}
+                wrapClassName="inline-flex"
                 loading={index === 0 ? "eager" : "lazy"}
                 fetchPriority={index === 0 ? "high" : "auto"}
               />

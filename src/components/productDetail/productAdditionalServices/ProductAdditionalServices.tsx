@@ -6,6 +6,7 @@ import PreviewModal from "@/components/ui/previewModal/PreviewModal";
 import { ImageWithSkeleton } from "@/components/ui/imageWithSkeleton/ImageWithSkeleton";
 import { AdditionalService } from "@/types/product";
 import { formatPrice } from "@/utils/formatPrice";
+import { SmartImage } from "@/components/ui/smartImage/SmartImage";
 
 type Props = {
   additionalServices: AdditionalService[];
@@ -35,9 +36,8 @@ export function ProductAdditionalServices({ additionalServices }: Props) {
               <article key={el.id} className="flex flex-col max-w-35 min-w-28">
                 {el.thumbnail && (
                   <>
-                    <ImageWithSkeleton
+                    <SmartImage
                       src={el.thumbnail.src}
-                      srcset={el.thumbnail.srcset}
                       alt={el.name}
                       className="w-10"
                       wrapClassName="w-10"

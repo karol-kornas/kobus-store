@@ -5,7 +5,6 @@ import { X } from "lucide-react";
 import { Button, ButtonLink } from "@/components/ui/button/Button";
 import Image from "next/image";
 import { useCart } from "@/features/cart/hooks/cart.hooks";
-import { Hot } from "@/components/icons/hot";
 import { ImageWithSkeleton } from "@/components/ui/imageWithSkeleton/ImageWithSkeleton";
 import { formatPrice } from "@/utils/formatPrice";
 
