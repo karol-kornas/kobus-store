@@ -29,7 +29,7 @@ export function CategoryCardImage({ src, srcset, alt }: Props) {
       <img
         src={src}
         srcSet={srcset || undefined}
-        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 480px"
+        sizes="(max-width: 640px) 74vw, (max-width: 1024px) 50vw, 480px"
         alt={alt}
         className="absolute top-0 left-0 size-full object-cover group-hover:scale-105
           transition-all duration-300"

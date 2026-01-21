@@ -104,7 +104,7 @@ export function HeroSlider({ slides }: Props) {
                   </div>
                 )}
 
-                {/* {item.video && activeIndex === i && (
+                {item.video && (
                   <video
                     ref={(el) => {
                       if (!el) return;
@@ -131,7 +131,7 @@ export function HeroSlider({ slides }: Props) {
                     muted
                     playsInline
                   />
-                )} */}
+                )}
 
                 {item.isHtmlText && (
                   <>
