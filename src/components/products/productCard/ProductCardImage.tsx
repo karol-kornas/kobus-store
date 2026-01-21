@@ -35,8 +35,9 @@ export function ProductCardImage({ src, srcset, alt, children }: Props) {
           sizes="(max-width: 768px) 50vw, 360px"
           alt={alt}
           className={clsx(
-            "absolute top-0 left-0 size-full object-contain group-hover:opacity-90 transition-opacity",
+            "absolute top-0 left-0 size-full object-contain transition-opacity",
             !loaded && "opacity-0",
+            loaded && "group-hover:opacity-90",
           )}
           loading="lazy"
           onLoad={() => setLoaded(true)}
