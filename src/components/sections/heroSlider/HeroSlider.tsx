@@ -32,7 +32,6 @@ export function HeroSlider({ slides }: Props) {
   const nextRef = useRef<HTMLButtonElement | null>(null);
 
   const [activeIndex, setActiveIndex] = useState(0);
-  const [previousIndex, setPreviousIndex] = useState<null | number>(null);
   const [isPaused, setIsPaused] = useState(false);
 
   const isEffectivelyPaused = isPaused || !inView;
@@ -72,7 +71,6 @@ export function HeroSlider({ slides }: Props) {
         pagination={{ clickable: true, dynamicBullets: true }}
         onInit={(swiper) => setActiveIndex(swiper.activeIndex)}
         onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
-        onSlideChangeTransitionEnd={(swiper) => setPreviousIndex(swiper.previousIndex)}
       >
         {slides.map((item, i) => {
           return (
@@ -104,7 +102,7 @@ export function HeroSlider({ slides }: Props) {
                   </div>
                 )}
 
-                {item.video && (
+                {item.video && activeIndex === i && (
                   <video
                     ref={(el) => {
                       if (!el) return;
@@ -116,10 +114,6 @@ export function HeroSlider({ slides }: Props) {
                         }
 
                         el.play().catch(() => {});
-                      }
-
-                      if (previousIndex === i) {
-                        el.pause();
                       }
 
                       if (isEffectivelyPaused) {
