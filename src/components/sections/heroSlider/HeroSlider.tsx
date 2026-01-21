@@ -104,7 +104,7 @@ export function HeroSlider({ slides }: Props) {
                   </div>
                 )}
 
-                {item.video && (
+                {item.video && activeIndex === i && (
                   <video
                     ref={(el) => {
                       if (!el) return;
