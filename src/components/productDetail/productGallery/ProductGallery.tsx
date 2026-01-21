@@ -21,8 +21,6 @@ export function ProductGallery({ images, productName }: Props) {
 
   if (!images.length) return null;
 
-  console.log(images);
-
   return (
     <div className="flex flex-col gap-4" aria-label={`Galeria zdjęć produktu ${productName}`}>
       <div className="relative w-full">
@@ -54,7 +52,7 @@ export function ProductGallery({ images, productName }: Props) {
                 width={image.width ?? 660}
                 height={image.height ?? 660}
                 className="w-full h-auto object-contain"
-                sizes="(min-width: 1024px) 660px, 100vw"
+                sizes="(min-width: 1024px) 660px, 94vw"
                 loading={index === 0 ? "eager" : "lazy"}
                 fetchPriority={index === 0 ? "high" : "auto"}
               />

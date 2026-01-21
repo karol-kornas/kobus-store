@@ -7,11 +7,12 @@ import { useState } from "react";
 type Props = {
   src: string;
   srcset?: string;
+  loading?: "lazy" | "eager" | undefined;
   alt: string;
   children?: React.ReactNode;
 };
 
-export function ProductCardImage({ src, srcset, alt, children }: Props) {
+export function ProductCardImage({ src, srcset, loading, alt, children }: Props) {
   const [loaded, setLoaded] = useState(false);
 
   return (
@@ -39,7 +40,7 @@ export function ProductCardImage({ src, srcset, alt, children }: Props) {
             !loaded && "opacity-0",
             loaded && "group-hover:opacity-90",
           )}
-          loading="lazy"
+          loading={loading ?? "lazy"}
           onLoad={() => setLoaded(true)}
         />
         // <Image
