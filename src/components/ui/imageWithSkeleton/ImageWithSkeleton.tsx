@@ -55,7 +55,7 @@ export function ImageWithSkeleton({
         srcSet={srcset || undefined}
         sizes={sizes || undefined}
         alt={alt}
-        className={className}
+        className={clsx(!loaded && "opacity-0", className)}
         loading="lazy"
         onLoad={() => setLoaded(true)}
       />

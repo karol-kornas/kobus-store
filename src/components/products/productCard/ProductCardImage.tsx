@@ -1,5 +1,6 @@
 "use client";
 
+import clsx from "clsx";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -33,7 +34,10 @@ export function ProductCardImage({ src, srcset, alt, children }: Props) {
           srcSet={srcset || undefined}
           sizes="(max-width: 768px) 50vw, 360px"
           alt={alt}
-          className="absolute top-0 left-0 size-full object-contain group-hover:opacity-90"
+          className={clsx(
+            "absolute top-0 left-0 size-full object-contain group-hover:opacity-90 transition-opacity",
+            !loaded && "opacity-0",
+          )}
           loading="lazy"
           onLoad={() => setLoaded(true)}
         />

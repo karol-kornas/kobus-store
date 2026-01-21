@@ -32,6 +32,7 @@ export function HeroSlider({ slides }: Props) {
   const nextRef = useRef<HTMLButtonElement | null>(null);
 
   const [activeIndex, setActiveIndex] = useState(0);
+  const [previousIndex, setPreviousIndex] = useState<null | number>(null);
   const [isPaused, setIsPaused] = useState(false);
 
   const isEffectivelyPaused = isPaused || !inView;
@@ -71,6 +72,7 @@ export function HeroSlider({ slides }: Props) {
         pagination={{ clickable: true, dynamicBullets: true }}
         onInit={(swiper) => setActiveIndex(swiper.activeIndex)}
         onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
+        onSlideChangeTransitionEnd={(swiper) => setPreviousIndex(swiper.previousIndex)}
       >
         {slides.map((item, i) => {
           return (
@@ -78,31 +80,21 @@ export function HeroSlider({ slides }: Props) {
               <div className="flex justify-center relative w-full h-[58vh] min-h-108 max-h-144 md:max-h-full md:h-170.75">
                 {item.image && (
                   <div className="absolute inset-0">
-                    {/* MOBILE */}
-                    <Image
-                      src={item.imageMobile}
-                      alt=""
-                      fill
-                      priority={i === 0}
-                      fetchPriority={i === 0 ? "high" : "auto"}
-                      className="object-cover md:hidden"
-                      sizes="100vw"
-                    />
-
-                    {/* DESKTOP */}
-                    <Image
-                      src={item.image}
-                      alt=""
-                      fill
-                      priority={i === 0}
-                      fetchPriority={i === 0 ? "high" : "auto"}
-                      className="object-cover hidden md:block"
-                      sizes="100vw"
-                    />
+                    <picture>
+                      <source media="(max-width: 768px)" srcSet={item.imageMobile} />
+                      <img
+                        src={item.image}
+                        fetchPriority={i === 0 ? "high" : "auto"}
+                        loading={i === 0 ? "eager" : "lazy"}
+                        sizes="100vw"
+                        className="absolute top-0 left-0 size-full object-cover"
+                        alt=""
+                      />
+                    </picture>
                   </div>
                 )}
 
-                {item.video && activeIndex === i && (
+                {item.video && (
                   <video
                     ref={(el) => {
                       if (!el) return;
@@ -114,6 +106,10 @@ export function HeroSlider({ slides }: Props) {
                         }
 
                         el.play().catch(() => {});
+                      }
+
+                      if (previousIndex === i) {
+                        el.pause();
                       }
 
                       if (isEffectivelyPaused) {
