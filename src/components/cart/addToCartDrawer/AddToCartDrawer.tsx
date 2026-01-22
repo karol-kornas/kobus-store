@@ -69,7 +69,7 @@ export function AddToCartDrawer() {
                       srcSet={drawerProduct.images[0].srcset}
                       alt={drawerProduct.images[0].alt || drawerProduct.name}
                       sizes="96px"
-                      wrapClassName="w-24 aspect-3/4 overflow-hidden"
+                      wrapClassName="w-24 aspect-3/4 overflow-hidden flex-none"
                       className="absolute inset-0 size-full object-cover"
                     />
                   )}
