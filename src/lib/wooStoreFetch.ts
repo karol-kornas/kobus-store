@@ -1,16 +1,9 @@
 const WC_STORE_API_URL = process.env.WC_STORE_API_URL!;
 
-type WooStoreFetchOptions = RequestInit & {
-  cookies?: string;
-};
-
 export async function wooStoreFetch<T>(
   endpoint: string,
-  options: WooStoreFetchOptions = {}
-): Promise<{
-  data: T;
-  headers: Headers;
-}> {
+  options: RequestInit & { cookies?: string } = {},
+): Promise<{ data: T; headers: Headers }> {
   const res = await fetch(`${WC_STORE_API_URL}${endpoint}`, {
     ...options,
     headers: {
@@ -26,10 +19,8 @@ export async function wooStoreFetch<T>(
     throw new Error(`Woo Store API error: ${res.status} ${text}`);
   }
 
-  const data = await res.json();
-
   return {
-    data,
+    data: await res.json(),
     headers: res.headers,
   };
 }

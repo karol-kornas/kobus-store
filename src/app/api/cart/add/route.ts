@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { wooFetchWithNonce } from "@/lib/wooWithNonce";
+import { wooFetchWithNonce } from "@/lib/wooFetchWithNonce";
 
 export async function POST(req: NextRequest) {
   try {

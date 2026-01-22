@@ -1,11 +1,8 @@
 "use client";
 
-import { Button } from "@/components/ui/button/Button";
 import { useState } from "react";
 import PreviewModal from "@/components/ui/previewModal/PreviewModal";
 import { AdditionalService } from "@/types/product";
-import { formatPrice } from "@/utils/formatPrice";
-import { SmartImage } from "@/components/ui/smartImage/SmartImage";
 import { ProductAdditionalServicesItem } from "./ProductAdditionalServicesItem";
 
 type Props = {

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { ImageWithSkeleton } from "@/components/ui/imageWithSkeleton/ImageWithSkeleton";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, A11y, Keyboard } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";

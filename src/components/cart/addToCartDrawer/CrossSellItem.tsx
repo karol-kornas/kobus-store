@@ -1,6 +1,5 @@
 "use client";
 import { Button } from "@/components/ui/button/Button";
-import { ImageWithSkeleton } from "@/components/ui/imageWithSkeleton/ImageWithSkeleton";
 import { SmartImage } from "@/components/ui/smartImage/SmartImage";
 import { useCart } from "@/features/cart/hooks/cart.hooks";
 import { CrossSellItem as CrossSellItemType } from "@/types/cart/crossSellItem";
