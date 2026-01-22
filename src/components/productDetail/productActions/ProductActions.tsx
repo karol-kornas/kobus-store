@@ -21,7 +21,8 @@ export function ProductActions({ product }: Props) {
 
   const handleAddToCart = async () => {
     setIsAdding(true);
-    const addedItem = await addItem(product.id, quantity);
+    const idToAdd = hasVariations ? selectedVariation!.id : product.id;
+    const addedItem = await addItem(idToAdd, quantity);
     setQuantity(1);
     setIsAdding(false);
 
