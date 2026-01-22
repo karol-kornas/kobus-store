@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { X } from "lucide-react";
 import { ImageWithSkeleton } from "../imageWithSkeleton/ImageWithSkeleton";
+import { SmartImage } from "../smartImage/SmartImage";
 
 type Props = {
   isOpen: boolean;
@@ -10,6 +11,7 @@ type Props = {
   imageUrl: string;
   imageWidth: number;
   imageHeight: number;
+  imageSrcSet?: string;
   imageAlt?: string;
 };
 
@@ -20,6 +22,7 @@ export default function PreviewModal({
   imageAlt = "",
   imageWidth,
   imageHeight,
+  imageSrcSet,
 }: Props) {
   useEffect(() => {
     if (!isOpen) return;
@@ -55,14 +58,15 @@ export default function PreviewModal({
           <X size="32" />
         </button>
 
-        <ImageWithSkeleton
+        <SmartImage
           src={imageUrl}
+          srcSet={imageSrcSet}
           alt={imageAlt}
           width={imageWidth}
           height={imageHeight}
+          sizes="(max-width: 768px) 100vw, 1024px"
           className="max-h-[80vh] max-w-[90vw] w-auto h-auto object-contain"
           wrapClassName="relative flex bg-white items-center justify-center max-h-[80vh] max-w-[90vw]"
-          sizes="(max-width: 768px) 100vw, 80vw"
         />
       </div>
     </div>

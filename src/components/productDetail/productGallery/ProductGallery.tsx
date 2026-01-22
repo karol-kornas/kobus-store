@@ -75,18 +75,17 @@ export function ProductGallery({ images, productName }: Props) {
                 aria-label={`Pokaż zdjęcie ${index + 1}`}
                 aria-current={isActive}
                 onClick={() => mainSwiperRef.current?.slideTo(index)}
-                className={`relative aspect-square overflow-hidden border cursor-pointer
+                className={`relative overflow-hidden border cursor-pointer
                   ${isActive ? "border-black" : "border-transparent"}
                   hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-primary`}
               >
-                <ImageWithSkeleton
+                <SmartImage
                   src={image.src}
-                  srcset={image.srcset}
+                  srcSet={image.srcset}
                   alt={image.alt || productName}
-                  fill
-                  className="absolute inset-0 size-full object-cover"
-                  wrapClassName="aspect-square overflow-hidden"
                   sizes="160px"
+                  wrapClassName="aspect-3/4 w-full overflow-hidden"
+                  className="absolute inset-0 size-full object-cover"
                 />
               </button>
             );

@@ -15,7 +15,7 @@ export type CartState = {
   setCart: (cart: Cart) => void;
 
   fetchCart: () => Promise<void>;
-  addItem: (id: number, quantity?: number, product?: CartItem) => Promise<void>;
+  addItem: (id: number, quantity?: number) => Promise<CartItem | void>;
   removeItem: (key: string) => Promise<void>;
   updateItem: (key: string, quantity: number) => Promise<void>;
   openDrawer: (product: CartItem) => void;
@@ -52,7 +52,10 @@ export const createCartStore = (initialCart: Cart | null) =>
         const data = await addToCart(id, quantity);
         const mapped = mapCart(data);
         const addedItem = mapped.items.find((item) => item.id === id);
-        set({ cart: mapped, isDrawerOpen: true, drawerProduct: addedItem });
+
+        set({ cart: mapped });
+
+        return addedItem;
       } catch (err) {
         set({ error: "Failed to add item" });
       } finally {

@@ -32,7 +32,7 @@ export function SmartImage({
       {src ? (
         <img
           src={src}
-          srcSet={srcSet}
+          srcSet={srcSet || undefined}
           sizes={sizes}
           alt={alt}
           width={width}

@@ -13,10 +13,22 @@ type Props = {
 };
 
 export function ProductActions({ product }: Props) {
-  const { addItem, isMutating } = useCart();
+  const { addItem, openDrawer } = useCart();
+  const [isAdding, setIsAdding] = useState<boolean>(false);
   const [quantity, setQuantity] = useState<number>(1);
   const [selectedVariation, setSelectedVariation] = useState<Variation | null>(null);
   const hasVariations = product.variations?.length > 0;
+
+  const handleAddToCart = async () => {
+    setIsAdding(true);
+    const addedItem = await addItem(product.id, quantity);
+    setQuantity(1);
+    setIsAdding(false);
+
+    if (addedItem) {
+      openDrawer(addedItem);
+    }
+  };
 
   return (
     <div className="mt-8">
@@ -35,13 +47,9 @@ export function ProductActions({ product }: Props) {
           size={"lg"}
           variant="special"
           className="w-full gap-3 uppercase"
-          isLoading={isMutating}
+          isLoading={isAdding}
           disabled={hasVariations && !selectedVariation}
-          onClick={async () => {
-            const idToAdd = hasVariations ? selectedVariation!.id : product.id;
-            await addItem(idToAdd, quantity);
-            setQuantity(1);
-          }}
+          onClick={handleAddToCart}
         >
           <ShoppingBag size={18} />
           {hasVariations && !selectedVariation ? "Wybierz wariant" : "Dodaj do koszyka"}

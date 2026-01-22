@@ -58,3 +58,7 @@ export function useCartTotals() {
     currencySymbol: totals.currency_symbol,
   };
 }
+
+export function useCartCrossSells() {
+  return useCartStore((s) => s.cart?.cross_sells ?? []);
+}

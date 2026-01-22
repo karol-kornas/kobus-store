@@ -10,6 +10,7 @@ export type ApiCart = {
     currency_symbol: string;
     currency_suffix: string;
   };
+  cross_sells: ApiCrossSellItem[]
 };
 
 export type ApiCartItem = {
@@ -37,3 +38,23 @@ export type ApiCartItem = {
     line_total: string;
   };
 };
+
+export type ApiCrossSellItem = {
+  id: number;
+  name: string;
+  slug: string;
+  images?: {
+    id: number;
+    src: string;
+    srcset: string;
+    name: string;
+  }[];
+  prices: {
+    price: string;
+    regular_price: string;
+    sale_price: string;
+  };
+  is_in_stock: boolean;
+  on_sell: boolean;
+
+}
