@@ -1,6 +1,6 @@
 import { wooStoreFetch } from "@/lib/wooStoreFetch";
 
-export async function wooFetchWithNonce(
+export async function wooFetchWithNonce<T>(
   path: string,
   options: {
     method: string;
@@ -8,7 +8,10 @@ export async function wooFetchWithNonce(
     body?: string;
     _retry?: boolean;
   },
-) {
+): Promise<{
+  data: T;
+  headers: Headers;
+}> {
   const { headers: cartHeaders } = await wooStoreFetch("/cart", {
     method: "GET",
     cookies: options.cookies,

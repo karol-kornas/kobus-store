@@ -16,6 +16,7 @@ export type CartItem = {
   totals: {
     line_total: number | null;
   };
+  on_sale: boolean;
 };
 
 export type CartItemVariation = {

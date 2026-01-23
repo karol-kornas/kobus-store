@@ -54,7 +54,7 @@ export function ProductVariants({ product }: Props) {
                 sizes="160px"
                 alt={variant.name}
                 wrapClassName="w-full aspect-3/4"
-                className="absolute inset-0 w-full h-full object-cover"
+                className="absolute inset-0 w-full h-full object-contain"
               />
             </VariantWrapper>
           );

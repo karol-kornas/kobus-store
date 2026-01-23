@@ -5,18 +5,16 @@ import { CircleCheckBig, X } from "lucide-react";
 import { Button, ButtonLink } from "@/components/ui/button/Button";
 
 import { useCart, useCartCrossSells } from "@/features/cart/hooks/cart.hooks";
-import { ImageWithSkeleton } from "@/components/ui/imageWithSkeleton/ImageWithSkeleton";
 import { formatPrice } from "@/utils/formatPrice";
 import { CrossSellItem } from "./CrossSellItem";
 import { CrossSellItem as CrossSellItemType } from "@/types/cart/crossSellItem";
 import { useEffect, useState } from "react";
 import { SmartImage } from "@/components/ui/smartImage/SmartImage";
+import { isCartItemOnSale } from "@/features/cart/cart.helpers";
 
 export function AddToCartDrawer() {
   const { isDrawerOpen, drawerProduct, closeDrawer } = useCart();
   const crossSellsFromStore = useCartCrossSells();
-
-  console.log(drawerProduct);
 
   const [initialCrossSells, setInitialCrossSells] = useState<CrossSellItemType[]>([]);
 
@@ -70,7 +68,7 @@ export function AddToCartDrawer() {
                       alt={drawerProduct.images[0].alt || drawerProduct.name}
                       sizes="96px"
                       wrapClassName="w-24 aspect-3/4 overflow-hidden flex-none"
-                      className="absolute inset-0 size-full object-cover"
+                      className="absolute inset-0 size-full object-contain"
                     />
                   )}
 
@@ -88,9 +86,9 @@ export function AddToCartDrawer() {
                     <p className="flex gap-2 text-lg">
                       {drawerProduct.quantity} x
                       <strong className="">{formatPrice(drawerProduct.price)}</strong>
-                      {drawerProduct.sale_price !== drawerProduct.regular_price && (
-                        <span className="font-normal line-through text-neutral-400 text-base">
-                          {drawerProduct.regular_price} zł
+                      {drawerProduct.on_sale && (
+                        <span className="line-through text-neutral-400 text-base">
+                          {formatPrice(drawerProduct.regular_price)}
                         </span>
                       )}
                     </p>

@@ -4,6 +4,7 @@ import { SmartImage } from "@/components/ui/smartImage/SmartImage";
 import { useCart } from "@/features/cart/hooks/cart.hooks";
 import { CrossSellItem as CrossSellItemType } from "@/types/cart/crossSellItem";
 import { formatPrice } from "@/utils/formatPrice";
+import Link from "next/link";
 import { useState } from "react";
 
 type Props = {
@@ -14,27 +15,32 @@ export function CrossSellItem({ product }: Props) {
   const { addItem } = useCart();
   const [isAdded, setIsAdded] = useState<boolean>(false);
   const [isAdding, setIsAdding] = useState<boolean>(false);
+  const { closeDrawer } = useCart();
 
   return (
     <div className="flex gap-4 w-full items-center">
       {product.images?.[0]?.src && (
-        <SmartImage
-          src={product.images[0].src}
-          srcSet={product.images[0].srcset}
-          alt={product.images[0].alt || product.name}
-          sizes="96px"
-          wrapClassName="w-24 aspect-3/4 overflow-hidden flex-none"
-          className="absolute inset-0 size-full object-cover"
-        />
+        <Link href={`/product/${product.slug}`} onClick={closeDrawer}>
+          <SmartImage
+            src={product.images[0].src}
+            srcSet={product.images[0].srcset}
+            alt={product.images[0].alt || product.name}
+            sizes="96px"
+            wrapClassName="w-24 aspect-3/4 overflow-hidden flex-none"
+            className="absolute inset-0 size-full object-contain"
+          />
+        </Link>
       )}
 
       <div>
-        <p className="font-bold leading-tight">{product.name}</p>
+        <Link href={`/product/${product.slug}`} className="font-bold leading-tight" onClick={closeDrawer}>
+          {product.name}
+        </Link>
         <p className="flex gap-2">
           <strong className="">{formatPrice(product.price)}</strong>
-          {product.sale_price !== product.regular_price && (
+          {product.on_sell && (
             <span className="font-normal line-through text-neutral-400 text-sm">
-              {product.regular_price} zł
+              {formatPrice(product.regular_price)}
             </span>
           )}
         </p>

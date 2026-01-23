@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { SeoResponse } from "./seo.types";
+import { decode } from "html-entities";
 
 export function mapSeoToMetadata(seo: SeoResponse): Metadata {
   return {
-    title: seo.title,
+    title: decode(seo.title),
     description: seo.description,
     alternates: {
       canonical: seo.canonical,

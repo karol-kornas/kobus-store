@@ -12,6 +12,7 @@ export type Product = {
     srcset?: string;
     sizes?: string;
     alt: string;
+    name: string;
     width: number;
     height: number;
   }[];
@@ -30,6 +31,7 @@ export type Product = {
   cross_sell_ids: number[];
   variations: Variation[];
   featured: boolean;
+  stock_status: string;
 };
 
 export type AdditionalService = {

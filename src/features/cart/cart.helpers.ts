@@ -9,3 +9,13 @@ export function getGuestCartSnapshot(items: CartItem[] | null | undefined): Cart
     quantity: item.quantity,
   }));
 }
+
+export function isCartItemOnSale(item: {
+  price: number | null;
+  regular_price: number | null;
+  sale_price: number | null;
+}) {
+  if (!item.regular_price || !item.sale_price) return false;
+
+  return item.sale_price < item.regular_price;
+}
