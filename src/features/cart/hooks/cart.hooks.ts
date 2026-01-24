@@ -6,7 +6,8 @@ export function useCart() {
   const isSyncing = useCartStore((s) => s.isSyncing);
   const error = useCartStore((s) => s.error);
   const isDrawerOpen = useCartStore((s) => s.isDrawerOpen);
-  const drawerProduct = useCartStore((s) => s.drawerProduct);
+  const drawerItemKey = useCartStore((s) => s.drawerItemKey);
+  const updatingItems = useCartStore((s) => s.updatingItems);
 
   const fetchCart = useCartStore((s) => s.fetchCart);
   const addItem = useCartStore((s) => s.addItem);
@@ -21,7 +22,8 @@ export function useCart() {
     isSyncing,
     error,
     isDrawerOpen,
-    drawerProduct,
+    drawerItemKey,
+    updatingItems,
     fetchCart,
     addItem,
     removeItem,

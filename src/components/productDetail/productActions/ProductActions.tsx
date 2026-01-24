@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button/Button";
-import QuantitySelector from "@/components/ui/quantitySelector/QuantitySelector";
+import { QuantitySelector } from "@/components/ui/quantitySelector/QuantitySelector";
 import { useCart } from "@/features/cart/hooks/cart.hooks";
 import { Product, Variation } from "@/types/product";
 import { ShoppingBag } from "lucide-react";
@@ -27,7 +27,7 @@ export function ProductActions({ product }: Props) {
     setIsAdding(false);
 
     if (addedItem) {
-      openDrawer(addedItem);
+      openDrawer(addedItem.key);
     }
   };
 
@@ -41,8 +41,9 @@ export function ProductActions({ product }: Props) {
       <div className="flex flex-col md:flex-row justify-between items-center gap-6 mt-8">
         <QuantitySelector
           max={product.stock_quantity ?? Infinity}
-          quantity={quantity}
-          setQuantity={setQuantity}
+          value={quantity}
+          min={1}
+          onChange={setQuantity}
         />
         <Button
           size={"lg"}

@@ -10,7 +10,8 @@ export type CartState = {
   isSyncing: boolean;
   error: string | null;
   isDrawerOpen: boolean;
-  drawerProduct: CartItem | null;
+  drawerItemKey: string | null;
+  updatingItems: Record<string, boolean>;
 
   setCart: (cart: Cart) => void;
 
@@ -18,7 +19,7 @@ export type CartState = {
   addItem: (id: number, quantity?: number) => Promise<CartItem | void>;
   removeItem: (key: string) => Promise<void>;
   updateItem: (key: string, quantity: number) => Promise<void>;
-  openDrawer: (product: CartItem) => void;
+  openDrawer: (itemKey: string) => void;
   closeDrawer: () => void;
 };
 
@@ -29,7 +30,8 @@ export const createCartStore = (initialCart: Cart | null) =>
     isSyncing: false,
     error: null,
     isDrawerOpen: false,
-    drawerProduct: null,
+    drawerItemKey: null,
+    updatingItems: {},
 
     setCart: (cart) => set({ cart }),
 
@@ -77,7 +79,13 @@ export const createCartStore = (initialCart: Cart | null) =>
     },
 
     updateItem: async (key, quantity) => {
-      set({ isMutating: true, error: null });
+      set((state) => ({
+        updatingItems: {
+          ...state.updatingItems,
+          [key]: true,
+        },
+        error: null,
+      }));
       try {
         const data = await updateCartItem(key, quantity);
         const mapped = mapCart(data);
@@ -85,18 +93,23 @@ export const createCartStore = (initialCart: Cart | null) =>
       } catch (err) {
         set({ error: "Failed to update item" });
       } finally {
-        set({ isMutating: false });
+        set((state) => ({
+          updatingItems: {
+            ...state.updatingItems,
+            [key]: false,
+          },
+        }));
       }
     },
-    openDrawer: (product) =>
+    openDrawer: (itemKey) =>
       set({
         isDrawerOpen: true,
-        drawerProduct: product,
+        drawerItemKey: itemKey,
       }),
 
     closeDrawer: () =>
       set({
         isDrawerOpen: false,
-        drawerProduct: null,
+        drawerItemKey: null,
       }),
   }));

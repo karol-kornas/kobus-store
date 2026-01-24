@@ -10,11 +10,15 @@ import { CrossSellItem } from "./CrossSellItem";
 import { CrossSellItem as CrossSellItemType } from "@/types/cart/crossSellItem";
 import { useEffect, useState } from "react";
 import { SmartImage } from "@/components/ui/smartImage/SmartImage";
-import { isCartItemOnSale } from "@/features/cart/cart.helpers";
+import { QuantitySelector } from "@/components/ui/quantitySelector/QuantitySelector";
+import { FreeShippingNotice } from "../freeShippingNotice/FreeShippingNotice";
 
 export function AddToCartDrawer() {
-  const { isDrawerOpen, drawerProduct, closeDrawer } = useCart();
+  const { cart, isDrawerOpen, drawerItemKey, closeDrawer, updateItem, updatingItems } = useCart();
   const crossSellsFromStore = useCartCrossSells();
+
+  const drawerProduct = cart?.items.find((item) => item.key === drawerItemKey);
+  const isUpdating = drawerProduct && updatingItems[drawerProduct.key];
 
   const [initialCrossSells, setInitialCrossSells] = useState<CrossSellItemType[]>([]);
 
@@ -57,6 +61,8 @@ export function AddToCartDrawer() {
               </button>
             </div>
 
+            <FreeShippingNotice />
+
             <div className="overflow-y-auto px-6 py-6">
               {/* Content */}
               {drawerProduct && (
@@ -92,6 +98,14 @@ export function AddToCartDrawer() {
                         </span>
                       )}
                     </p>
+                    <div className="mt-2">
+                      <QuantitySelector
+                        value={drawerProduct.quantity}
+                        size="sm"
+                        loading={isUpdating}
+                        onChange={(qty) => updateItem(drawerProduct.key, qty)}
+                      />
+                    </div>
                   </div>
                 </div>
               )}
