@@ -4,6 +4,7 @@ export type ApiCart = {
   totals: {
     total_price: string | number;
     total_items: string | number;
+    total_items_tax: number | null;
     total_shipping: string;
     total_tax: string;
     currency_code: string;

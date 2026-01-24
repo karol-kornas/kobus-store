@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { getShopConfigClient } from "@/features/shop/shop.client";
 import { useCart } from "@/features/cart/hooks/cart.hooks";
 import { Skeleton } from "@/components/ui/skeleton/Skeleton";
+import { formatPrice } from "@/utils/formatPrice";
 
 export function FreeShippingNotice() {
   const { cart } = useCart();
@@ -27,7 +28,7 @@ export function FreeShippingNotice() {
     );
   }
 
-  const total = cart.totals.total_items || 0;
+  const total = (cart.totals.total_items || 0) + (cart.totals.total_items_tax || 0);
   const missing = Math.max(0, threshold - total);
   const progress = Math.min(1, total / threshold);
 
@@ -37,7 +38,7 @@ export function FreeShippingNotice() {
         <p>🎉 Masz darmową dostawę!</p>
       ) : (
         <p>
-          Brakuje <strong>{missing.toFixed(2)} zł</strong> do <strong className="uppercase">darmowej</strong>{" "}
+          Brakuje <strong>{formatPrice(missing)} </strong> do <strong className="uppercase">darmowej</strong>{" "}
           🎁 <strong>dostawy!</strong>
         </p>
       )}

@@ -1,5 +1,6 @@
 export interface CartTotals {
   total_items: number | null;
+  total_items_tax: number | null;
   total_shipping: number | null;
   total_price: number | null;
   total_tax: number | null;

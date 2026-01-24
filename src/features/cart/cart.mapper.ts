@@ -11,6 +11,7 @@ export function mapCart(apiCart: ApiCart): Cart {
     totals: {
       ...apiCart.totals,
       total_items: normalizeCartPrice(apiCart.totals.total_items),
+      total_items_tax: normalizeCartPrice(apiCart.totals.total_items_tax),
       total_tax: normalizeCartPrice(apiCart.totals.total_tax),
       total_price: normalizeCartPrice(apiCart.totals.total_price),
       total_shipping: normalizeCartPrice(apiCart.totals.total_price),
