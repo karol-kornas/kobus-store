@@ -17,7 +17,7 @@ type Options = Omit<UseQueryOptions<QueryData, Error, QueryData, readonly unknow
 
 export function useProductsByCategoryLite(
   { categoryId, limit = 8 }: UseProductsByCategoryLiteParams,
-  options?: Options
+  options?: Options,
 ) {
   return useQuery<QueryData>({
     queryKey: ["products", "category", categoryId, limit],

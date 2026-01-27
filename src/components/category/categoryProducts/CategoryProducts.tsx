@@ -27,6 +27,8 @@ export async function CategoryProducts({ categoryPromise, searchParams }: Props)
     max_price,
   });
 
+  console.log(products);
+
   return (
     <ProductsListing
       totalItems={products.totalItems}

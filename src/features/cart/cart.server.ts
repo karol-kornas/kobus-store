@@ -1,6 +1,5 @@
 import { cookies } from "next/headers";
 import { wooStoreFetch } from "@/lib/wooStoreFetch";
-import { Cart } from "@/types/cart/cart";
 import { ApiCart } from "@/types/cart/apiCart";
 
 export async function getCartServer() {

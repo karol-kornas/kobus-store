@@ -23,12 +23,11 @@ export function ProductVariations({ variations, onSelect, selectedId }: Props) {
 
           const label = mainAttribute.value;
           const isSelected = selectedId === variation.id;
-          const isDisabled = !variation.is_in_stock;
+          const isDisabled = !variation.availability.can_add_to_cart;
 
           return (
             <button
               key={variation.id}
-              disabled={isDisabled}
               onClick={() => onSelect(variation)}
               className={`
                 px-4 py-2 border uppercase focus:outline-none focus:ring-2 cursor-pointer

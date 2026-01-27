@@ -45,7 +45,6 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const [menu, cart, user] = await Promise.all([getMenu("headless_header"), getCartServer(), getMeServer()]);
-  console.log(cart);
   return (
     <html lang="pl">
       <body className={`${mulish.variable} ${playfairDisplay.variable} antialiased font-sans`}>

@@ -16,6 +16,7 @@ import { ProductDescription } from "@/components/productDetail/productDescriptio
 import { BenefitsSection } from "@/components/sections/benefitsSection/BenefitsSection";
 import { ProductUpsell } from "@/components/productDetail/productUpsell/ProductUpsell";
 import { ProductCrossSell } from "@/components/productDetail/productCrossSell/ProductCrossSell";
+import { ProductWaitlist } from "@/components/productDetail/productWaitlist/ProductWaitlist";
 
 type PageProps = {
   params: {

@@ -7,6 +7,7 @@ import { Product, Variation } from "@/types/product";
 import { ShoppingBag } from "lucide-react";
 import { useState } from "react";
 import { ProductVariations } from "../productVariations/productVariations";
+import { ProductWaitlist } from "../productWaitlist/ProductWaitlist";
 
 type Props = {
   product: Product;
@@ -19,9 +20,15 @@ export function ProductActions({ product }: Props) {
   const [selectedVariation, setSelectedVariation] = useState<Variation | null>(null);
   const hasVariations = product.variations?.length > 0;
 
+  const activeAvailability = hasVariations ? selectedVariation?.availability : product.availability;
+
+  const canAddToCart = !!activeAvailability?.can_add_to_cart;
+
+  const idToAdd = hasVariations && selectedVariation ? selectedVariation!.id : product.id;
+
   const handleAddToCart = async () => {
     setIsAdding(true);
-    const idToAdd = hasVariations ? selectedVariation!.id : product.id;
+
     const addedItem = await addItem(idToAdd, quantity);
     setQuantity(1);
     setIsAdding(false);
@@ -38,25 +45,35 @@ export function ProductActions({ product }: Props) {
         selectedId={selectedVariation?.id}
         onSelect={setSelectedVariation}
       />
-      <div className="flex flex-col md:flex-row justify-between items-center gap-6 mt-8">
-        <QuantitySelector
-          max={product.stock_quantity ?? Infinity}
-          value={quantity}
-          min={1}
-          onChange={setQuantity}
-        />
-        <Button
-          size={"lg"}
-          variant="special"
-          className="w-full gap-3 uppercase"
-          isLoading={isAdding}
-          disabled={hasVariations && !selectedVariation}
-          onClick={handleAddToCart}
-        >
-          <ShoppingBag size={18} />
-          {hasVariations && !selectedVariation ? "Wybierz wariant" : "Dodaj do koszyka"}
-        </Button>
-      </div>
+
+      {(selectedVariation && !canAddToCart) || (!canAddToCart && !hasVariations) ? (
+        <div className="mt-8">
+          <ProductWaitlist productId={idToAdd} />
+        </div>
+      ) : (
+        <>
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6 mt-8">
+            <QuantitySelector
+              max={product.stock_quantity ?? Infinity}
+              value={quantity}
+              min={1}
+              disabled={!canAddToCart}
+              onChange={setQuantity}
+            />
+            <Button
+              size={"lg"}
+              variant="special"
+              className="w-full gap-3 uppercase"
+              isLoading={isAdding}
+              disabled={!canAddToCart || (hasVariations && !selectedVariation)}
+              onClick={handleAddToCart}
+            >
+              <ShoppingBag size={18} />
+              {hasVariations && !selectedVariation ? "Wybierz wariant" : "Dodaj do koszyka"}
+            </Button>
+          </div>
+        </>
+      )}
     </div>
   );
 }

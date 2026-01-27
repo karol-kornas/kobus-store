@@ -32,6 +32,15 @@ export type Product = {
   variations: Variation[];
   featured: boolean;
   stock_status: string;
+  availability: Availability;
+};
+
+export type Availability = {
+  status: "instock" | "outofstock" | "onbackorder";
+  is_in_stock: boolean;
+  purchasable: boolean;
+  can_add_to_cart: boolean;
+  quantity?: number | null;
 };
 
 export type AdditionalService = {
@@ -81,5 +90,5 @@ export type Variation = {
   id: number;
   price: number;
   attributes: VariationAttribute[];
-  is_in_stock: boolean;
+  availability: Availability;
 };

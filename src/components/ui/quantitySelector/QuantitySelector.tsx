@@ -3,7 +3,6 @@
 import { Minus, Plus } from "lucide-react";
 import { useQuantity } from "@/hooks/useQuantity";
 import { Spinner } from "../spinner/Spinner";
-import clsx from "clsx";
 
 type Props = {
   value: number;
@@ -11,6 +10,7 @@ type Props = {
   max?: number;
   size?: "sm" | "md";
   loading?: boolean;
+  disabled?: boolean;
   onChange: (value: number) => void;
 };
 
@@ -29,7 +29,7 @@ const styles = {
   },
 };
 
-export function QuantitySelector({ value, min, max, size = "md", loading, onChange }: Props) {
+export function QuantitySelector({ value, min, max, size = "md", loading, disabled, onChange }: Props) {
   const q = useQuantity({ value, min, max, onChange });
   const s = styles[size];
   const buttonStyle =
@@ -37,7 +37,11 @@ export function QuantitySelector({ value, min, max, size = "md", loading, onChan
 
   return (
     <div className={`flex items-center ${s.gap}`}>
-      <button onClick={q.dec} disabled={!q.canDec || loading} className={`${s.button} ${buttonStyle}`}>
+      <button
+        onClick={q.dec}
+        disabled={!q.canDec || loading || disabled}
+        className={`${s.button} ${buttonStyle}`}
+      >
         <Minus />
       </button>
 
@@ -45,7 +49,7 @@ export function QuantitySelector({ value, min, max, size = "md", loading, onChan
         <input
           type="number"
           value={q.value}
-          disabled={loading}
+          disabled={loading || disabled}
           min={min}
           max={max}
           onChange={(e) => q.onInputChange(e.target.value)}
@@ -58,7 +62,11 @@ export function QuantitySelector({ value, min, max, size = "md", loading, onChan
         )}
       </div>
 
-      <button onClick={q.inc} disabled={!q.canInc || loading} className={`${s.button} ${buttonStyle}`}>
+      <button
+        onClick={q.inc}
+        disabled={!q.canInc || loading || disabled}
+        className={`${s.button} ${buttonStyle}`}
+      >
         <Plus />
       </button>
     </div>
