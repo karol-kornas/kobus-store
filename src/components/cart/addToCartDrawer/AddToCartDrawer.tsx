@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { CircleCheckBig, X } from "lucide-react";
+import { CircleCheckBig, Info, X } from "lucide-react";
 import { Button, ButtonLink } from "@/components/ui/button/Button";
 
 import { useCart, useCartCrossSells } from "@/features/cart/hooks/cart.hooks";
@@ -33,7 +33,6 @@ export function AddToCartDrawer() {
     <AnimatePresence>
       {isDrawerOpen && (
         <>
-          {/* Overlay */}
           <motion.div
             className="fixed inset-0 bg-black/40 z-40 backdrop-blur-sm"
             initial={{ opacity: 0 }}
@@ -42,7 +41,6 @@ export function AddToCartDrawer() {
             onClick={closeDrawer}
           />
 
-          {/* Drawer */}
           <motion.aside
             className="fixed inset-y-0 right-0 w-full sm:w-105 bg-background z-50 flex flex-col"
             initial={{ x: "100%" }}
@@ -51,22 +49,23 @@ export function AddToCartDrawer() {
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-6 bg-cream">
-              <h2 className="text-xl font-semibold flex gap-4 items-center">
-                <CircleCheckBig size={32} className="text-[#956e50]" />
-                Dodano do koszyka
-              </h2>
-              <button onClick={closeDrawer} className="cursor-pointer">
-                <X />
-              </button>
+            <div className="border-b border-neutral-100">
+              <div className="flex items-center justify-between p-6">
+                <h2 className="text-xl font-semibold flex gap-4 items-center">
+                  <CircleCheckBig size={32} className="text-[#956e50]" />
+                  Dodano do koszyka
+                </h2>
+                <button onClick={closeDrawer} className="cursor-pointer">
+                  <X />
+                </button>
+              </div>
+
+              <FreeShippingNotice />
             </div>
 
-            <FreeShippingNotice />
-
             <div className="overflow-y-auto px-6 py-6">
-              {/* Content */}
               {drawerProduct && (
-                <div className="flex items-center gap-4 mb-6">
+                <div className="flex items-center gap-4">
                   {drawerProduct.images?.[0]?.src && (
                     <SmartImage
                       src={drawerProduct.images[0].src}
@@ -109,8 +108,14 @@ export function AddToCartDrawer() {
                   </div>
                 </div>
               )}
+              <div className="flex items-center justify-end gap-2 text-right text-[#956e50] leading-[1.2] text-xs mt-3">
+                <div className="max-w-2xs">
+                  Nie zwlekaj z zakupem, dodanie artykułów do koszyka nie oznacza ich rezerwacji
+                </div>
+                <Info />
+              </div>
               {initialCrossSells.length !== 0 && (
-                <div className="py-4 border-t border-cream rounded-lg">
+                <div className="py-4 border-t border-cream rounded-lg mt-4">
                   <h3 className="text-lg font-bold">Te rzeczy też moga ci się spodobać:</h3>
                   <div className="flex flex-col gap-2 mt-2">
                     {initialCrossSells.map((product) => (

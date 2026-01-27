@@ -67,3 +67,13 @@
 .no-spinner {
   -moz-appearance: textfield;
 }
+
+.checkout-step {
+  counter-increment: order;
+}
+
+input:autofill, input:autofill:active, input:autofill:focus, input:autofill:hover, textarea:autofill, textarea:autofill:active, textarea:autofill:focus, textarea:autofill:hover {
+  -webkit-box-shadow: none;
+  -webkit-transition: background-color 9999s ease-in-out 9999s;
+  transition: background-color 9999s ease-in-out 9999s;
+}

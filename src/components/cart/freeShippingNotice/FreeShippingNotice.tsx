@@ -21,7 +21,7 @@ export function FreeShippingNotice() {
 
   if (isLoading) {
     return (
-      <div className="px-6 pb-4 flex flex-col gap-2 bg-cream text-sm">
+      <div className="px-6 pb-4 flex flex-col gap-2 text-sm">
         <Skeleton className="h-5 w-3/4" />
         <Skeleton className="h-2 w-full" />
       </div>
@@ -33,7 +33,7 @@ export function FreeShippingNotice() {
   const progress = Math.min(1, total / threshold);
 
   return (
-    <div className="px-6 pb-4 flex flex-col gap-2 bg-cream text-sm">
+    <div className="px-6 pb-4 flex flex-col gap-2 text-sm">
       {missing === 0 ? (
         <p>🎉 Masz darmową dostawę!</p>
       ) : (

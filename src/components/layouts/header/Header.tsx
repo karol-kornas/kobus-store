@@ -48,7 +48,7 @@ export function Header({ menu }: Props) {
             </button>
 
             <Link href="/">
-              <Image className="max-xl:w-40" src="/logo.svg" alt="Kobus Store" width={200} height={82} />
+              <img className="max-xl:w-40" src="/logo.svg" alt="Kobus Store" width={200} height={82} />
             </Link>
 
             <Navigation classNav="hidden xl:flex" items={menu} />

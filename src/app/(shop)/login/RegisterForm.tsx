@@ -4,12 +4,13 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button/Button";
 import { Input } from "@/components/ui/input/Input";
-import { RegisterFormValues, registerSchema } from "../../features/auth/schemas/register.schema";
+
 import { Checkbox } from "@/components/ui/checkbox/Checkbox";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { FormField } from "@/components/ui/formField/FormField";
 import { FormError } from "@/components/ui/form/formError/FormError";
+import { RegisterFormValues, registerSchema } from "@/features/auth/schemas/register.schema";
 
 export function RegisterForm() {
   const router = useRouter();

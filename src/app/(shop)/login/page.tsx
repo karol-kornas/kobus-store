@@ -1,11 +1,11 @@
-import { RegisterForm } from "@/app/login/RegisterForm";
 import { LoginForm } from "./LoginForm";
+import { RegisterForm } from "./RegisterForm";
 
 export default function LoginPage() {
   return (
     <div
       className="container grid grid-cols-1 md:grid-cols-2 max-w-5xl mx-auto 
-        divide-y md:divide-y-0 md:divide-x dark:divide-neutral-800 divide-neutral-200 py-16 md:py-24"
+        divide-y md:divide-y-0 md:divide-x dark:divide-neutral-800 divide-neutral-200 py-10 md:py-24"
     >
       <div className="pb-8 md:pb-0 md:pr-6 lg:pr-16">
         <h1 className="font-display text-xl font-medium pb-8 uppercase">Logowanie</h1>
