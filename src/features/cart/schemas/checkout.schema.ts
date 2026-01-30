@@ -46,8 +46,7 @@ export const checkoutSchema = z
           .string()
           .min(1, "Pole jest wymagane")
           .transform((v) => v.replace(/\s+/g, ""))
-          .refine((v) => /^\d+$/.test(v), "Numer telefonu może zawierać tylko cyfry")
-          .refine((v) => v.length >= 9 && v.length <= 11, "Numer telefonu musi mieć od 9 do 11 cyfr"),
+          .refine((v) => /^\d+$/.test(v), "Numer telefonu może zawierać tylko cyfry"),
         country: baseAddressSchema.country,
         postcode: baseAddressSchema.postcode,
         street: z
@@ -63,14 +62,30 @@ export const checkoutSchema = z
       .superRefine((data, ctx) => {
         const rule = POSTCODE_RULES[data.country];
 
-        if (!rule) return;
-
-        if (!rule.regex.test(data.postcode)) {
+        if (rule && !rule.regex.test(data.postcode)) {
           ctx.addIssue({
             path: ["postcode"],
             message: rule.message,
-            code: z.ZodIssueCode.custom,
+            code: "custom",
           });
+        }
+
+        if (data.phonePrefix === "+48") {
+          if (data.phone.length !== 9) {
+            ctx.addIssue({
+              path: ["phone"],
+              message: "Numer telefonu musi mieć 9 cyfr",
+              code: "custom",
+            });
+          }
+        } else {
+          if (data.phone.length < 9 || data.phone.length > 11) {
+            ctx.addIssue({
+              path: ["phone"],
+              message: "Numer telefonu musi mieć od 9 do 11 cyfr",
+              code: "custom",
+            });
+          }
         }
       })
       .optional(),
