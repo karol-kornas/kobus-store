@@ -12,10 +12,13 @@ import { useEffect, useState } from "react";
 import { SmartImage } from "@/components/ui/smartImage/SmartImage";
 import { QuantitySelector } from "@/components/ui/quantitySelector/QuantitySelector";
 import { FreeShippingNotice } from "../freeShippingNotice/FreeShippingNotice";
+import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
+import { useRouter } from "next/navigation";
 
 export function AddToCartDrawer() {
   const { cart, isDrawerOpen, drawerItemKey, closeDrawer, updateItem, updatingItems } = useCart();
   const crossSellsFromStore = useCartCrossSells();
+  const router = useRouter();
 
   const drawerProduct = cart?.items.find((item) => item.key === drawerItemKey);
   const isUpdating = drawerProduct && updatingItems[drawerProduct.key];
@@ -28,6 +31,8 @@ export function AddToCartDrawer() {
       setInitialCrossSells(crossSellsFromStore);
     }
   }, [isDrawerOpen]);
+
+  useLockBodyScroll(isDrawerOpen);
 
   return (
     <AnimatePresence>

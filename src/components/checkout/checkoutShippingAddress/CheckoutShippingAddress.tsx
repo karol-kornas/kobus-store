@@ -21,7 +21,7 @@ export function CheckoutShippingAddress() {
 
   const country = useWatch({ name: "shippingAddress.country" });
   return (
-    <div className="checkout-step rounded-lg bg-white p-6 shadow-[0_10px_15px_-3px_rgba(0,0,0,0.025),0_4px_6px_-4px_rgba(0,0,0,0.025)]">
+    <div className="checkout-step rounded-lg bg-white px-3 py-6 sm:px-6 shadow-[0_10px_15px_-3px_rgba(0,0,0,0.025),0_4px_6px_-4px_rgba(0,0,0,0.025)]">
       <h3
         className="before:content-[counter(order)] before:bg-cream before:font-bold  before:mr-3
                    before:size-8 before:rounded-full before:inline-flex before:justify-center before:items-center
@@ -30,7 +30,7 @@ export function CheckoutShippingAddress() {
         Adres dostawy
       </h3>
       <div className="mt-6 flex flex-col gap-5">
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid grid-cols-2 gap-3 sm:gap-5">
           <FormField
             label="Imię"
             htmlFor="firstName"
@@ -60,7 +60,7 @@ export function CheckoutShippingAddress() {
             />
           </FormField>
         </div>
-        <div className="grid grid-cols-3 gap-5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-5">
           <FormField
             label="Kierunkowy"
             htmlFor="phonePrefix"
@@ -84,7 +84,7 @@ export function CheckoutShippingAddress() {
           <FormField
             label="Numer telefonu"
             htmlFor="phone"
-            className="col-span-2"
+            className="sm:col-span-2"
             required
             error={errors.shippingAddress?.phone?.message}
           >
@@ -131,7 +131,7 @@ export function CheckoutShippingAddress() {
             {...register("shippingAddress.street")}
           />
         </FormField>
-        <div className="grid grid-cols-3 gap-5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-5">
           <FormField
             label="Kod pocztowy"
             htmlFor="postcode"
@@ -157,7 +157,7 @@ export function CheckoutShippingAddress() {
           </FormField>
           <FormField
             label="Miasto"
-            className="col-span-2"
+            className="sm:col-span-2"
             htmlFor="city"
             required
             error={errors.shippingAddress?.city?.message}

@@ -3,6 +3,7 @@
 import { ReactNode, useEffect } from "react";
 import { X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
 
 type ResponsiveModalProps = {
   open: boolean;
@@ -23,6 +24,8 @@ export function ResponsiveModal({ open, onClose, title, children }: ResponsiveMo
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [open, onClose]);
+
+  useLockBodyScroll(open);
 
   return (
     <AnimatePresence>

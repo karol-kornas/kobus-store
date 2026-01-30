@@ -17,12 +17,13 @@ type SelectProps = {
 export function Select({ value, onChange, options, placeholder, error }: SelectProps) {
   return (
     <>
+      <ChevronDown className="absolute top-3.5 right-3 text-current pointer-events-none" />
       <select
         value={value ?? ""}
         onChange={(e) => onChange(e.target.value)}
         aria-invalid={error}
         className={clsx(
-          "w-full border-2 pl-3 pr-12 py-3 transition-colors focus:outline-none bg-white font-sans appearance-none",
+          "peer w-full border-2 pl-3 pr-12 py-3 transition-colors focus:outline-none bg-white font-sans appearance-none",
           error ? "border-red-300 focus:border-red-300" : "border-neutral-200 focus:border-neutral-500",
         )}
       >
@@ -38,7 +39,6 @@ export function Select({ value, onChange, options, placeholder, error }: SelectP
           </option>
         ))}
       </select>
-      <ChevronDown className="absolute top-3.5 right-3 text-current" />
     </>
   );
 }

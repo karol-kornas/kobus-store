@@ -38,7 +38,7 @@ export function FormField({
         className={clsx(
           "absolute top-0.5 left-3 origin-left pointer-events-none before:bg-white px-0.5 before:absolute before:-left-1 \
           font-medium before:w-[calc(100%+8px)] before:z-[-1] before:h-full before:origin-center",
-          error ? "text-red-400" : "text-neutral-700",
+          error ? "text-red-400!" : "text-neutral-400",
 
           isFloating
             ? `
@@ -48,9 +48,10 @@ before:transition-transform before:duration-200
 peer-autofill:before:scale-x-100 peer-focus:before:scale-x-100 peer-not-placeholder-shown:before:scale-x-100
 peer-autofill:scale-[0.85] peer-focus:scale-[0.85] peer-not-placeholder-shown:scale-[0.85]
 peer-not-placeholder-shown:-translate-y-3.5 peer-focus:-translate-y-3.5 peer-autofill:-translate-y-3.5
+ peer-focus:text-neutral-700
 `
             : `
--translate-y-3.5 scale-[0.85] before:scale-x-100
+-translate-y-3.5 scale-[0.85] before:scale-x-100 peer-focus:text-neutral-700
 `,
         )}
       >
