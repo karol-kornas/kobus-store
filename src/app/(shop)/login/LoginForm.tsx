@@ -13,7 +13,11 @@ import { FormField } from "@/components/ui/formField/FormField";
 import { FormError } from "@/components/ui/form/formError/FormError";
 import { LoginFormValues, loginSchema } from "@/features/auth/schemas/login.schema";
 
-export function LoginForm() {
+interface Props {
+  onSuccess?: () => void;
+  redirectTo?: string;
+}
+export function LoginForm({ onSuccess, redirectTo }: Props) {
   const router = useRouter();
   const { login } = useAuth();
 
@@ -29,7 +33,13 @@ export function LoginForm() {
   const onSubmit = async (data: LoginFormValues) => {
     try {
       await login({ ...data, remember: data.remember ?? false });
-      router.push("/account");
+      if (onSuccess) {
+        onSuccess();
+        return;
+      }
+      if (redirectTo) {
+        router.push(redirectTo);
+      }
     } catch (err) {
       setError("root", {
         message: (err as Error).message,
@@ -58,7 +68,9 @@ export function LoginForm() {
 
       <FormError message={errors.root?.message} variant="auth" />
 
-      <Button isLoading={isSubmitting}>Zaloguj się</Button>
+      <Button type="submit" isLoading={isSubmitting}>
+        Zaloguj się
+      </Button>
 
       <div>
         <Link href="/forgot-password" className="hover:opacity-85 transition-opacity">

@@ -57,7 +57,9 @@ export function RegisterForm() {
 
       <FormError message={errors.root?.message} variant="auth" />
 
-      <Button isLoading={isSubmitting}>Zarejestruj się</Button>
+      <Button type="submit" isLoading={isSubmitting}>
+        Zarejestruj się
+      </Button>
     </form>
   );
 }

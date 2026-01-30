@@ -3,6 +3,7 @@ import { getCart, addToCart, removeFromCart, updateCartItem } from "@/features/c
 import { Cart } from "@/types/cart/cart";
 import { mapCart } from "@/features/cart/cart.mapper";
 import { CartItem } from "@/types/cart/cartItem";
+import { selectShippingRate } from "@/features/cart/cart.client";
 
 export type CartState = {
   cart: Cart | null;
@@ -21,6 +22,7 @@ export type CartState = {
   updateItem: (key: string, quantity: number) => Promise<void>;
   openDrawer: (itemKey: string) => void;
   closeDrawer: () => void;
+  selectShippingRate: (packageId: number, rateId: string) => Promise<void>;
 };
 
 export const createCartStore = (initialCart: Cart | null) =>
@@ -112,4 +114,17 @@ export const createCartStore = (initialCart: Cart | null) =>
         isDrawerOpen: false,
         drawerItemKey: null,
       }),
+    selectShippingRate: async (packageId, rateId) => {
+      set({ isMutating: true, error: null });
+
+      try {
+        const data = await selectShippingRate(packageId, rateId);
+        const mapped = mapCart(data);
+        set({ cart: mapped });
+      } catch (err) {
+        set({ error: "Failed to select shipping rate" });
+      } finally {
+        set({ isMutating: false });
+      }
+    },
   }));

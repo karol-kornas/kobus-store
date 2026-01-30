@@ -9,7 +9,7 @@ export default function LoginPage() {
     >
       <div className="pb-8 md:pb-0 md:pr-6 lg:pr-16">
         <h1 className="font-display text-xl font-medium pb-8 uppercase">Logowanie</h1>
-        <LoginForm />
+        <LoginForm redirectTo="/account" />
       </div>
       <div className="pt-8 md:pt-0 md:pl-6 lg:pl-16">
         <h2 className="font-display text-xl font-medium pb-2 uppercase">Nie masz jeszcze konta?</h2>

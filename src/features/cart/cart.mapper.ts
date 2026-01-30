@@ -3,6 +3,13 @@ import { Cart } from "@/types/cart/cart";
 import { Product } from "@/types/product";
 import { normalizeCartPrice } from "@/utils/normalizeCartPrice";
 import { decode } from "html-entities";
+import { CheckoutFormValues } from "./schemas/checkout.schema";
+import {
+  ApiCartShippingPackage,
+  ApiCartShippingRate,
+  CartShippingPackage,
+  CartShippingRate,
+} from "@/types/cart/CartShippingPackage";
 
 export function mapCart(apiCart: ApiCart): Cart {
   return {
@@ -15,8 +22,10 @@ export function mapCart(apiCart: ApiCart): Cart {
       total_tax: normalizeCartPrice(apiCart.totals.total_tax),
       total_price: normalizeCartPrice(apiCart.totals.total_price),
       total_shipping: normalizeCartPrice(apiCart.totals.total_shipping),
+      total_shipping_tax: normalizeCartPrice(apiCart.totals.total_shipping_tax),
     },
     cross_sells: apiCart.cross_sells.map(mapCrossSellItem),
+    shipping_rates: apiCart.shipping_rates?.map(mapCartShippingPackage),
   };
 }
 
@@ -93,5 +102,57 @@ export function mapUpsellToCrossSell(product: Product): ApiCrossSellItem {
 
     is_in_stock: product.stock_status === "instock",
     on_sale: product.on_sale,
+  };
+}
+
+type WooShippingAddress = {
+  first_name: string;
+  last_name: string;
+  phone: string;
+  country: string;
+  address_1: string;
+  address_2: string;
+  postcode: string;
+  city: string;
+};
+
+export function mapWooShippingToForm(shipping?: WooShippingAddress): CheckoutFormValues["shippingAddress"] {
+  if (!shipping) {
+    return {
+      firstName: "",
+      lastName: "",
+      phonePrefix: "+48",
+      phone: "",
+      country: "PL",
+      street: "",
+      postcode: "",
+      city: "",
+    };
+  }
+
+  return {
+    firstName: shipping.first_name ?? "",
+    lastName: shipping.last_name ?? "",
+    phonePrefix: "+48", // albo wyciągane z country
+    phone: shipping.phone ?? "",
+    country: shipping.country ?? "PL",
+    street: shipping.address_1 ?? "",
+    postcode: shipping.postcode ?? "",
+    city: shipping.city ?? "",
+  };
+}
+
+function mapCartShippingRate(rate: ApiCartShippingRate): CartShippingRate {
+  return {
+    ...rate,
+    price: normalizeCartPrice(rate.price),
+    taxes: normalizeCartPrice(rate.taxes),
+  };
+}
+
+function mapCartShippingPackage(pkg: ApiCartShippingPackage): CartShippingPackage {
+  return {
+    ...pkg,
+    shipping_rates: pkg.shipping_rates.map(mapCartShippingRate),
   };
 }

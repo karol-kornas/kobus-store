@@ -1,11 +1,20 @@
-type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
+import clsx from "clsx";
 
-export function Input(props: InputProps) {
+type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
+  error?: boolean;
+};
+
+export function Input({ error, className, ...props }: InputProps) {
   return (
     <input
       {...props}
       placeholder={props.placeholder ?? " "}
-      className="w-full border placeholder:text-neutral-300 placeholder:opacity-0 focus:placeholder:opacity-100 border-neutral-400 px-3 py-3 peer focus:outline-none transition-shadow duration-300"
+      aria-invalid={error}
+      className={clsx(
+        "w-full border-2 px-3 py-3 peer transition-colors focus:outline-none",
+        error ? "border-red-300 focus:border-red-300" : "border-neutral-200 focus:border-neutral-500",
+        className,
+      )}
     />
   );
 }

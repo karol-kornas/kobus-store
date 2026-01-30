@@ -9,16 +9,17 @@ import { useState } from "react";
 export default function CartView() {
   const items = useCartItems();
   const { totalPrice, currency } = useCartTotals();
-  const { cart, isSyncing } = useCart();
+  const { cart } = useCart();
   const [open, setOpen] = useState(true);
 
-  if (isSyncing && !items.length) return <p>Ładowanie...</p>;
   if (!items.length) return <p>Koszyk pusty</p>;
 
   const productsGross = (cart!.totals.total_items ?? 0) + (cart!.totals.total_items_tax ?? 0);
 
-  const shipping = cart!.totals.total_shipping ?? 0;
+  const shipping = (cart!.totals.total_shipping || 0) + (cart!.totals.total_shipping_tax || 0);
   const total = cart!.totals.total_price ?? 0;
+
+  console.log("rerender CartView");
 
   return (
     <div>

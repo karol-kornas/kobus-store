@@ -15,7 +15,7 @@ export default async function ShopLayout({
         Przejdź do treści
       </a>
 
-      <div className="bg-cream min-h-screen">
+      <div className="bg-cream min-h-screen relative">
         <header>
           <div className="container max-w-5xl py-8 grid lg:grid-cols-3 items-center justify-center">
             <Link href="/" className="hidden lg:inline-flex gap-0.5 font-semibold hover:opacity-90">

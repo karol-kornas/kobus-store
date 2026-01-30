@@ -44,3 +44,12 @@ export async function mergeCartApi(items: CartMergeItem[]): Promise<ApiCart> {
   const res = await apiClient.post<ApiCart>("/api/cart/merge", payload);
   return res.data;
 }
+
+export async function selectShippingRate(packageId: number, rateId: string): Promise<ApiCart> {
+  const res = await apiClient.post<ApiCart>("/api/cart/select-shipping", {
+    packageId,
+    rateId,
+  });
+
+  return res.data;
+}

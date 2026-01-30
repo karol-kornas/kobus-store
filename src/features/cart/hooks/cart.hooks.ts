@@ -1,5 +1,7 @@
 import { useCartStore } from "@/stores/CartStoreProvider";
 
+const EMPTY_ARRAY: [] = [];
+
 export function useCart() {
   const cart = useCartStore((s) => s.cart);
   const isMutating = useCartStore((s) => s.isMutating);
@@ -15,6 +17,7 @@ export function useCart() {
   const updateItem = useCartStore((s) => s.updateItem);
   const openDrawer = useCartStore((s) => s.openDrawer);
   const closeDrawer = useCartStore((s) => s.closeDrawer);
+  const selectShippingRate = useCartStore((s) => s.selectShippingRate);
 
   return {
     cart,
@@ -30,6 +33,7 @@ export function useCart() {
     updateItem,
     openDrawer,
     closeDrawer,
+    selectShippingRate,
   };
 }
 
@@ -63,4 +67,15 @@ export function useCartTotals() {
 
 export function useCartCrossSells() {
   return useCartStore((s) => s.cart?.cross_sells ?? []);
+}
+
+export function useCartShippingRates() {
+  return useCartStore((s) => {
+    const pkg = s.cart?.shipping_rates?.[0];
+    return pkg?.shipping_rates;
+  });
+}
+
+export function useCartShippingAddress() {
+  return useCartStore((s) => s.cart?.shipping_address);
 }

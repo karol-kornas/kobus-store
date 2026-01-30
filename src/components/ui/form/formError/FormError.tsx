@@ -11,10 +11,10 @@ export function FormError({ message, variant = "auth" }: FormErrorProps) {
   return (
     <div
       className={clsx(
-        "text-sm",
+        "text-xs font-semibold",
         variant === "auth" && "bg-red-200 p-2 text-black",
         variant === "checkout" && "bg-red-50 border border-red-200 text-red-700",
-        variant === "inline" && "text-red-500 dark:text-red-200"
+        variant === "inline" && "text-red-400 dark:text-red-200",
       )}
       role="alert"
     >
