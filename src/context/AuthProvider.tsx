@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
+import { AuthUser } from "@/features/auth/auth.types";
 import {
   getMe,
   login as loginApi,
@@ -9,22 +10,28 @@ import {
   setPassword as setPasswordApi,
 } from "@/features/auth/auth.client";
 import { AuthContext } from "./AuthContext";
-import { LoginFormValues } from "@/features/auth/schemas/login.schema";
-import { RegisterFormValues } from "@/features/auth/schemas/register.schema";
 import { SetPasswordFormValues } from "@/features/auth/schemas/setPassword.schema";
+import { RegisterFormValues } from "@/features/auth/schemas/register.schema";
+import { LoginFormValues } from "@/features/auth/schemas/login.schema";
 import { useCart, useCartItems } from "@/features/cart/hooks/cart.hooks";
+
 import { getCart, mergeCartApi } from "@/features/cart/cart.client";
 import { getGuestCartSnapshot } from "@/features/cart/cart.helpers";
-import { AuthUser } from "@/features/auth/auth.types";
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<AuthUser | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
+export function AuthProvider({
+  children,
+  initialUser,
+}: {
+  children: React.ReactNode;
+  initialUser: AuthUser | null;
+}) {
+  const [isLoading, setIsLoading] = useState(false);
+  const [user, setUser] = useState<AuthUser | null>(initialUser);
   const { fetchCart } = useCart();
   const cartItems = useCartItems();
 
   const fetchUser = useCallback(async () => {
+    setIsLoading(true);
     try {
       const me = await getMe();
       setUser(me);
@@ -37,24 +44,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  useEffect(() => {
-    fetchUser();
-    fetchCart();
-  }, [fetchUser, fetchCart]);
-
   const login = async (data: LoginFormValues) => {
     const guestSnapshot = getGuestCartSnapshot(cartItems);
-    const hadGuestItems = guestSnapshot.length > 0;
+    const guestHadItems = guestSnapshot.length > 0;
 
     await loginApi(data);
     const user = await fetchUser();
 
-    if (hadGuestItems) {
+    if (!guestHadItems) {
+      await fetchCart();
+    } else {
       await getCart();
       await mergeCartApi(guestSnapshot);
+      await fetchCart();
     }
 
-    await fetchCart();
     return user;
   };
 

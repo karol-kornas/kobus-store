@@ -2,10 +2,13 @@ import type { Metadata } from "next";
 import { Mulish, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
+import { getCartServer } from "@/features/cart/cart.server";
+import { CartStoreProvider } from "@/stores/CartStoreProvider";
 import { getMeServer } from "@/features/auth/auth.server";
 import { QueryProvider } from "@/providers/QueryProvider";
 import { AuthProvider } from "@/context/AuthProvider";
 import { AddToCartDrawer } from "@/components/cart/addToCartDrawer/AddToCartDrawer";
+import { mapCart } from "@/features/cart/cart.mapper";
 
 const mulish = Mulish({
   variable: "--font-mulish",
@@ -39,14 +42,17 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const [cart, user] = await Promise.all([getCartServer(), getMeServer()]);
   return (
     <html lang="pl">
       <body className={`${mulish.variable} ${playfairDisplay.variable} antialiased font-sans`}>
         <QueryProvider>
-          <AuthProvider>
-            {children}
-            <AddToCartDrawer />
-          </AuthProvider>
+          <CartStoreProvider initialCart={mapCart(cart)}>
+            <AuthProvider initialUser={user}>
+              {children}
+              <AddToCartDrawer />
+            </AuthProvider>
+          </CartStoreProvider>
         </QueryProvider>
       </body>
     </html>

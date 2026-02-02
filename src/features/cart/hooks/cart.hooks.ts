@@ -1,15 +1,6 @@
-import { useCartStore } from "@/stores/cart.store";
+import { useCartStore } from "@/stores/CartStoreProvider";
 
-/**
- * Stałe referencje – KLUCZOWE dla braku infinite loop
- */
 const EMPTY_ARRAY: [] = [];
-const EMPTY_TOTALS = {
-  totalItems: 0,
-  totalPrice: 0,
-  currency: "PLN",
-  currencySymbol: "zł",
-};
 
 export function useCart() {
   const cart = useCartStore((s) => s.cart);
