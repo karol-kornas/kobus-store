@@ -39,13 +39,11 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const user = await getMeServer();
-
   return (
     <html lang="pl">
       <body className={`${mulish.variable} ${playfairDisplay.variable} antialiased font-sans`}>
         <QueryProvider>
-          <AuthProvider initialUser={user}>
+          <AuthProvider>
             {children}
             <AddToCartDrawer />
           </AuthProvider>
