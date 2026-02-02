@@ -5,7 +5,7 @@ import { useFormContext } from "react-hook-form";
 import { LoggedInView } from "./LoggedInView";
 import { FormField } from "@/components/ui/formField/FormField";
 import { Input } from "@/components/ui/input/Input";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { CheckoutFormValues } from "@/features/cart/schemas/checkout.schema";
 import { Button } from "@/components/ui/button/Button";
 
@@ -16,25 +16,9 @@ type Props = {
 export function CheckoutEmail({ setIsLoginOpen }: Props) {
   const { user } = useAuth();
   const {
-    setValue,
     register,
-    clearErrors,
     formState: { errors },
   } = useFormContext<CheckoutFormValues>();
-
-  useEffect(() => {
-    if (!user?.email) return;
-
-    setValue("email", user.email, {
-      shouldDirty: false,
-      shouldTouch: false,
-    });
-    setValue("shippingAddress", user.billingAddress, {
-      shouldDirty: false,
-      shouldTouch: false,
-    });
-    clearErrors(["email", "shippingAddress"]);
-  }, [user?.email, user?.billingAddress, setValue, clearErrors]);
 
   return (
     <div className="checkout-step rounded-lg bg-white px-3 py-6 sm:px-6 shadow-[0_10px_15px_-3px_rgba(0,0,0,0.025),0_4px_6px_-4px_rgba(0,0,0,0.025)]">

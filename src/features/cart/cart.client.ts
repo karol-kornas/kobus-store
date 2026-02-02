@@ -1,6 +1,7 @@
 import { apiClient } from "@/lib/apiClient";
 import { ApiCart } from "@/types/cart/apiCart";
 import { CartMergeItem } from "@/types/cart/cartMergeItem";
+import { CartShippingAddress } from "@/types/cart/cartShippingAddress";
 
 export async function getCart(): Promise<ApiCart> {
   const res = await apiClient.get<ApiCart>("/api/cart");
@@ -51,5 +52,15 @@ export async function selectShippingRate(packageId: number, rateId: string): Pro
     rateId,
   });
 
+  return res.data;
+}
+
+export type UpdateCustomerPayload = {
+  billing_address?: Partial<CartShippingAddress>;
+  shipping_address?: Partial<CartShippingAddress>;
+};
+
+export async function updateCustomer(data: UpdateCustomerPayload): Promise<ApiCart> {
+  const res = await apiClient.post("/api/cart/update-customer", data);
   return res.data;
 }

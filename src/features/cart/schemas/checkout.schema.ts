@@ -2,35 +2,29 @@ import { z } from "zod";
 
 const PARCEL_LOCKER_RATE_ID = "flexible_shipping_single:9";
 
+const ERRORS = {
+  REQUIRED: "Pole jest wymagane",
+  INVALID_POSTCODE: "Nieprawidłowy kod",
+  INVALID_EMAIL: "Nieprawidłowy adres e-mail",
+  INVALID_PHONE: "Nieprawidłowy numer telefonu",
+};
+
 export const baseAddressSchema = {
   country: z.string().min(2, "Wybierz kraj"),
 
   postcode: z
     .string()
     .trim()
-    .min(1, "Pole jest wymagane")
-    .min(3, "Kod pocztowy jest za krótki")
-    .max(10, "Kod pocztowy jest za długi")
-    .regex(/^[A-Za-z0-9 -]+$/, "Kod pocztowy zawiera niedozwolone znaki"),
+    .min(1, ERRORS.REQUIRED)
+    .max(10, ERRORS.INVALID_POSTCODE)
+    .regex(/^[A-Za-z0-9 -]+$/, ERRORS.INVALID_POSTCODE),
 };
 
-const POSTCODE_RULES: Record<string, { regex: RegExp; message: string }> = {
-  PL: {
-    regex: /^\d{2}-\d{3}$/,
-    message: "Kod pocztowy musi być w formacie 00-000",
-  },
-  DE: {
-    regex: /^\d{5}$/,
-    message: "Niemiecki kod pocztowy musi mieć 5 cyfr",
-  },
-  FR: {
-    regex: /^\d{5}$/,
-    message: "Francuski kod pocztowy musi mieć 5 cyfr",
-  },
-  GB: {
-    regex: /^[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}$/i,
-    message: "Nieprawidłowy kod pocztowy UK",
-  },
+const POSTCODE_RULES: Record<string, RegExp> = {
+  PL: /^\d{2}-\d{3}$/,
+  DE: /^\d{5}$/,
+  FR: /^\d{5}$/,
+  GB: /^[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}$/i,
 };
 
 export const checkoutSchema = z
@@ -46,26 +40,23 @@ export const checkoutSchema = z
           .string()
           .min(1, "Pole jest wymagane")
           .transform((v) => v.replace(/\s+/g, ""))
-          .refine((v) => /^\d+$/.test(v), "Numer telefonu może zawierać tylko cyfry"),
+          .refine((v) => /^\d+$/.test(v), "Nieprawidłowy numer"),
         country: baseAddressSchema.country,
         postcode: baseAddressSchema.postcode,
         street: z
           .string()
           .min(1, "Pole jest wymagane")
-          .regex(
-            /^(?=.*[A-Za-zĄąĆćĘęŁłŃńÓóŚśŻżŹź])(?=.*\d).+$/,
-            "Brakuje nazwy ulicy lub numeru domu/mieszkania",
-          ),
+          .regex(/^(?=.*[A-Za-zĄąĆćĘęŁłŃńÓóŚśŻżŹź])(?=.*\d).+$/, "Brakuje ulicy lub numeru domu/mieszkania"),
 
         city: z.string().min(1, "Pole jest wymagane"),
       })
       .superRefine((data, ctx) => {
-        const rule = POSTCODE_RULES[data.country];
+        const postcodeRule = POSTCODE_RULES[data.country];
 
-        if (rule && !rule.regex.test(data.postcode)) {
+        if (postcodeRule && !postcodeRule.test(data.postcode)) {
           ctx.addIssue({
             path: ["postcode"],
-            message: rule.message,
+            message: ERRORS.INVALID_POSTCODE,
             code: "custom",
           });
         }
@@ -74,7 +65,7 @@ export const checkoutSchema = z
           if (data.phone.length !== 9) {
             ctx.addIssue({
               path: ["phone"],
-              message: "Numer telefonu musi mieć 9 cyfr",
+              message: ERRORS.INVALID_PHONE,
               code: "custom",
             });
           }
@@ -82,7 +73,7 @@ export const checkoutSchema = z
           if (data.phone.length < 9 || data.phone.length > 11) {
             ctx.addIssue({
               path: ["phone"],
-              message: "Numer telefonu musi mieć od 9 do 11 cyfr",
+              message: ERRORS.INVALID_PHONE,
               code: "custom",
             });
           }

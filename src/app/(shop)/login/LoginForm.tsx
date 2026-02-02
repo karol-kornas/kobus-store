@@ -12,9 +12,10 @@ import Link from "next/link";
 import { FormField } from "@/components/ui/formField/FormField";
 import { FormError } from "@/components/ui/form/formError/FormError";
 import { LoginFormValues, loginSchema } from "@/features/auth/schemas/login.schema";
+import { AuthUser } from "@/features/auth/auth.types";
 
 interface Props {
-  onSuccess?: () => void;
+  onSuccess?: (user: AuthUser | null) => void;
   redirectTo?: string;
 }
 export function LoginForm({ onSuccess, redirectTo }: Props) {
@@ -32,9 +33,9 @@ export function LoginForm({ onSuccess, redirectTo }: Props) {
 
   const onSubmit = async (data: LoginFormValues) => {
     try {
-      await login({ ...data, remember: data.remember ?? false });
+      const user = await login({ ...data, remember: data.remember ?? false });
       if (onSuccess) {
-        onSuccess();
+        onSuccess(user);
         return;
       }
       if (redirectTo) {

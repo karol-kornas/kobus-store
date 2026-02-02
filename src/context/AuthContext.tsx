@@ -10,7 +10,7 @@ type AuthContextValue = {
   user: AuthUser | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (data: LoginFormValues) => Promise<void>;
+  login: (data: LoginFormValues) => Promise<AuthUser | null>;
   logout: () => Promise<void>;
   registerUser: (data: RegisterFormValues) => Promise<void>;
   setPassword: (data: SetPasswordFormValues) => Promise<void>;

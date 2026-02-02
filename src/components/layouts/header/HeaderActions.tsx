@@ -41,9 +41,12 @@ export function HeaderActions() {
         className="relative flex items-center justify-center transition-opacity hover:opacity-60"
       >
         <ShoppingBag width={26} height={26} />
-        <span className="absolute text-sm flex justify-center items-center font-bold -top-2.5 -right-2.5 bg-black text-white size-5 rounded-full">
-          {count}
-        </span>
+        {count !== 0 && (
+          <span className="absolute text-sm flex justify-center items-center font-bold -top-2.5 -right-2.5 bg-black text-white size-5 rounded-full">
+            {count}
+          </span>
+        )}
+
         <span className="sr-only">Koszyk</span>
       </Link>
     </div>

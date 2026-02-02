@@ -6,17 +6,28 @@ import { Checkbox } from "@/components/ui/checkbox/Checkbox";
 import { FormError } from "@/components/ui/form/formError/FormError";
 import { Button } from "@/components/ui/button/Button";
 import { useAuth } from "@/context/AuthContext";
-import { useCartShippingRates } from "@/features/cart/hooks/cart.hooks";
-import { useState } from "react";
+import {
+  useCartBillingAddress,
+  useCartShippingAddress,
+  useCartShippingRates,
+} from "@/features/cart/hooks/cart.hooks";
+import { Dispatch, SetStateAction, useState } from "react";
 import { ResponsiveModal } from "@/components/ui/responsiveModal/ResponsiveModal";
 import { LoginForm } from "@/app/(shop)/login/LoginForm";
 import { ShippingMethods } from "../shippingMethods/ShippingMethods";
 
 import { CheckoutEmail } from "@/components/checkout/checkoutEmail/CheckoutEmail";
 import { CheckoutShippingAddress } from "@/components/checkout/checkoutShippingAddress/CheckoutShippingAddress";
+import { PaymentMethods } from "@/components/checkout/paymentMethods/PaymentMethods";
 
-export function CartForm() {
+type Props = {
+  setCartFormKey: Dispatch<SetStateAction<number>>;
+};
+
+export function CartForm({ setCartFormKey }: Props) {
   const { user } = useAuth();
+  const shippingAddress = useCartShippingAddress();
+  const billingAddress = useCartBillingAddress();
 
   const shippingRates = useCartShippingRates();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -25,13 +36,15 @@ export function CartForm() {
 
   const form = useForm<CheckoutFormValues>({
     resolver: zodResolver(checkoutSchema),
-    mode: "onBlur",
+    mode: "onTouched",
+    reValidateMode: "onChange",
     defaultValues: {
       email: user ? user.email : "",
       shippingAddress: {
+        ...shippingAddress,
+        phone: billingAddress?.phone,
         phonePrefix: "+48",
-        country: user?.billingAddress?.country ?? "PL",
-        ...user?.billingAddress,
+        country: shippingAddress?.country,
       },
       shippingRateId: selectedRate,
     },
@@ -77,6 +90,7 @@ export function CartForm() {
             >
               Płatność
             </h3>
+            <PaymentMethods />
             <div className="py-2">
               <Checkbox
                 id="accept_regulations"
@@ -98,6 +112,7 @@ export function CartForm() {
         <LoginForm
           onSuccess={() => {
             setIsLoginOpen(false);
+            setCartFormKey((k) => k + 1);
           }}
         />
       </ResponsiveModal>

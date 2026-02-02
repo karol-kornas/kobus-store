@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input/Input";
 import { Select } from "@/components/ui/select/Select";
 import { COUNTRIES } from "@/constants/countries";
 import { PHONE_COUNTRY_CODES } from "@/constants/phoneCodes";
+import { useCart } from "@/features/cart/hooks/cart.hooks";
 import { CheckoutFormValues } from "@/features/cart/schemas/checkout.schema";
 import { formatPlPostcode } from "@/utils/formatPlPostcode";
 import { Controller, useFormContext, useWatch } from "react-hook-form";
@@ -18,6 +19,8 @@ export function CheckoutShippingAddress() {
   } = useFormContext<CheckoutFormValues>();
 
   const { onChange, ...rest } = register("shippingAddress.postcode");
+
+  const { updateCustomer } = useCart();
 
   const country = useWatch({ name: "shippingAddress.country" });
   return (
@@ -110,7 +113,18 @@ export function CheckoutShippingAddress() {
             render={({ field }) => (
               <Select
                 value={field.value}
-                onChange={field.onChange}
+                onChange={(value) => {
+                  field.onChange(value);
+
+                  updateCustomer({
+                    shipping_address: {
+                      country: value,
+                    },
+                    billing_address: {
+                      country: value,
+                    },
+                  });
+                }}
                 options={COUNTRIES}
                 error={!!errors.shippingAddress?.country}
               />

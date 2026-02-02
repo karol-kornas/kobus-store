@@ -1,3 +1,4 @@
+"use client";
 import { QuantitySelector } from "@/components/ui/quantitySelector/QuantitySelector";
 import { SmartImage } from "@/components/ui/smartImage/SmartImage";
 import { useCart } from "@/features/cart/hooks/cart.hooks";

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { AuthUser } from "@/features/auth/auth.types";
 import {
   getMe,
@@ -35,28 +35,36 @@ export function AuthProvider({
     try {
       const me = await getMe();
       setUser(me);
+      return me;
     } catch {
       setUser(null);
+      return null;
     } finally {
       setIsLoading(false);
     }
   }, []);
+
+  useEffect(() => {
+    // 🔥 przy starcie aplikacji
+    fetchCart();
+  }, [fetchCart]);
 
   const login = async (data: LoginFormValues) => {
     const guestSnapshot = getGuestCartSnapshot(cartItems);
     const guestHadItems = guestSnapshot.length > 0;
 
     await loginApi(data);
-    await fetchUser();
+    const user = await fetchUser();
 
     if (!guestHadItems) {
       await fetchCart();
-      return;
+    } else {
+      await getCart();
+      await mergeCartApi(guestSnapshot);
+      await fetchCart();
     }
 
-    await getCart();
-    await mergeCartApi(guestSnapshot);
-    await fetchCart();
+    return user;
   };
 
   const logout = async () => {

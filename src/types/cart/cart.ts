@@ -10,5 +10,7 @@ export interface Cart {
   items_count: number;
   cross_sells: CrossSellItem[];
   shipping_address: CartShippingAddress;
+  billing_address: CartShippingAddress;
   shipping_rates: CartShippingPackage[];
+  payment_methods: string[];
 }

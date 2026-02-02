@@ -10,6 +10,7 @@ import {
   CartShippingPackage,
   CartShippingRate,
 } from "@/types/cart/CartShippingPackage";
+import { ApiCartShippingAddress, CartShippingAddress } from "@/types/cart/cartShippingAddress";
 
 export function mapCart(apiCart: ApiCart): Cart {
   return {
@@ -26,6 +27,8 @@ export function mapCart(apiCart: ApiCart): Cart {
     },
     cross_sells: apiCart.cross_sells.map(mapCrossSellItem),
     shipping_rates: apiCart.shipping_rates?.map(mapCartShippingPackage),
+    shipping_address: mapWooShippingToForm(apiCart.shipping_address),
+    billing_address: mapWooShippingToForm(apiCart.billing_address),
   };
 }
 
@@ -105,40 +108,31 @@ export function mapUpsellToCrossSell(product: Product): ApiCrossSellItem {
   };
 }
 
-type WooShippingAddress = {
-  first_name: string;
-  last_name: string;
-  phone: string;
-  country: string;
-  address_1: string;
-  address_2: string;
-  postcode: string;
-  city: string;
-};
-
-export function mapWooShippingToForm(shipping?: WooShippingAddress): CheckoutFormValues["shippingAddress"] {
+export function mapWooShippingToForm(shipping?: ApiCartShippingAddress): CartShippingAddress {
   if (!shipping) {
     return {
       firstName: "",
       lastName: "",
-      phonePrefix: "+48",
       phone: "",
-      country: "PL",
+      country: "",
       street: "",
       postcode: "",
       city: "",
+      state: "",
+      company: "",
     };
   }
 
   return {
     firstName: shipping.first_name ?? "",
     lastName: shipping.last_name ?? "",
-    phonePrefix: "+48", // albo wyciągane z country
     phone: shipping.phone ?? "",
-    country: shipping.country ?? "PL",
+    country: shipping.country ?? "",
     street: shipping.address_1 ?? "",
     postcode: shipping.postcode ?? "",
     city: shipping.city ?? "",
+    state: shipping.state ?? "",
+    company: shipping.company ?? "",
   };
 }
 

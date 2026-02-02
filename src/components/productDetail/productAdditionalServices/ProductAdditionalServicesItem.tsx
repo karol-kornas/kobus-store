@@ -1,3 +1,5 @@
+"use client";
+
 import { SmartImage } from "@/components/ui/smartImage/SmartImage";
 import { AdditionalService } from "@/types/product";
 import { formatPrice } from "@/utils/formatPrice";

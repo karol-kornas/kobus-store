@@ -1,4 +1,4 @@
-import { CartShippingAddress } from "./cartShippingAddress";
+import { ApiCartShippingAddress } from "./cartShippingAddress";
 import { ApiCartShippingPackage } from "./CartShippingPackage";
 
 export type ApiCart = {
@@ -16,8 +16,10 @@ export type ApiCart = {
     currency_suffix: string;
   };
   cross_sells: ApiCrossSellItem[];
-  shipping_address: CartShippingAddress;
+  shipping_address: ApiCartShippingAddress;
+  billing_address: ApiCartShippingAddress;
   shipping_rates: ApiCartShippingPackage[];
+  payment_methods: string[];
 };
 
 export type ApiCartItem = {
