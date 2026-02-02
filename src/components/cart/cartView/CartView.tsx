@@ -19,8 +19,6 @@ export default function CartView() {
   const shipping = (cart!.totals.total_shipping || 0) + (cart!.totals.total_shipping_tax || 0);
   const total = cart!.totals.total_price ?? 0;
 
-  console.log("rerender CartView");
-
   return (
     <div>
       <div className="flex items-center justify-between cursor-pointer" onClick={() => setOpen(!open)}>
