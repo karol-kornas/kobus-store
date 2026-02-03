@@ -1,8 +1,8 @@
 "use client";
 
+import { ResponsiveModal } from "@/components/ui/responsiveModal/ResponsiveModal";
 import { useEffect, useRef } from "react";
 
-// Typ paczkomatu zwracanego przez Geowidget
 export type ParcelLockerPoint = {
   id: string;
   name: string;
@@ -10,9 +10,6 @@ export type ParcelLockerPoint = {
   city?: string;
   zip?: string;
 };
-
-// Typ eventu emitowanego przez Geowidget
-type GeowidgetEvent = CustomEvent<ParcelLockerPoint>;
 
 type ParcelLockerModalProps = {
   open: boolean;
@@ -43,11 +40,11 @@ export function ParcelLockerModal({ open, onClose, onSelectPoint, token }: Parce
     };
   }, []);
 
-  // Tworzenie widgetu programowo przy każdym otwarciu modalu
+  // Tworzenie widgetu przy każdym otwarciu
   useEffect(() => {
     if (!open || !widgetContainerRef.current) return;
 
-    // Czyścimy stary widget (przy ponownym otwarciu)
+    // Czyścimy stary widget
     widgetContainerRef.current.innerHTML = "";
 
     const widget = document.createElement("inpost-geowidget");
@@ -55,36 +52,25 @@ export function ParcelLockerModal({ open, onClose, onSelectPoint, token }: Parce
     widget.setAttribute("language", "pl");
     widget.setAttribute("config", "parcelCollect");
 
-    // Listener na wybór paczkomatu
     const handler = (event: Event) => {
       const customEvent = event as CustomEvent<ParcelLockerPoint>;
       onSelectPoint(customEvent.detail);
       onClose();
     };
 
-    widget.addEventListener("inpost.geowidget.pointselect", handler);
+    widget.addEventListener("onpointselect", handler);
 
-    // Dodajemy widget do kontenera
     widgetContainerRef.current.appendChild(widget);
     widgetRef.current = widget;
 
-    // Cleanup przy zamknięciu lub odmontowaniu
     return () => {
-      widget.removeEventListener("inpost.geowidget.pointselect", handler);
+      widget.removeEventListener("onpointselect", handler);
     };
   }, [open, token, onSelectPoint, onClose]);
 
-  if (!open) return null;
-
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg w-[500px] max-w-full relative">
-        <button className="absolute top-2 right-2 text-gray-500 hover:text-gray-800" onClick={onClose}>
-          ✕
-        </button>
-        <h2 className="text-lg font-semibold mb-4">Wybierz paczkomat</h2>
-        <div ref={widgetContainerRef} className="w-full h-[400px]" />
-      </div>
-    </div>
+    <ResponsiveModal open={open} onClose={onClose} title="Wybierz paczkomat">
+      <div ref={widgetContainerRef} className="w-full h-125" />
+    </ResponsiveModal>
   );
 }
