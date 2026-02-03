@@ -114,7 +114,7 @@ export function ShippingMethods() {
         token={process.env.NEXT_PUBLIC_GEOWIDGET_API!}
         onSelectPoint={(point) => {
           setValue("paczkomat_id", point.id);
-          setValue("paczkomat_name", point.name); // opcjonalnie
+          setValue("paczkomat_name", point.name);
         }}
       />
     </div>

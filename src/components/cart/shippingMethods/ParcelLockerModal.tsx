@@ -58,13 +58,13 @@ export function ParcelLockerModal({ open, onClose, onSelectPoint, token }: Parce
       onClose();
     };
 
-    widget.addEventListener("onpointselect", handler);
+    document.addEventListener("onpointselect", handler);
 
     widgetContainerRef.current.appendChild(widget);
     widgetRef.current = widget;
 
     return () => {
-      widget.removeEventListener("onpointselect", handler);
+      document.removeEventListener("onpointselect", handler);
     };
   }, [open, token, onSelectPoint, onClose]);
 
