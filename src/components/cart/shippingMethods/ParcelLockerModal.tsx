@@ -3,6 +3,8 @@
 import { ResponsiveModal } from "@/components/ui/responsiveModal/ResponsiveModal";
 import { useEffect, useRef } from "react";
 
+const GEOWIDGET_BASE_URL = process.env.NEXT_PUBLIC_INPOST_GEOWIDGET_BASE_URL;
+
 export type ParcelLockerPoint = {
   name: string;
   address?: {
@@ -26,11 +28,11 @@ export function ParcelLockerModal({ open, onClose, onSelectPoint, token }: Parce
   useEffect(() => {
     const css = document.createElement("link");
     css.rel = "stylesheet";
-    css.href = "https://sandbox-easy-geowidget-sdk.easypack24.net/inpost-geowidget.css";
+    css.href = `${GEOWIDGET_BASE_URL}/inpost-geowidget.css`;
     document.head.appendChild(css);
 
     const script = document.createElement("script");
-    script.src = "https://sandbox-easy-geowidget-sdk.easypack24.net/inpost-geowidget.js";
+    script.src = `${GEOWIDGET_BASE_URL}/inpost-geowidget.js`;
     script.defer = true;
     document.head.appendChild(script);
 
