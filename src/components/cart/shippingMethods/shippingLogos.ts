@@ -1,17 +1,26 @@
-import InpostPaczkomatLogo from "../../../../public/shipping/inpost-paczkomat.svg";
-import InpostKurierLogo from "../../../../public/shipping/inpost-kurier.svg";
-
 export const SHIPPING_LOGOS: Record<string, { src: string; alt: string }> = {
   inpost_paczkomat: {
-    src: InpostPaczkomatLogo,
+    src: "/shipping/inpost-paczkomat.svg",
     alt: "InPost Paczkomat",
   },
   inpost_kurier: {
-    src: InpostKurierLogo,
+    src: "/shipping/inpost-kurier.svg",
     alt: "InPost Kurier",
   },
+  inpost_kurier_pobranie: {
+    src: "/shipping/inpost-kurier.svg",
+    alt: "InPost Kurier pobranie",
+  },
+  global_simple: {
+    src: "/shipping/global.svg",
+    alt: "Wysyłka zagraniczna",
+  },
+  global: {
+    src: "/shipping/global.svg",
+    alt: "Wysyłka zagraniczna (globalna)",
+  },
   default: {
-    src: InpostKurierLogo,
+    src: "/shipping/inpost-kurier.svg",
     alt: "Dostawa",
   },
 };

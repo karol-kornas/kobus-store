@@ -8,6 +8,8 @@ import { ShippingLogo } from "./ShippingLogo";
 import { getShippingProvider } from "./getShippingProvider";
 import clsx from "clsx";
 import { Check } from "lucide-react";
+import { useState } from "react";
+import { ParcelLockerModal } from "./ParcelLockerModal";
 
 export function ShippingMethods() {
   const { setValue, watch } = useFormContext();
@@ -15,6 +17,9 @@ export function ShippingMethods() {
   const rates = useCartShippingRates();
 
   const selectedRate = watch("shippingRateId");
+  const selectedParcelLocker = watch("paczkomat_id");
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     if (selectedRate || !rates) return;
@@ -52,8 +57,10 @@ export function ShippingMethods() {
           <label
             key={rate.rate_id}
             className={clsx(
-              "flex items-center justify-between border-neutral-200 border-2 b gap-4 rounded-lg p-4 cursor-pointer transition",
-              selectedRate === rate.rate_id && "border-neutral-800",
+              "flex items-center justify-between border-2 b gap-4 rounded-lg p-4 cursor-pointer transition",
+              selectedRate === rate.rate_id
+                ? "border-neutral-800"
+                : "border-neutral-200 hover:border-neutral-400",
             )}
           >
             <div className="flex items-center gap-3 w-full">
@@ -79,6 +86,19 @@ export function ShippingMethods() {
                 <span className="font-medium">{rate.name}</span> -{" "}
                 <span className="text-sm font-semibold">{formatPrice(priceBrutto)}</span>
                 <div className="text-xs">1-2 dni robocze</div>
+                {rate.rate_id === "flexible_shipping_single:9" && (
+                  <div className="mt-2 ml-8">
+                    <button
+                      type="button"
+                      className="border rounded px-3 py-1 text-sm hover:bg-gray-100"
+                      onClick={() => setIsModalOpen(true)}
+                    >
+                      {selectedParcelLocker
+                        ? `Wybrany paczkomat: ${selectedParcelLocker}`
+                        : "Wybierz paczkomat"}
+                    </button>
+                  </div>
+                )}
               </div>
               <div className="ml-auto">
                 <ShippingLogo provider={provider} />
@@ -87,6 +107,16 @@ export function ShippingMethods() {
           </label>
         );
       })}
+
+      <ParcelLockerModal
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        token={process.env.NEXT_PUBLIC_GEOWIDGET_API!}
+        onSelectPoint={(point) => {
+          setValue("paczkomat_id", point.id);
+          setValue("paczkomat_name", point.name); // opcjonalnie
+        }}
+      />
     </div>
   );
 }

@@ -43,6 +43,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const [cart, user] = await Promise.all([getCartServer(), getMeServer()]);
+  console.log(cart);
   return (
     <html lang="pl">
       <body className={`${mulish.variable} ${playfairDisplay.variable} antialiased font-sans`}>
