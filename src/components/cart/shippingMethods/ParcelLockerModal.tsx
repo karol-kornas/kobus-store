@@ -73,7 +73,7 @@ export function ParcelLockerModal({ open, onClose, onSelectPoint, token }: Parce
 
   return (
     <ResponsiveModal open={open} onClose={onClose} title="Wybierz paczkomat" className="md:w-3xl">
-      <div ref={widgetContainerRef} className="w-full h-125" />
+      <div ref={widgetContainerRef} className="w-full h-[70vh]" />
     </ResponsiveModal>
   );
 }
