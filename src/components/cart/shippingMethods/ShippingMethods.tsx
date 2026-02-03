@@ -9,7 +9,8 @@ import { getShippingProvider } from "./getShippingProvider";
 import clsx from "clsx";
 import { Check } from "lucide-react";
 import { useState } from "react";
-import { ParcelLockerModal } from "./ParcelLockerModal";
+import { ParcelLockerModal, ParcelLockerPoint } from "./ParcelLockerModal";
+import { Button } from "@/components/ui/button/Button";
 
 export function ShippingMethods() {
   const { setValue, watch } = useFormContext();
@@ -17,7 +18,7 @@ export function ShippingMethods() {
   const rates = useCartShippingRates();
 
   const selectedRate = watch("shippingRateId");
-  const selectedParcelLocker = watch("paczkomat_id");
+  const [selectedParcelLocker, setSelectedParcelLocker] = useState<ParcelLockerPoint | null>(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -87,20 +88,29 @@ export function ShippingMethods() {
                 <span className="text-sm font-semibold">{formatPrice(priceBrutto)}</span>
                 <div className="text-xs">1-2 dni robocze</div>
                 {rate.rate_id === "flexible_shipping_single:9" && (
-                  <div className="mt-2 ml-8">
-                    <button
-                      type="button"
-                      className="border rounded px-3 py-1 text-sm hover:bg-gray-100"
-                      onClick={() => setIsModalOpen(true)}
-                    >
-                      {selectedParcelLocker
-                        ? `Wybrany paczkomat: ${selectedParcelLocker}`
-                        : "Wybierz paczkomat"}
-                    </button>
+                  <div className="mt-2">
+                    {selectedParcelLocker ? (
+                      <button
+                        type="button"
+                        className="flex w-full items-end justify-between bg-cream text-sm py-1 px-3 text-left cursor-pointer hover:opacity-85 "
+                        onClick={() => setIsModalOpen(true)}
+                      >
+                        <div>
+                          <strong>{selectedParcelLocker.name}</strong> <br />
+                          <span className="text-xs">{selectedParcelLocker.address?.line1}</span> <br />
+                          <span className="text-xs">{selectedParcelLocker.address?.line2}</span>
+                        </div>
+                        <span className="ml-6">Zmień</span>
+                      </button>
+                    ) : (
+                      <Button type="button" size="sm" onClick={() => setIsModalOpen(true)}>
+                        Wybierz paczkomat
+                      </Button>
+                    )}
                   </div>
                 )}
               </div>
-              <div className="ml-auto">
+              <div className="ml-auto flex-none">
                 <ShippingLogo provider={provider} />
               </div>
             </div>
@@ -113,8 +123,9 @@ export function ShippingMethods() {
         onClose={() => setIsModalOpen(false)}
         token={process.env.NEXT_PUBLIC_GEOWIDGET_API!}
         onSelectPoint={(point) => {
-          setValue("paczkomat_id", point.id);
-          setValue("paczkomat_name", point.name);
+          console.log(point);
+          setSelectedParcelLocker(point);
+          setValue("paczkomat_id", point.name);
         }}
       />
     </div>

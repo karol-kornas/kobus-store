@@ -4,11 +4,11 @@ import { ResponsiveModal } from "@/components/ui/responsiveModal/ResponsiveModal
 import { useEffect, useRef } from "react";
 
 export type ParcelLockerPoint = {
-  id: string;
   name: string;
-  address?: string;
-  city?: string;
-  zip?: string;
+  address?: {
+    line1: string;
+    line2: string;
+  };
 };
 
 type ParcelLockerModalProps = {
@@ -26,11 +26,11 @@ export function ParcelLockerModal({ open, onClose, onSelectPoint, token }: Parce
   useEffect(() => {
     const css = document.createElement("link");
     css.rel = "stylesheet";
-    css.href = "https://geowidget.inpost.pl/inpost-geowidget.css";
+    css.href = "https://sandbox-easy-geowidget-sdk.easypack24.net/inpost-geowidget.css";
     document.head.appendChild(css);
 
     const script = document.createElement("script");
-    script.src = "https://geowidget.inpost.pl/inpost-geowidget.js";
+    script.src = "https://sandbox-easy-geowidget-sdk.easypack24.net/inpost-geowidget.js";
     script.defer = true;
     document.head.appendChild(script);
 
@@ -51,6 +51,7 @@ export function ParcelLockerModal({ open, onClose, onSelectPoint, token }: Parce
     widget.setAttribute("token", token);
     widget.setAttribute("language", "pl");
     widget.setAttribute("config", "parcelCollect");
+    widget.setAttribute("onpoint", "onpointselect");
 
     const handler = (event: Event) => {
       const customEvent = event as CustomEvent<ParcelLockerPoint>;
@@ -69,7 +70,7 @@ export function ParcelLockerModal({ open, onClose, onSelectPoint, token }: Parce
   }, [open, token, onSelectPoint, onClose]);
 
   return (
-    <ResponsiveModal open={open} onClose={onClose} title="Wybierz paczkomat">
+    <ResponsiveModal open={open} onClose={onClose} title="Wybierz paczkomat" className="md:w-3xl">
       <div ref={widgetContainerRef} className="w-full h-125" />
     </ResponsiveModal>
   );

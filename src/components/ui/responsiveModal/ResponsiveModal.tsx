@@ -4,15 +4,17 @@ import { ReactNode, useEffect } from "react";
 import { X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
+import clsx from "clsx";
 
 type ResponsiveModalProps = {
   open: boolean;
   onClose: () => void;
   title?: string;
   children: ReactNode;
+  className?: string;
 };
 
-export function ResponsiveModal({ open, onClose, title, children }: ResponsiveModalProps) {
+export function ResponsiveModal({ open, onClose, title, children, className }: ResponsiveModalProps) {
   // ESC zamyka modal
   useEffect(() => {
     if (!open) return;
@@ -42,12 +44,16 @@ export function ResponsiveModal({ open, onClose, title, children }: ResponsiveMo
 
           {/* modal / drawer */}
           <motion.div
-            className={`
+            className={clsx(
+              `
               fixed z-50 bg-white w-full
-              bottom-0 left-0 right-0 -2xl
+              bottom-0 left-0 right-0 rounded-t-2xl
               md:top-1/2 md:left-1/2 md:bottom-auto md:right-auto
-              md:w-4xl md:-translate-x-1/2 md:-translate-y-1/2
-            `}
+              md:-translate-x-1/2 md:-translate-y-1/2
+              `,
+              !className && "md:w-4xl",
+              className,
+            )}
             initial={{
               y: "100%",
               opacity: 0,
@@ -71,6 +77,7 @@ export function ResponsiveModal({ open, onClose, title, children }: ResponsiveMo
               {title && <h2 className="text-lg font-semibold uppercase">{title}</h2>}
 
               <button
+                type="button"
                 onClick={onClose}
                 className=" hover:text-neutral-500 cursor-pointer"
                 aria-label="Zamknij"
