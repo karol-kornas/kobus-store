@@ -19,6 +19,7 @@ import { ShippingMethods } from "../shippingMethods/ShippingMethods";
 import { CheckoutEmail } from "@/components/checkout/checkoutEmail/CheckoutEmail";
 import { CheckoutShippingAddress } from "@/components/checkout/checkoutShippingAddress/CheckoutShippingAddress";
 import { PaymentMethods } from "@/components/checkout/paymentMethods/PaymentMethods";
+import { placeOrderCheckout } from "@/features/checkout/checkout.client";
 
 type Props = {
   setCartFormKey: Dispatch<SetStateAction<number>>;
@@ -58,7 +59,45 @@ export function CartForm({ setCartFormKey }: Props) {
   } = form;
 
   const onSubmit = async (data: CheckoutFormValues) => {
+    const payload = {
+      billing_address: {
+        first_name: data.shippingAddress?.firstName || "",
+        last_name: data.shippingAddress?.lastName || "",
+        company: "",
+        address_1: data.shippingAddress?.street || "",
+        address_2: "",
+        city: data.shippingAddress?.city || "",
+        state: "",
+        postcode: data.shippingAddress?.postcode || "",
+        country: data.shippingAddress?.country || "",
+        email: data.email || "",
+        phone: (data.shippingAddress?.phonePrefix || "") + (data.shippingAddress?.phone || ""),
+      },
+      shipping_address: {
+        first_name: data.shippingAddress?.firstName || "",
+        last_name: data.shippingAddress?.lastName || "",
+        company: "",
+        address_1: data.shippingAddress?.street || "",
+        address_2: "",
+        city: data.shippingAddress?.city || "",
+        state: "",
+        postcode: data.shippingAddress?.postcode || "",
+        country: data.shippingAddress?.country || "",
+        phone: (data.shippingAddress?.phonePrefix || "") + (data.shippingAddress?.phone || ""),
+      },
+      customer_note: "",
+      create_account: false,
+      payment_method: data.paymentMethod || "",
+      payment_data: [],
+      extensions: {
+        "woocommerce-paczkomaty-inpost": {
+          paczkomat_id: data.paczkomat_id || "",
+        },
+      },
+    };
     try {
+      const res = await placeOrderCheckout(payload);
+      console.log(res);
     } catch (err) {
       setError("root", {
         message: (err as Error).message,

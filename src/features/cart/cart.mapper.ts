@@ -11,6 +11,8 @@ import {
   CartShippingRate,
 } from "@/types/cart/CartShippingPackage";
 import { ApiCartShippingAddress, CartShippingAddress } from "@/types/cart/cartShippingAddress";
+import { ApiCartBillingAddress, CartBillingAddress } from "@/types/cart/cartBillingAddress";
+import { ApiCartFees, CartFees } from "@/types/cart/cartFees";
 
 export function mapCart(apiCart: ApiCart): Cart {
   return {
@@ -27,8 +29,9 @@ export function mapCart(apiCart: ApiCart): Cart {
     },
     cross_sells: apiCart.cross_sells.map(mapCrossSellItem),
     shipping_rates: apiCart.shipping_rates?.map(mapCartShippingPackage),
-    shipping_address: mapWooShippingToForm(apiCart.shipping_address),
-    billing_address: mapWooShippingToForm(apiCart.billing_address),
+    shipping_address: mapShippingAddressToForm(apiCart.shipping_address),
+    billing_address: mapBillingAddressToForm(apiCart.billing_address),
+    fees: apiCart.fees.map(mapCartFee),
   };
 }
 
@@ -108,8 +111,8 @@ export function mapUpsellToCrossSell(product: Product): ApiCrossSellItem {
   };
 }
 
-export function mapWooShippingToForm(shipping?: ApiCartShippingAddress): CartShippingAddress {
-  if (!shipping) {
+export function mapShippingAddressToForm(address?: ApiCartShippingAddress): CartShippingAddress {
+  if (!address) {
     return {
       firstName: "",
       lastName: "",
@@ -124,15 +127,45 @@ export function mapWooShippingToForm(shipping?: ApiCartShippingAddress): CartShi
   }
 
   return {
-    firstName: shipping.first_name ?? "",
-    lastName: shipping.last_name ?? "",
-    phone: shipping.phone ?? "",
-    country: shipping.country ?? "",
-    street: shipping.address_1 ?? "",
-    postcode: shipping.postcode ?? "",
-    city: shipping.city ?? "",
-    state: shipping.state ?? "",
-    company: shipping.company ?? "",
+    firstName: address.first_name ?? "",
+    lastName: address.last_name ?? "",
+    phone: address.phone ?? "",
+    country: address.country ?? "",
+    street: address.address_1 ?? "",
+    postcode: address.postcode ?? "",
+    city: address.city ?? "",
+    state: address.state ?? "",
+    company: address.company ?? "",
+  };
+}
+
+export function mapBillingAddressToForm(address?: ApiCartBillingAddress): CartBillingAddress {
+  if (!address) {
+    return {
+      firstName: "",
+      lastName: "",
+      phone: "",
+      country: "",
+      street: "",
+      postcode: "",
+      city: "",
+      state: "",
+      company: "",
+      email: "",
+    };
+  }
+
+  return {
+    firstName: address.first_name ?? "",
+    lastName: address.last_name ?? "",
+    phone: address.phone ?? "",
+    country: address.country ?? "",
+    street: address.address_1 ?? "",
+    postcode: address.postcode ?? "",
+    city: address.city ?? "",
+    state: address.state ?? "",
+    company: address.company ?? "",
+    email: address.email ?? "",
   };
 }
 
@@ -148,5 +181,17 @@ function mapCartShippingPackage(pkg: ApiCartShippingPackage): CartShippingPackag
   return {
     ...pkg,
     shipping_rates: pkg.shipping_rates.map(mapCartShippingRate),
+  };
+}
+
+export function mapCartFee(apiFee: ApiCartFees): CartFees {
+  return {
+    key: apiFee.key,
+    name: apiFee.name,
+    totals: {
+      ...apiFee.totals,
+      total: normalizeCartPrice(apiFee.totals.total),
+      total_tax: normalizeCartPrice(apiFee.totals.total_tax),
+    },
   };
 }

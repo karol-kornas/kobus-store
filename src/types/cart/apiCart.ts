@@ -1,3 +1,5 @@
+import { ApiCartBillingAddress } from "./cartBillingAddress";
+import { ApiCartFees } from "./cartFees";
 import { ApiCartShippingAddress } from "./cartShippingAddress";
 import { ApiCartShippingPackage } from "./CartShippingPackage";
 
@@ -17,9 +19,10 @@ export type ApiCart = {
   };
   cross_sells: ApiCrossSellItem[];
   shipping_address: ApiCartShippingAddress;
-  billing_address: ApiCartShippingAddress;
+  billing_address: ApiCartBillingAddress;
   shipping_rates: ApiCartShippingPackage[];
   payment_methods: string[];
+  fees: ApiCartFees[];
 };
 
 export type ApiCartItem = {

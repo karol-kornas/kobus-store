@@ -23,7 +23,7 @@ export const PAYMENT_METHODS_MAP: Record<string, PaymentMethodConfig> = {
 
   "ppcp-gateway": {
     id: "ppcp-gateway",
-    label: "PayPal",
+    label: "PayPal (+5% prowizji)",
     description: "PayPal, karta, Pay Later",
     type: "online",
     logo: {

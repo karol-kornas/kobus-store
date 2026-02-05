@@ -1,3 +1,5 @@
+import { CartBillingAddress } from "./cartBillingAddress";
+import { CartFees } from "./cartFees";
 import { CartItem } from "./cartItem";
 import { CartShippingAddress } from "./cartShippingAddress";
 import { CartShippingPackage } from "./CartShippingPackage";
@@ -10,7 +12,8 @@ export interface Cart {
   items_count: number;
   cross_sells: CrossSellItem[];
   shipping_address: CartShippingAddress;
-  billing_address: CartShippingAddress;
+  billing_address: CartBillingAddress;
   shipping_rates: CartShippingPackage[];
   payment_methods: string[];
+  fees: CartFees[];
 }

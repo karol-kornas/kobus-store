@@ -11,6 +11,7 @@ import { Cart } from "@/types/cart/cart";
 import { mapCart } from "@/features/cart/cart.mapper";
 import { CartItem } from "@/types/cart/cartItem";
 import { selectShippingRate } from "@/features/cart/cart.client";
+import { updatePaymentMethod } from "@/features/checkout/checkout.client";
 
 export type CartState = {
   cart: Cart | null;
@@ -31,6 +32,7 @@ export type CartState = {
   closeDrawer: () => void;
   selectShippingRate: (packageId: number, rateId: string) => Promise<void>;
   updateCustomer: (payload: UpdateCustomerPayload) => Promise<void>;
+  updatePaymentMethod: (payment_method: string) => Promise<void>;
 };
 
 export const createCartStore = (initialCart: Cart | null) =>
@@ -129,7 +131,7 @@ export const createCartStore = (initialCart: Cart | null) =>
         const data = await selectShippingRate(packageId, rateId);
         const mapped = mapCart(data);
         set({ cart: mapped });
-      } catch (err) {
+      } catch {
         set({ error: "Failed to select shipping rate" });
       } finally {
         set({ isMutating: false });
@@ -144,6 +146,20 @@ export const createCartStore = (initialCart: Cart | null) =>
         set({ cart: mapped });
       } catch {
         set({ error: "Nie udało się zaktualizować adresu" });
+      } finally {
+        set({ isMutating: false });
+      }
+    },
+    updatePaymentMethod: async (payment_method: string) => {
+      set({ isMutating: true, error: null });
+      try {
+        const data = await updatePaymentMethod(payment_method);
+        if (data?.__experimentalCart) {
+          const mapped = mapCart(data.__experimentalCart);
+          set({ cart: mapped });
+        }
+      } catch {
+        set({ error: "Failed to update payment method" });
       } finally {
         set({ isMutating: false });
       }

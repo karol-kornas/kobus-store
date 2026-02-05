@@ -122,7 +122,7 @@ export function ShippingMethods() {
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         token={process.env.NEXT_PUBLIC_GEOWIDGET_API!}
-        onSelectPoint={(point) => {
+        onSelectPoint={async (point) => {
           console.log(point);
           setSelectedParcelLocker(point);
           setValue("paczkomat_id", point.name);

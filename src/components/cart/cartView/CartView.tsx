@@ -1,6 +1,6 @@
 "use client";
 
-import { useCart, useCartItems, useCartTotals } from "@/features/cart/hooks/cart.hooks";
+import { useCartItems, useCartSummary } from "@/features/cart/hooks/cart.hooks";
 import { formatPrice } from "@/utils/formatPrice";
 import { CartItem } from "./CartItem";
 import { ChevronDown, ShoppingCart } from "lucide-react";
@@ -8,16 +8,12 @@ import { useState } from "react";
 
 export default function CartView() {
   const items = useCartItems();
-  const { totalPrice, currency } = useCartTotals();
-  const { cart } = useCart();
+
+  const { productsGross, shippingGross, feesGross, totalGross, currency } = useCartSummary();
+
   const [open, setOpen] = useState(true);
 
   if (!items.length) return <p>Koszyk pusty</p>;
-
-  const productsGross = (cart!.totals.total_items ?? 0) + (cart!.totals.total_items_tax ?? 0);
-
-  const shipping = (cart!.totals.total_shipping || 0) + (cart!.totals.total_shipping_tax || 0);
-  const total = cart!.totals.total_price ?? 0;
 
   return (
     <div>
@@ -26,7 +22,7 @@ export default function CartView() {
           <ShoppingCart width={26} height={26} /> Koszyk ({items.length})
         </h3>
         <div className="flex items-center gap-2">
-          {formatPrice(totalPrice, currency)}
+          {formatPrice(totalGross, currency)}
           <ChevronDown className={`${open && "rotate-180"} transition-transform`} />
         </div>
       </div>
@@ -47,12 +43,19 @@ export default function CartView() {
 
           <p className="flex justify-between">
             <span>Dostawa:</span>
-            <span>{formatPrice(shipping, currency)}</span>
+            <span>{formatPrice(shippingGross, currency)}</span>
           </p>
+
+          {feesGross?.map((fee) => (
+            <p className="flex justify-between" key={fee.key}>
+              <span>{fee.name}:</span>
+              <span>{formatPrice(fee.feeGross, currency)}</span>
+            </p>
+          ))}
 
           <p className="pt-3 mt-3 border-t border-neutral-100 flex justify-between text-base font-semibold">
             <span>Suma:</span>
-            <span>{formatPrice(total, currency)}</span>
+            <span>{formatPrice(totalGross, currency)}</span>
           </p>
         </div>
       </div>

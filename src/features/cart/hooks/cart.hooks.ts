@@ -19,6 +19,7 @@ export function useCart() {
   const closeDrawer = useCartStore((s) => s.closeDrawer);
   const selectShippingRate = useCartStore((s) => s.selectShippingRate);
   const updateCustomer = useCartStore((s) => s.updateCustomer);
+  const updatePaymentMethod = useCartStore((s) => s.updatePaymentMethod);
 
   return {
     cart,
@@ -36,6 +37,7 @@ export function useCart() {
     closeDrawer,
     selectShippingRate,
     updateCustomer,
+    updatePaymentMethod,
   };
 }
 
@@ -58,6 +60,30 @@ export function useCartTotals() {
     totalPrice,
     currency,
     currencySymbol,
+  };
+}
+
+export function useCartSummary() {
+  const totals = useCartStore((s) => s.cart?.totals);
+  const fees = useCartStore((s) => s.cart?.fees);
+  const productsGross = (totals?.total_items || 0) + (totals?.total_items_tax || 0);
+  const shippingGross = (totals?.total_shipping || 0) + (totals?.total_shipping_tax || 0);
+  const feesGross = fees?.map((fee) => {
+    return {
+      key: fee.key,
+      name: fee.name,
+      feeGross: (fee.totals.total || 0) + (fee.totals.total_tax || 0),
+    };
+  });
+  const totalGross = totals?.total_price || 0;
+  const currency = totals?.currency_code;
+
+  return {
+    productsGross,
+    shippingGross,
+    feesGross,
+    totalGross,
+    currency,
   };
 }
 
