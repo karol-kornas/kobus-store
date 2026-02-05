@@ -6,7 +6,7 @@ import { normalizePaymentMethod } from "./normalizePaymentMethod";
 import Image from "next/image";
 import { Check } from "lucide-react";
 import { useAvailablePaymentMethods } from "@/hooks/useAvailablePaymentMethods";
-import { useCart } from "@/features/cart/hooks/cart.hooks";
+import { useCart, useCartItems } from "@/features/cart/hooks/cart.hooks";
 import { getCheckout } from "@/features/checkout/checkout.client";
 import { useEffect, useRef } from "react";
 
@@ -16,6 +16,7 @@ export function PaymentMethods() {
   const selected = watch("paymentMethod");
   const paymentMethods = useAvailablePaymentMethods();
   const { updatePaymentMethod, isMutating } = useCart();
+  const cartItems = useCartItems();
 
   useEffect(() => {
     if (!paymentMethods?.length) return;
@@ -42,6 +43,11 @@ export function PaymentMethods() {
   useEffect(() => {
     if (initialized.current) return;
     initialized.current = true;
+
+    if (!cartItems || cartItems.length === 0) {
+      console.warn("Koszyk pusty — nie pobieramy checkoutu");
+      return;
+    }
 
     (async () => {
       try {

@@ -95,7 +95,9 @@ export function CartForm({ setCartFormKey }: Props) {
         },
       },
     };
+    console.log("data:", data);
     try {
+      console.log("payload:", payload);
       const res = await placeOrderCheckout(payload);
       console.log(res);
     } catch (err) {
