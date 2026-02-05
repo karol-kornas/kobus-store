@@ -1,12 +1,14 @@
 "use client";
 
-import { useCartItems, useCartSummary } from "@/features/cart/hooks/cart.hooks";
+import { useCart, useCartItems, useCartSummary } from "@/features/cart/hooks/cart.hooks";
 import { formatPrice } from "@/utils/formatPrice";
 import { CartItem } from "./CartItem";
 import { ChevronDown, ShoppingCart } from "lucide-react";
 import { useState } from "react";
+import { Skeleton } from "@/components/ui/skeleton/Skeleton";
 
 export default function CartView() {
+  const { isMutating } = useCart();
   const items = useCartItems();
 
   const { productsGross, shippingGross, feesGross, totalGross, currency } = useCartSummary();
@@ -35,28 +37,44 @@ export default function CartView() {
           ))}
         </ul>
 
-        <div className="mt-4 text-right border-t border-neutral-100 pt-4">
-          <p className="flex justify-between">
+        <div className="flex flex-col gap-1 mt-4 text-right border-t border-neutral-100 pt-4">
+          <div className="flex justify-between">
             <span>Produkty (brutto):</span>
-            <span>{formatPrice(productsGross, currency)}</span>
-          </p>
+            {isMutating ? (
+              <Skeleton className="w-17 h-6" />
+            ) : (
+              <span>{formatPrice(productsGross, currency)}</span>
+            )}
+          </div>
 
-          <p className="flex justify-between">
+          <div className="flex justify-between">
             <span>Dostawa:</span>
-            <span>{formatPrice(shippingGross, currency)}</span>
-          </p>
+            {isMutating ? (
+              <Skeleton className="w-12.5 h-6" />
+            ) : (
+              <span>{formatPrice(shippingGross, currency)}</span>
+            )}
+          </div>
 
           {feesGross?.map((fee) => (
-            <p className="flex justify-between" key={fee.key}>
+            <div className="flex justify-between" key={fee.key}>
               <span>{fee.name}:</span>
-              <span>{formatPrice(fee.feeGross, currency)}</span>
-            </p>
+              {isMutating ? (
+                <Skeleton className="w-12.5 h-6" />
+              ) : (
+                <span>{formatPrice(fee.feeGross, currency)}</span>
+              )}
+            </div>
           ))}
 
-          <p className="pt-3 mt-3 border-t border-neutral-100 flex justify-between text-base font-semibold">
+          <div className="pt-3 mt-3 border-t border-neutral-100 flex justify-between text-base font-semibold">
             <span>Suma:</span>
-            <span>{formatPrice(totalGross, currency)}</span>
-          </p>
+            {isMutating ? (
+              <Skeleton className="w-17 h-6" />
+            ) : (
+              <span>{formatPrice(totalGross, currency)}</span>
+            )}
+          </div>
         </div>
       </div>
     </div>

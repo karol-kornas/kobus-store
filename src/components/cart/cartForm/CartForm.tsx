@@ -7,11 +7,12 @@ import { FormError } from "@/components/ui/form/formError/FormError";
 import { Button } from "@/components/ui/button/Button";
 import { useAuth } from "@/context/AuthContext";
 import {
+  useCart,
   useCartBillingAddress,
   useCartShippingAddress,
   useCartShippingRates,
 } from "@/features/cart/hooks/cart.hooks";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { ResponsiveModal } from "@/components/ui/responsiveModal/ResponsiveModal";
 import { LoginForm } from "@/app/(shop)/login/LoginForm";
 import { ShippingMethods } from "../shippingMethods/ShippingMethods";
@@ -20,6 +21,7 @@ import { CheckoutEmail } from "@/components/checkout/checkoutEmail/CheckoutEmail
 import { CheckoutShippingAddress } from "@/components/checkout/checkoutShippingAddress/CheckoutShippingAddress";
 import { PaymentMethods } from "@/components/checkout/paymentMethods/PaymentMethods";
 import { placeOrderCheckout, toCheckoutPaymentMethod } from "@/features/checkout/checkout.client";
+import { useRouter } from "next/navigation";
 
 type Props = {
   setCartFormKey: Dispatch<SetStateAction<number>>;
@@ -27,6 +29,9 @@ type Props = {
 
 export function CartForm({ setCartFormKey }: Props) {
   const { user } = useAuth();
+  const router = useRouter();
+  const [redirectUrl, setRedirectUrl] = useState<string | null>(null);
+  const { isMutating } = useCart();
   const shippingAddress = useCartShippingAddress();
   const billingAddress = useCartBillingAddress();
 
@@ -57,6 +62,12 @@ export function CartForm({ setCartFormKey }: Props) {
     setError,
     formState: { errors, isSubmitting },
   } = form;
+
+  useEffect(() => {
+    if (redirectUrl) {
+      window.location.href = redirectUrl;
+    }
+  }, [redirectUrl]);
 
   const onSubmit = async (data: CheckoutFormValues) => {
     const payload = {
@@ -100,6 +111,11 @@ export function CartForm({ setCartFormKey }: Props) {
       console.log("payload:", payload);
       const res = await placeOrderCheckout(payload);
       console.log(res);
+      if (res.payment_result?.redirect_url) {
+        setRedirectUrl(res.payment_result.redirect_url);
+      } else if (res.order_id) {
+        router.push(`/checkout/order-complete?order_id=${res.order_id}&order_key=${res.order_key}`);
+      }
     } catch (err) {
       setError("root", {
         message: (err as Error).message,
@@ -132,7 +148,7 @@ export function CartForm({ setCartFormKey }: Props) {
               Płatność
             </h3>
             <PaymentMethods />
-            <div className="py-2">
+            <div className="py-2 mt-4">
               <Checkbox
                 id="accept_regulations"
                 label="Oświadczam, że akceptuję regulamin sklepu i potwierdzam zapoznanie się z Polityką prywatności."
@@ -143,7 +159,7 @@ export function CartForm({ setCartFormKey }: Props) {
 
             <FormError message={errors.root?.message} variant="auth" />
 
-            <Button isLoading={isSubmitting} type="submit">
+            <Button className="w-full mt-4" disabled={isMutating} isLoading={isSubmitting} type="submit">
               Zamawiam i płacę
             </Button>
           </div>
