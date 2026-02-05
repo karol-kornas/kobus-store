@@ -19,7 +19,7 @@ export async function updateCheckout(payload: UpdateCheckoutPayload): Promise<Ch
   return res.data;
 }
 
-const toCheckoutPaymentMethod = (uiMethod: string) => {
+export const toCheckoutPaymentMethod = (uiMethod: string) => {
   if (uiMethod.startsWith("przelewy24_extra_")) {
     return "przelewy24";
   }

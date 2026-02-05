@@ -19,7 +19,7 @@ import { ShippingMethods } from "../shippingMethods/ShippingMethods";
 import { CheckoutEmail } from "@/components/checkout/checkoutEmail/CheckoutEmail";
 import { CheckoutShippingAddress } from "@/components/checkout/checkoutShippingAddress/CheckoutShippingAddress";
 import { PaymentMethods } from "@/components/checkout/paymentMethods/PaymentMethods";
-import { placeOrderCheckout } from "@/features/checkout/checkout.client";
+import { placeOrderCheckout, toCheckoutPaymentMethod } from "@/features/checkout/checkout.client";
 
 type Props = {
   setCartFormKey: Dispatch<SetStateAction<number>>;
@@ -87,7 +87,7 @@ export function CartForm({ setCartFormKey }: Props) {
       },
       customer_note: "",
       create_account: false,
-      payment_method: data.paymentMethod || "",
+      payment_method: toCheckoutPaymentMethod(data.paymentMethod) || "",
       payment_data: [],
       extensions: {
         "woocommerce-paczkomaty-inpost": {
