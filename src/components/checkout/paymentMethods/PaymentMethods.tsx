@@ -47,7 +47,7 @@ export function PaymentMethods() {
             />
 
             <div
-              className="flex h-5 w-5 items-center justify-center rounded-full border-2 border-neutral-400 
+              className="flex h-5 w-5 items-center justify-center rounded-full border-2 border-neutral-400 flex-none
               peer-checked:border-neutral-800 peer-checked:bg-neutral-800 peer-disabled:opacity-50 text-white"
             >
               {selected === id && <Check strokeWidth={3} size={14} />}

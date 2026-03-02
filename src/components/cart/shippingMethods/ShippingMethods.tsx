@@ -65,7 +65,7 @@ export function ShippingMethods() {
               />
               <div
                 className={clsx(
-                  "flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition",
+                  "flex flex-none h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition",
                   "border-neutral-400",
                   "peer-checked:border-neutral-800 peer-checked:bg-neutral-800",
                   "peer-disabled:opacity-50 text-white",
