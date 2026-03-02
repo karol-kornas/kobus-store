@@ -11,8 +11,8 @@ export default function OrderCompletePage() {
 
   useEffect(() => {
     // Pobieramy parametry z URL
-    setOrderId(searchParams.get("order_id"));
-    setOrderKey(searchParams.get("order_key"));
+    setOrderId(searchParams.get("orderId"));
+    setOrderKey(searchParams.get("orderKey"));
   }, [searchParams]);
 
   return (

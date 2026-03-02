@@ -1,4 +1,4 @@
-export const PAYMENT_METHODS_BY_SHIPPING: Record<string, string[]> = {
+export const PAYMENT_METHODS_BY_SHIPPING: Record<string, readonly string[]> = {
   "flexible_shipping_single:9": ["przelewy24_extra_154", "przelewy24", "ppcp-gateway", "bacs"],
   "flexible_shipping_single:10": ["przelewy24_extra_154", "przelewy24", "ppcp-gateway", "bacs"],
   "flexible_shipping_single:8": ["cod"],

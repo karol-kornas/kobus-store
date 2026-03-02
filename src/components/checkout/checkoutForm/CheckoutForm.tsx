@@ -15,24 +15,22 @@ import {
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { ResponsiveModal } from "@/components/ui/responsiveModal/ResponsiveModal";
 import { LoginForm } from "@/app/(shop)/login/LoginForm";
-import { ShippingMethods } from "../shippingMethods/ShippingMethods";
 
 import { CheckoutEmail } from "@/components/checkout/checkoutEmail/CheckoutEmail";
 import { CheckoutShippingAddress } from "@/components/checkout/checkoutShippingAddress/CheckoutShippingAddress";
 import { PaymentMethods } from "@/components/checkout/paymentMethods/PaymentMethods";
-import {
-  optionsCheckout,
-  placeOrderCheckout,
-  toCheckoutPaymentMethod,
-} from "@/features/checkout/checkout.client";
+import { placeOrderCheckout, toCheckoutPaymentMethod } from "@/features/checkout/checkout.client";
 import { useRouter } from "next/navigation";
+import { ShippingMethods } from "@/components/cart/shippingMethods/ShippingMethods";
+import { useCheckoutContext } from "@/context/CheckoutProvider";
 
 type Props = {
   setCartFormKey: Dispatch<SetStateAction<number>>;
 };
 
-export function CartForm({ setCartFormKey }: Props) {
+export function CheckoutForm({ setCartFormKey }: Props) {
   const { user } = useAuth();
+  const { initialCheckout, countriesStates } = useCheckoutContext();
   const router = useRouter();
   const [redirectUrl, setRedirectUrl] = useState<string | null>(null);
   const { isMutating } = useCart();
@@ -43,9 +41,6 @@ export function CartForm({ setCartFormKey }: Props) {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
 
   const selectedRate = shippingRates?.find((r) => r.selected)?.rate_id;
-
-  const options = optionsCheckout();
-  console.log(options);
 
   const form = useForm<CheckoutFormValues>({
     resolver: zodResolver(checkoutSchema),
@@ -60,6 +55,7 @@ export function CartForm({ setCartFormKey }: Props) {
         country: shippingAddress?.country,
       },
       shippingRateId: selectedRate,
+      paymentMethod: initialCheckout.payment_method,
     },
   });
 

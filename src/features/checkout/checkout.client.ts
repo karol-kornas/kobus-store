@@ -44,3 +44,8 @@ export async function placeOrderCheckout(payload: {
   const res = await apiClient.post("/api/checkout", payload);
   return res.data;
 }
+
+export async function optionsCheckout(): Promise<Checkout> {
+  const res = await apiClient.options("/api/checkout");
+  return res.data;
+}

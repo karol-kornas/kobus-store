@@ -23,6 +23,8 @@ export type ApiCart = {
   shipping_rates: ApiCartShippingPackage[];
   payment_methods: string[];
   fees: ApiCartFees[];
+  needs_shipping: boolean;
+  needs_payment: boolean;
 };
 
 export type ApiCartItem = {

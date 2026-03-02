@@ -9,7 +9,7 @@ export function useClickOutside<T extends HTMLElement>(ref: React.RefObject<T | 
       handler();
     }
 
-    document.addEventListener("pointerdown", listener, true); // 👈 capture
+    document.addEventListener("pointerdown", listener, true); 
 
     return () => {
       document.removeEventListener("pointerdown", listener, true);

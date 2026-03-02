@@ -7,6 +7,7 @@ export function useCart() {
   const isMutating = useCartStore((s) => s.isMutating);
   const isSyncing = useCartStore((s) => s.isSyncing);
   const error = useCartStore((s) => s.error);
+  const selectedPaymentMethod = useCartStore((s) => s.selectedPaymentMethod);
   const isDrawerOpen = useCartStore((s) => s.isDrawerOpen);
   const drawerItemKey = useCartStore((s) => s.drawerItemKey);
   const updatingItems = useCartStore((s) => s.updatingItems);
@@ -26,6 +27,7 @@ export function useCart() {
     isMutating,
     isSyncing,
     error,
+    selectedPaymentMethod,
     isDrawerOpen,
     drawerItemKey,
     updatingItems,

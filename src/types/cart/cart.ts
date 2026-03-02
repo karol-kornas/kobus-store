@@ -16,4 +16,6 @@ export interface Cart {
   shipping_rates: CartShippingPackage[];
   payment_methods: string[];
   fees: CartFees[];
+  needs_shipping: boolean;
+  needs_payment: boolean;
 }

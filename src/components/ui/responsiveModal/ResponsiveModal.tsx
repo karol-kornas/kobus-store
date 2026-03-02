@@ -47,7 +47,7 @@ export function ResponsiveModal({ open, onClose, title, children, className }: R
             className={clsx(
               `
               fixed z-50 bg-white w-full
-              bottom-0 left-0 right-0 rounded-t-2xl
+              bottom-0 left-0 right-0
               md:top-1/2 md:left-1/2 md:bottom-auto md:right-auto
               md:-translate-x-1/2 md:-translate-y-1/2
               `,

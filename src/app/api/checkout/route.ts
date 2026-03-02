@@ -11,7 +11,6 @@ export async function GET(req: NextRequest) {
       cookies: cookie,
     });
 
-    // Przekazujemy cookies + nonce dalej do klienta
     const response = NextResponse.json(data);
 
     headers.forEach((value, key) => {
@@ -59,6 +58,9 @@ export async function POST(req: NextRequest) {
     const { data, headers } = await wooFetchWithNonce<Checkout>("/checkout", {
       method: "POST",
       cookies: cookie,
+      headers: {
+        "X-Headless-Frontend": "http://localhost:3000",
+      },
       body: JSON.stringify(body),
     });
 
@@ -74,5 +76,31 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     console.error("POST /checkout error:", err);
     return NextResponse.json({ message: "Nie udało się złożyć zamówienia" }, { status: 500 });
+  }
+}
+
+export async function OPTIONS(req: NextRequest) {
+  try {
+    const cookie = req.headers.get("cookie") ?? "";
+
+    const { data, headers } = await wooFetchWithNonce("/checkout", {
+      method: "OPTIONS",
+      cookies: cookie,
+    });
+
+    const response = NextResponse.json(data);
+
+    // Przekazujemy cookies (jeśli Woo coś ustawi)
+    headers.forEach((value, key) => {
+      if (key.toLowerCase() === "set-cookie") {
+        response.headers.append("set-cookie", value);
+      }
+    });
+
+    return response;
+  } catch (err) {
+    console.error("OPTIONS /checkout error:", err);
+
+    return NextResponse.json({ message: "Nie udało się pobrać schematu checkoutu" }, { status: 500 });
   }
 }

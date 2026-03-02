@@ -130,7 +130,7 @@ export function AddToCartDrawer() {
             </div>
 
             <div className="mt-auto flex flex-col gap-3 py-6 px-6 bg-cream">
-              <ButtonLink href="/cart" size="lg" variant="special" onClick={closeDrawer}>
+              <ButtonLink href="/checkout" size="lg" variant="special" onClick={closeDrawer}>
                 Przejdź do koszyka
               </ButtonLink>
 

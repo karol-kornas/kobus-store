@@ -2,7 +2,6 @@
 
 import { useCart, useCartShippingRates } from "@/features/cart/hooks/cart.hooks";
 import { formatPrice } from "@/utils/formatPrice";
-import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import { ShippingLogo } from "./ShippingLogo";
 import { getShippingProvider } from "./getShippingProvider";
@@ -11,33 +10,18 @@ import { Check } from "lucide-react";
 import { useState } from "react";
 import { ParcelLockerModal, ParcelLockerPoint } from "./ParcelLockerModal";
 import { Button } from "@/components/ui/button/Button";
+import { useCheckoutController } from "@/hooks/useCheckoutController";
 
 export function ShippingMethods() {
   const { setValue, watch } = useFormContext();
-  const { selectShippingRate, isMutating } = useCart();
+  const { isMutating } = useCart();
   const rates = useCartShippingRates();
+  const { changeShippingMethod } = useCheckoutController();
 
   const selectedRate = watch("shippingRateId");
   const [selectedParcelLocker, setSelectedParcelLocker] = useState<ParcelLockerPoint | null>(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  useEffect(() => {
-    if (selectedRate || !rates) return;
-
-    const preselected = rates.find((r) => r.selected);
-    if (!preselected) return;
-
-    setValue("shippingRateId", preselected.rate_id, {
-      shouldDirty: false,
-      shouldTouch: false,
-    });
-  }, [rates, selectedRate, setValue]);
-
-  const handleChange = (rateId: string) => {
-    setValue("shippingRateId", rateId, { shouldDirty: true });
-    selectShippingRate(0, rateId);
-  };
 
   if (!rates) {
     return (
@@ -58,7 +42,7 @@ export function ShippingMethods() {
           <label
             key={rate.rate_id}
             className={clsx(
-              "flex items-center justify-between border-2 b gap-4 rounded-lg p-4 cursor-pointer transition",
+              "flex items-center justify-between border-2 b gap-4 p-4 cursor-pointer transition",
               selectedRate === rate.rate_id
                 ? "border-neutral-800"
                 : "border-neutral-200 hover:border-neutral-400",
@@ -71,7 +55,13 @@ export function ShippingMethods() {
                 value={rate.rate_id}
                 checked={selectedRate === rate.rate_id}
                 disabled={isMutating}
-                onChange={() => handleChange(rate.rate_id)}
+                onChange={() => {
+                  setValue("shippingRateId", rate.rate_id, {
+                    shouldDirty: true,
+                    shouldTouch: true,
+                  });
+                  changeShippingMethod(rate.rate_id);
+                }}
               />
               <div
                 className={clsx(

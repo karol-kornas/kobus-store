@@ -5,6 +5,7 @@ import { useState } from "react";
 
 export default function CartPage() {
   const [cartFormKey, setCartFormKey] = useState(0);
+
   return (
     <div className="container max-w-5xl grid lg:grid-cols-[540fr_325fr] gap-8">
       <div className="flex flex-col gap-8 max-lg:order-2">

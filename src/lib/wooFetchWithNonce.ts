@@ -6,6 +6,7 @@ export async function wooFetchWithNonce<T>(
     method: string;
     cookies?: string;
     body?: string;
+    headers?: Record<string, string>;
     _retry?: boolean;
   },
 ): Promise<{
@@ -27,6 +28,7 @@ export async function wooFetchWithNonce<T>(
     return await wooStoreFetch(path, {
       ...options,
       headers: {
+        ...(options.headers ?? {}),
         Nonce: nonce,
       },
     });

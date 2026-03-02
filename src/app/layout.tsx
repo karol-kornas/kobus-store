@@ -44,6 +44,7 @@ export default async function RootLayout({
 }>) {
   const [cart, user] = await Promise.all([getCartServer(), getMeServer()]);
   console.log(cart);
+
   return (
     <html lang="pl">
       <body className={`${mulish.variable} ${playfairDisplay.variable} antialiased font-sans`}>
