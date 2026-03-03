@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const PARCEL_LOCKER_RATE_ID = "flexible_shipping_single:9";
+export const PARCEL_LOCKER_RATE_ID = "flexible_shipping_single:9";
 
 const ERRORS = {
   REQUIRED: "Pole jest wymagane",
@@ -42,6 +42,7 @@ export const checkoutSchema = z
           .transform((v) => v.replace(/\s+/g, ""))
           .refine((v) => /^\d+$/.test(v), "Nieprawidłowy numer"),
         country: baseAddressSchema.country,
+        state: z.string().optional(),
         postcode: baseAddressSchema.postcode,
         street: z
           .string()

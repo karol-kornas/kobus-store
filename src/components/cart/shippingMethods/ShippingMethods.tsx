@@ -11,6 +11,7 @@ import { useState } from "react";
 import { ParcelLockerModal, ParcelLockerPoint } from "./ParcelLockerModal";
 import { Button } from "@/components/ui/button/Button";
 import { useCheckoutController } from "@/hooks/useCheckoutController";
+import { PARCEL_LOCKER_RATE_ID } from "@/features/cart/schemas/checkout.schema";
 
 export function ShippingMethods() {
   const { setValue, watch } = useFormContext();
@@ -22,6 +23,11 @@ export function ShippingMethods() {
   const [selectedParcelLocker, setSelectedParcelLocker] = useState<ParcelLockerPoint | null>(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
 
   if (!rates) {
     return (
@@ -60,6 +66,12 @@ export function ShippingMethods() {
                     shouldDirty: true,
                     shouldTouch: true,
                   });
+                  if (rate.rate_id !== PARCEL_LOCKER_RATE_ID) {
+                    setValue("paczkomat_id", undefined, {
+                      shouldValidate: true,
+                    });
+                    setSelectedParcelLocker(null);
+                  }
                   changeShippingMethod(rate.rate_id);
                 }}
               />
@@ -77,8 +89,15 @@ export function ShippingMethods() {
                 <span className="font-medium">{rate.name}</span> -{" "}
                 <span className="text-sm font-semibold">{formatPrice(priceBrutto)}</span>
                 <div className="text-xs">1-2 dni robocze</div>
-                {rate.rate_id === "flexible_shipping_single:9" && (
+                {rate.rate_id === PARCEL_LOCKER_RATE_ID && (
                   <div className="mt-2">
+                    <input
+                      type="text"
+                      tabIndex={-1}
+                      aria-hidden="true"
+                      className="sr-only"
+                      {...register("paczkomat_id")}
+                    />
                     {selectedParcelLocker ? (
                       <button
                         type="button"
@@ -93,9 +112,14 @@ export function ShippingMethods() {
                         <span className="ml-6">Zmień</span>
                       </button>
                     ) : (
-                      <Button type="button" size="sm" onClick={() => setIsModalOpen(true)}>
-                        Wybierz paczkomat
-                      </Button>
+                      <>
+                        <Button type="button" size="sm" onClick={() => setIsModalOpen(true)}>
+                          Wybierz paczkomat
+                        </Button>
+                        {errors.paczkomat_id && (
+                          <p className="mt-1 text-xs text-red-600">{errors.paczkomat_id.message as string}</p>
+                        )}
+                      </>
                     )}
                   </div>
                 )}
@@ -115,7 +139,11 @@ export function ShippingMethods() {
         onSelectPoint={async (point) => {
           console.log(point);
           setSelectedParcelLocker(point);
-          setValue("paczkomat_id", point.name);
+          setValue("paczkomat_id", point.name, {
+            shouldDirty: true,
+            shouldTouch: true,
+            shouldValidate: true,
+          });
         }}
       />
     </div>

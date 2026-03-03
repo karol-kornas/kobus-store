@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { ChevronDown } from "lucide-react";
 
-type SelectOption = {
+export type SelectOption = {
   value: string;
   label: string;
 };

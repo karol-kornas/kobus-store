@@ -3,13 +3,14 @@
 import { FormField } from "@/components/ui/formField/FormField";
 import { Input } from "@/components/ui/input/Input";
 import { Select } from "@/components/ui/select/Select";
-import { COUNTRIES } from "@/constants/countries";
 import { PHONE_COUNTRY_CODES } from "@/constants/phoneCodes";
-import { useCart } from "@/features/cart/hooks/cart.hooks";
+import { useCheckoutContext } from "@/context/CheckoutProvider";
 import { CheckoutFormValues } from "@/features/cart/schemas/checkout.schema";
 import { useCheckoutController } from "@/hooks/useCheckoutController";
 import { formatPlPostcode } from "@/utils/formatPlPostcode";
+import { mapCountriesToOptions } from "@/utils/mapCountries";
 import { Controller, useFormContext, useWatch } from "react-hook-form";
+import { CheckoutShippingAddressState } from "./CheckoutShippingAddressState";
 
 export function CheckoutShippingAddress() {
   const { changeCountry } = useCheckoutController();
@@ -23,6 +24,11 @@ export function CheckoutShippingAddress() {
   const { onChange, ...rest } = register("shippingAddress.postcode");
 
   const country = useWatch({ name: "shippingAddress.country" });
+  
+  const { countriesStates } = useCheckoutContext();
+
+  const countryOptions = mapCountriesToOptions(countriesStates.countries);
+
   return (
     <div className="checkout-step rounded-lg bg-white px-3 py-6 sm:px-6 shadow-[0_10px_15px_-3px_rgba(0,0,0,0.025),0_4px_6px_-4px_rgba(0,0,0,0.025)]">
       <h3
@@ -118,12 +124,13 @@ export function CheckoutShippingAddress() {
 
                   changeCountry(value);
                 }}
-                options={COUNTRIES}
+                options={countryOptions}
                 error={!!errors.shippingAddress?.country}
               />
             )}
           />
         </FormField>
+        <CheckoutShippingAddressState />
         <FormField
           label="Ulica i numer domu/mieszkania"
           htmlFor="street"

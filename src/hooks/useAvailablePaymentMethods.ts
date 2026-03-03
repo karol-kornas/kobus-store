@@ -12,21 +12,16 @@ export function useAvailablePaymentMethods() {
 
   const backendMethods = cart.payment_methods ?? [];
 
-  // Brak wysyłki → nie filtrujemy nic
   if (!cart.needs_shipping) {
     return backendMethods;
   }
-
-  // Wysyłka potrzebna, ale brak wyboru
   if (!shippingMethod) return [];
 
   const allowedForShipping = PAYMENT_METHODS_BY_SHIPPING[shippingMethod];
 
-  // Jeśli nie mamy mapy → nie filtrujemy
   if (!allowedForShipping) {
     return backendMethods;
   }
 
-  // Filtrowanie backendowych metod
   return backendMethods.filter((method) => allowedForShipping.includes(method));
 }

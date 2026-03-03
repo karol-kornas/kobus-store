@@ -23,6 +23,7 @@ import { placeOrderCheckout, toCheckoutPaymentMethod } from "@/features/checkout
 import { useRouter } from "next/navigation";
 import { ShippingMethods } from "@/components/cart/shippingMethods/ShippingMethods";
 import { useCheckoutContext } from "@/context/CheckoutProvider";
+import { splitPhoneNumber } from "@/utils/phone";
 
 type Props = {
   setCartFormKey: Dispatch<SetStateAction<number>>;
@@ -30,7 +31,7 @@ type Props = {
 
 export function CheckoutForm({ setCartFormKey }: Props) {
   const { user } = useAuth();
-  const { initialCheckout, countriesStates } = useCheckoutContext();
+  const { initialCheckout } = useCheckoutContext();
   const router = useRouter();
   const [redirectUrl, setRedirectUrl] = useState<string | null>(null);
   const { isMutating } = useCart();
@@ -42,6 +43,8 @@ export function CheckoutForm({ setCartFormKey }: Props) {
 
   const selectedRate = shippingRates?.find((r) => r.selected)?.rate_id;
 
+  const { phonePrefix, phone } = splitPhoneNumber(billingAddress?.phone);
+
   const form = useForm<CheckoutFormValues>({
     resolver: zodResolver(checkoutSchema),
     mode: "onTouched",
@@ -50,8 +53,8 @@ export function CheckoutForm({ setCartFormKey }: Props) {
       email: user ? user.email : "",
       shippingAddress: {
         ...shippingAddress,
-        phone: billingAddress?.phone,
-        phonePrefix: "+48",
+        phone,
+        phonePrefix,
         country: shippingAddress?.country,
       },
       shippingRateId: selectedRate,
@@ -81,7 +84,7 @@ export function CheckoutForm({ setCartFormKey }: Props) {
         address_1: data.shippingAddress?.street || "",
         address_2: "",
         city: data.shippingAddress?.city || "",
-        state: "",
+        state: data.shippingAddress?.state || "",
         postcode: data.shippingAddress?.postcode || "",
         country: data.shippingAddress?.country || "",
         email: data.email || "",
@@ -94,7 +97,7 @@ export function CheckoutForm({ setCartFormKey }: Props) {
         address_1: data.shippingAddress?.street || "",
         address_2: "",
         city: data.shippingAddress?.city || "",
-        state: "",
+        state: data.shippingAddress?.state || "",
         postcode: data.shippingAddress?.postcode || "",
         country: data.shippingAddress?.country || "",
         phone: (data.shippingAddress?.phonePrefix || "") + (data.shippingAddress?.phone || ""),
