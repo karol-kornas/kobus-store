@@ -61,8 +61,11 @@ export default function CartView() {
             <Tags /> {couponOpen ? "Wpisz kod promocyjny" : "Masz kod promocyjny?"}
             <ChevronDown className={`${couponOpen && "rotate-180"} transition-transform ml-auto`} />
           </button>
-          <div className={`${couponOpen ? "block" : "hidden"} px-6 py-4`}>
+          <div className={`${couponOpen ? "flex" : "hidden"} px-6 py-4 gap-1`}>
             <Input type="text" />
+            <Button disabled={isMutating} isLoading={isMutating} type="submit">
+              Użyj
+            </Button>
           </div>
         </div>
 
