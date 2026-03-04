@@ -134,7 +134,7 @@ export function CheckoutForm({ setCartFormKey }: Props) {
       <FormProvider {...form}>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           <div className="container max-sm:px-0 max-w-5xl grid lg:grid-cols-[540fr_325fr] gap-8">
-            <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-6">
               <CheckoutStep title={user ? "Jesteś zalogowany jako" : "Podaj adres e-mail"}>
                 <CheckoutEmail setIsLoginOpen={setIsLoginOpen} />
               </CheckoutStep>

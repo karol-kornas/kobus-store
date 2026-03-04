@@ -11,6 +11,7 @@ import { useFormContext } from "react-hook-form";
 import { CheckoutFormValues } from "@/features/cart/schemas/checkout.schema";
 import { useState } from "react";
 import { Input } from "@/components/ui/input/Input";
+import { FormField } from "@/components/ui/formField/FormField";
 
 export default function CartView() {
   const {
@@ -41,7 +42,7 @@ export default function CartView() {
           </div>
         </div>
         <div
-          className={`${productsOpen ? "block" : "hidden"} overflow-y-auto max-h-60.75 px-6 py-4 border-t border-neutral-100`}
+          className={`${productsOpen ? "block" : "hidden"} overflow-y-auto max-h-60.75 px-6 py-4 border-t border-neutral-200`}
         >
           <ul className="">
             {items.map((item) => (
@@ -52,24 +53,26 @@ export default function CartView() {
           </ul>
         </div>
 
-        <div className="border-t border-neutral-100">
+        <div className="border-t border-neutral-200">
           <button
             type="button"
             onClick={() => setCouponOpen(!couponOpen)}
-            className="hover:bg-neutral-50 flex items-center gap-2 px-6 py-4 w-full cursor-pointer transition-colors"
+            className="flex items-center gap-2 px-6 py-4 w-full cursor-pointer transition-colors"
           >
             <Tags /> {couponOpen ? "Wpisz kod promocyjny" : "Masz kod promocyjny?"}
             <ChevronDown className={`${couponOpen && "rotate-180"} transition-transform ml-auto`} />
           </button>
-          <div className={`${couponOpen ? "flex" : "hidden"} px-6 py-4 gap-1`}>
-            <Input type="text" />
-            <Button disabled={isMutating} isLoading={isMutating} type="submit">
+          <div className={`${couponOpen ? "flex" : "hidden"} px-6 py-4 gap-1 items-center`}>
+            <FormField label="Kod promocyjny" htmlFor="couponCode">
+              <Input id="couponCode" type="text" />
+            </FormField>
+            <Button type="button" disabled={isMutating} isLoading={isMutating}>
               Użyj
             </Button>
           </div>
         </div>
 
-        <div className="flex flex-col gap-1 text-right border-t border-neutral-100 py-4 px-6">
+        <div className="flex flex-col gap-1 text-right border-t border-neutral-200 py-4 px-6">
           <div className="flex justify-between items-end">
             <span>Koszyk:</span>
             {isMutating ? (
@@ -107,7 +110,7 @@ export default function CartView() {
             </div>
           ))}
 
-          <div className="pt-3 mt-3 border-t border-neutral-100 flex justify-between text-base font-semibold">
+          <div className="pt-3 mt-3 border-t border-neutral-200 border-dashed flex justify-between text-base font-semibold">
             <span>Do zapłaty:</span>
             {isMutating ? (
               <Skeleton className="w-17 h-6" />
