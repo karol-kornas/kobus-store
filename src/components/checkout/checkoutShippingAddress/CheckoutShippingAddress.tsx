@@ -7,10 +7,10 @@ import { PHONE_COUNTRY_CODES } from "@/constants/phoneCodes";
 import { useCheckoutContext } from "@/context/CheckoutProvider";
 import { CheckoutFormValues } from "@/features/cart/schemas/checkout.schema";
 import { useCheckoutController } from "@/hooks/useCheckoutController";
-import { formatPlPostcode } from "@/utils/formatPlPostcode";
 import { mapCountriesToOptions } from "@/utils/mapCountries";
 import { Controller, useFormContext, useWatch } from "react-hook-form";
 import { CheckoutShippingAddressState } from "./CheckoutShippingAddressState";
+import { useHookFormMask } from "use-mask-input";
 
 export function CheckoutShippingAddress() {
   const { changeCountry } = useCheckoutController();
@@ -18,173 +18,166 @@ export function CheckoutShippingAddress() {
     control,
     register,
     formState: { errors },
-    setValue,
   } = useFormContext<CheckoutFormValues>();
 
-  const { onChange, ...rest } = register("shippingAddress.postcode");
-
   const country = useWatch({ name: "shippingAddress.country" });
-  
+  const phonePrefix = useWatch({ name: "shippingAddress.phonePrefix" });
+
   const { countriesStates } = useCheckoutContext();
 
   const countryOptions = mapCountriesToOptions(countriesStates.countries);
 
+  const registerWithMask = useHookFormMask(register);
+
+  const isPL = country === "PL";
+  const isPLPhone = phonePrefix === "+48";
+
+  console.log(isPLPhone);
+
   return (
-    <div className="checkout-step rounded-lg bg-white px-3 py-6 sm:px-6 shadow-[0_10px_15px_-3px_rgba(0,0,0,0.025),0_4px_6px_-4px_rgba(0,0,0,0.025)]">
-      <h3
-        className="before:content-[counter(order)] before:bg-cream before:font-bold  before:mr-3
-                   before:size-8 before:rounded-full before:inline-flex before:justify-center before:items-center
-                   font-semibold text-lg"
-      >
-        Adres dostawy
-      </h3>
-      <div className="mt-6 flex flex-col gap-5">
-        <div className="grid grid-cols-2 gap-3 sm:gap-5">
-          <FormField
-            label="Imię"
-            htmlFor="firstName"
-            required
-            error={errors.shippingAddress?.firstName?.message}
-          >
-            <Input
-              id="firstName"
-              type="text"
-              error={!!errors.shippingAddress?.firstName}
-              required
-              {...register("shippingAddress.firstName")}
-            />
-          </FormField>
-          <FormField
-            label="Nazwisko"
-            htmlFor="lastName"
-            required
-            error={errors.shippingAddress?.lastName?.message}
-          >
-            <Input
-              id="lastName"
-              type="text"
-              error={!!errors.shippingAddress?.lastName}
-              required
-              {...register("shippingAddress.lastName")}
-            />
-          </FormField>
-        </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-5">
-          <FormField
-            label="Kierunkowy"
-            htmlFor="phonePrefix"
-            variant="static"
-            required
-            error={errors.shippingAddress?.phonePrefix?.message}
-          >
-            <Controller
-              name="shippingAddress.phonePrefix"
-              control={control}
-              render={({ field }) => (
-                <Select
-                  value={field.value}
-                  onChange={field.onChange}
-                  options={PHONE_COUNTRY_CODES}
-                  error={!!errors.shippingAddress?.phonePrefix}
-                />
-              )}
-            />
-          </FormField>
-          <FormField
-            label="Numer telefonu"
-            htmlFor="phone"
-            className="sm:col-span-2"
-            required
-            error={errors.shippingAddress?.phone?.message}
-          >
-            <Input
-              id="phone"
-              type="text"
-              error={!!errors.shippingAddress?.phone}
-              required
-              {...register("shippingAddress.phone")}
-            />
-          </FormField>
-        </div>
+    <div className="mt-6 flex flex-col gap-5">
+      <div className="grid grid-cols-2 gap-3 sm:gap-5">
         <FormField
-          label="Kraj"
-          htmlFor="country"
+          label="Imię"
+          htmlFor="firstName"
+          required
+          error={errors.shippingAddress?.firstName?.message}
+        >
+          <Input
+            id="firstName"
+            type="text"
+            error={!!errors.shippingAddress?.firstName}
+            required
+            {...register("shippingAddress.firstName")}
+          />
+        </FormField>
+        <FormField
+          label="Nazwisko"
+          htmlFor="lastName"
+          required
+          error={errors.shippingAddress?.lastName?.message}
+        >
+          <Input
+            id="lastName"
+            type="text"
+            error={!!errors.shippingAddress?.lastName}
+            required
+            {...register("shippingAddress.lastName")}
+          />
+        </FormField>
+      </div>
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-5">
+        <FormField
+          label="Kierunkowy"
+          htmlFor="phonePrefix"
           variant="static"
           required
-          error={errors.shippingAddress?.country?.message}
+          error={errors.shippingAddress?.phonePrefix?.message}
         >
           <Controller
-            name="shippingAddress.country"
+            name="shippingAddress.phonePrefix"
             control={control}
             render={({ field }) => (
               <Select
                 value={field.value}
-                onChange={(value) => {
-                  field.onChange(value);
-
-                  changeCountry(value);
-                }}
-                options={countryOptions}
-                error={!!errors.shippingAddress?.country}
+                onChange={field.onChange}
+                options={PHONE_COUNTRY_CODES}
+                error={!!errors.shippingAddress?.phonePrefix}
               />
             )}
           />
         </FormField>
-        <CheckoutShippingAddressState />
         <FormField
-          label="Ulica i numer domu/mieszkania"
-          htmlFor="street"
+          label="Numer telefonu"
+          htmlFor="phone"
+          className="sm:col-span-2"
           required
-          error={errors.shippingAddress?.street?.message}
+          error={errors.shippingAddress?.phone?.message}
         >
           <Input
-            id="street"
+            id="phone"
+            key={phonePrefix}
             type="text"
-            error={!!errors.shippingAddress?.street}
+            error={!!errors.shippingAddress?.phone}
             required
-            {...register("shippingAddress.street")}
+            {...(isPLPhone
+              ? registerWithMask("shippingAddress.phone", ["999 999 999"], { required: true })
+              : register("shippingAddress.phone", { required: true }))}
           />
         </FormField>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-5">
-          <FormField
-            label="Kod pocztowy"
-            htmlFor="postcode"
-            error={errors.shippingAddress?.postcode?.message}
-            required
-          >
-            <Input
-              id="postcode"
-              {...rest}
-              inputMode="numeric"
-              onChange={(e) => {
-                if (country === "PL") {
-                  setValue("shippingAddress.postcode", formatPlPostcode(e.target.value), {
-                    shouldDirty: true,
-                  });
-                } else {
-                  onChange(e);
-                }
+      </div>
+      <FormField
+        label="Kraj"
+        htmlFor="country"
+        variant="static"
+        required
+        error={errors.shippingAddress?.country?.message}
+      >
+        <Controller
+          name="shippingAddress.country"
+          control={control}
+          render={({ field }) => (
+            <Select
+              value={field.value}
+              onChange={(value) => {
+                field.onChange(value);
+
+                changeCountry(value);
               }}
-              error={!!errors.shippingAddress?.postcode}
-              required
+              options={countryOptions}
+              error={!!errors.shippingAddress?.country}
             />
-          </FormField>
-          <FormField
-            label="Miasto"
-            className="sm:col-span-2"
-            htmlFor="city"
+          )}
+        />
+      </FormField>
+      <CheckoutShippingAddressState />
+      <FormField
+        label="Ulica i numer domu/mieszkania"
+        htmlFor="street"
+        required
+        error={errors.shippingAddress?.street?.message}
+      >
+        <Input
+          id="street"
+          type="text"
+          error={!!errors.shippingAddress?.street}
+          required
+          {...register("shippingAddress.street")}
+        />
+      </FormField>
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-5">
+        <FormField
+          label="Kod pocztowy"
+          htmlFor="postcode"
+          error={errors.shippingAddress?.postcode?.message}
+          required
+        >
+          <Input
+            key={country}
+            id="postcode"
+            inputMode="numeric"
+            error={!!errors.shippingAddress?.postcode}
             required
-            error={errors.shippingAddress?.city?.message}
-          >
-            <Input
-              id="city"
-              type="text"
-              error={!!errors.shippingAddress?.city}
-              required
-              {...register("shippingAddress.city")}
-            />
-          </FormField>
-        </div>
+            {...(isPL
+              ? registerWithMask("shippingAddress.postcode", ["99-999"], { required: true })
+              : register("shippingAddress.postcode", { required: true }))}
+          />
+        </FormField>
+        <FormField
+          label="Miasto"
+          className="sm:col-span-2"
+          htmlFor="city"
+          required
+          error={errors.shippingAddress?.city?.message}
+        >
+          <Input
+            id="city"
+            type="text"
+            error={!!errors.shippingAddress?.city}
+            required
+            {...register("shippingAddress.city")}
+          />
+        </FormField>
       </div>
     </div>
   );

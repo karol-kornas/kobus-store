@@ -1,4 +1,5 @@
 import { useCartStore } from "@/stores/CartStoreProvider";
+import { CartItem } from "@/types/cart/cartItem";
 
 const EMPTY_ARRAY: [] = [];
 
@@ -68,6 +69,7 @@ export function useCartTotals() {
 export function useCartSummary() {
   const totals = useCartStore((s) => s.cart?.totals);
   const fees = useCartStore((s) => s.cart?.fees);
+  const lineItems = useCartStore((s) => s.cart?.items);
   const productsGross = (totals?.total_items || 0) + (totals?.total_items_tax || 0);
   const shippingGross = (totals?.total_shipping || 0) + (totals?.total_shipping_tax || 0);
   const feesGross = fees?.map((fee) => {
@@ -77,6 +79,9 @@ export function useCartSummary() {
       feeGross: (fee.totals.total || 0) + (fee.totals.total_tax || 0),
     };
   });
+
+  console.log(lineItems);
+  const savings = calculateSavings(lineItems);
   const totalGross = totals?.total_price || 0;
   const currency = totals?.currency_code;
 
@@ -84,6 +89,7 @@ export function useCartSummary() {
     productsGross,
     shippingGross,
     feesGross,
+    savings,
     totalGross,
     currency,
   };
@@ -107,4 +113,19 @@ export function useCartShippingAddress() {
 
 export function useCartBillingAddress() {
   return useCartStore((s) => s.cart?.billing_address);
+}
+
+function calculateSavings(lineItems?: CartItem[]) {
+  if (!lineItems) return 0;
+
+  return lineItems.reduce((sum, item) => {
+    const regular = Number(item.regular_price ?? 0);
+    const sale = Number(item.price ?? 0);
+
+    if (regular > sale) {
+      return sum + (regular - sale) * item.quantity;
+    }
+
+    return sum;
+  }, 0);
 }

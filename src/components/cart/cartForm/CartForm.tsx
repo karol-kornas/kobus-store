@@ -15,7 +15,7 @@ import {
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { ResponsiveModal } from "@/components/ui/responsiveModal/ResponsiveModal";
 import { LoginForm } from "@/app/(shop)/login/LoginForm";
-import { ShippingMethods } from "../shippingMethods/ShippingMethods";
+import { ShippingMethods } from "../../checkout/shippingMethods/ShippingMethods";
 
 import { CheckoutEmail } from "@/components/checkout/checkoutEmail/CheckoutEmail";
 import { CheckoutShippingAddress } from "@/components/checkout/checkoutShippingAddress/CheckoutShippingAddress";
@@ -43,9 +43,6 @@ export function CartForm({ setCartFormKey }: Props) {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
 
   const selectedRate = shippingRates?.find((r) => r.selected)?.rate_id;
-
-  const options = optionsCheckout();
-  console.log(options);
 
   const form = useForm<CheckoutFormValues>({
     resolver: zodResolver(checkoutSchema),

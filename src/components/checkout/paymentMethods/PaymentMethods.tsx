@@ -19,7 +19,7 @@ export function PaymentMethods() {
   }
 
   return (
-    <div className="flex flex-col gap-3 mt-5">
+    <div className="flex flex-col rounded-md border border-neutral-200 mt-5">
       {paymentMethods.map((id) => {
         const method = normalizePaymentMethod(id);
 
@@ -27,8 +27,8 @@ export function PaymentMethods() {
           <label
             key={id}
             className={clsx(
-              "flex items-center gap-4 border-2 p-4 cursor-pointer transition",
-              selected === id ? "border-neutral-800" : "border-neutral-200 hover:border-neutral-400",
+              "flex rounded-md items-center gap-4 p-4 cursor-pointer transition",
+              selected === id ? "border border-neutral-800" : "hover:bg-neutral-50",
             )}
           >
             <input

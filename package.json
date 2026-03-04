@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
+    "@react-input/mask": "^2.0.4",
     "@tanstack/react-query": "^5.90.15",
     "axios": "^1.13.2",
     "class-variance-authority": "^0.7.1",
@@ -27,6 +28,7 @@
     "react-leaflet": "^5.0.0",
     "react-leaflet-cluster": "^4.0.0",
     "swiper": "^12.0.3",
+    "use-mask-input": "^3.7.4",
     "usehooks-ts": "^3.1.1",
     "zod": "^4.3.4",
     "zustand": "^5.0.10"

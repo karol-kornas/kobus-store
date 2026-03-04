@@ -39,7 +39,7 @@ export function ShippingMethods() {
   }
 
   return (
-    <div className="flex flex-col gap-3 mt-5">
+    <div className="flex flex-col rounded-md border border-neutral-200 mt-5">
       {rates.map((rate) => {
         const priceBrutto = (rate.price || 0) + (rate.taxes || 0);
         const provider = getShippingProvider(rate.rate_id);
@@ -48,10 +48,8 @@ export function ShippingMethods() {
           <label
             key={rate.rate_id}
             className={clsx(
-              "flex items-center justify-between border-2 b gap-4 p-4 cursor-pointer transition",
-              selectedRate === rate.rate_id
-                ? "border-neutral-800"
-                : "border-neutral-200 hover:border-neutral-400",
+              "flex items-center rounded-md justify-between gap-4 p-4 cursor-pointer transition",
+              selectedRate === rate.rate_id ? "border border-neutral-800" : "hover:bg-neutral-50",
             )}
           >
             <div className="flex items-center gap-3 w-full">
@@ -86,7 +84,7 @@ export function ShippingMethods() {
                 {selectedRate === rate.rate_id && <Check strokeWidth={3} size={14} />}
               </div>
               <div className="text-sm">
-                <span className="font-medium">{rate.name}</span> -{" "}
+                <span className="font-medium sm:text-base">{rate.name}</span> -{" "}
                 <span className="text-sm font-semibold">{formatPrice(priceBrutto)}</span>
                 <div className="text-xs">1-2 dni robocze</div>
                 {rate.rate_id === PARCEL_LOCKER_RATE_ID && (
@@ -137,7 +135,6 @@ export function ShippingMethods() {
         onClose={() => setIsModalOpen(false)}
         token={process.env.NEXT_PUBLIC_GEOWIDGET_API!}
         onSelectPoint={async (point) => {
-          console.log(point);
           setSelectedParcelLocker(point);
           setValue("paczkomat_id", point.name, {
             shouldDirty: true,

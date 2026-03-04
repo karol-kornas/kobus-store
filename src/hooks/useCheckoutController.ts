@@ -1,4 +1,4 @@
-import { PAYMENT_METHODS_BY_SHIPPING } from "@/components/cart/shippingMethods/payment-per-shipping";
+import { PAYMENT_METHODS_BY_SHIPPING } from "@/components/checkout/shippingMethods/payment-per-shipping";
 import { useCart } from "@/features/cart/hooks/cart.hooks";
 import { CheckoutFormValues } from "@/features/cart/schemas/checkout.schema";
 import { Cart } from "@/types/cart/cart";

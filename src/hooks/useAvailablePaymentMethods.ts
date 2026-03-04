@@ -1,6 +1,6 @@
 import { useCart } from "@/features/cart/hooks/cart.hooks";
 import { useFormContext } from "react-hook-form";
-import { PAYMENT_METHODS_BY_SHIPPING } from "@/components/cart/shippingMethods/payment-per-shipping";
+import { PAYMENT_METHODS_BY_SHIPPING } from "@/components/checkout/shippingMethods/payment-per-shipping";
 
 export function useAvailablePaymentMethods() {
   const { watch } = useFormContext();
@@ -10,18 +10,26 @@ export function useAvailablePaymentMethods() {
 
   if (!cart) return [];
 
-  const backendMethods = cart.payment_methods ?? [];
+  let backendMethods = cart.payment_methods ?? [];
 
   if (!cart.needs_shipping) {
-    return backendMethods;
+    backendMethods = [...backendMethods];
+  } else if (!shippingMethod) {
+    backendMethods = [];
+  } else {
+    const allowedForShipping = PAYMENT_METHODS_BY_SHIPPING[shippingMethod];
+    if (!allowedForShipping) {
+      backendMethods = [...backendMethods];
+    } else {
+      backendMethods = backendMethods.filter((method) => allowedForShipping.includes(method));
+    }
   }
-  if (!shippingMethod) return [];
 
-  const allowedForShipping = PAYMENT_METHODS_BY_SHIPPING[shippingMethod];
-
-  if (!allowedForShipping) {
-    return backendMethods;
+  const blikIndex = backendMethods.indexOf("przelewy24_extra_154");
+  if (blikIndex > 0) {
+    const blik = backendMethods.splice(blikIndex, 1)[0];
+    backendMethods.unshift(blik);
   }
 
-  return backendMethods.filter((method) => allowedForShipping.includes(method));
+  return backendMethods;
 }

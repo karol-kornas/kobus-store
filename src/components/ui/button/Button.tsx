@@ -19,6 +19,7 @@ const buttonVariants = cva(
         white: "bg-white border border-white text-[#262626] hover:bg-transparent hover:text-white",
         special:
           "bg-[#fa5453] border border-[#fa5453] text-white hover:bg-white hover:text-[#fa5453] focus:ring-neutral-500",
+        green: "bg-[#87c500] text-white",
       },
       size: {
         xs: "h-6 px-3 text-xs",
@@ -31,12 +32,11 @@ const buttonVariants = cva(
       variant: "primary",
       size: "md",
     },
-  }
+  },
 );
 
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {
   isLoading?: boolean;
 }
 
@@ -54,7 +54,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           <span
             className={clsx(
               "absolute inset-0 opacity-0 transition-opacity flex items-center justify-center pointer-events-none",
-              isLoading && "opacity-100"
+              isLoading && "opacity-100",
             )}
           >
             <Spinner />
@@ -69,7 +69,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         )}
       </button>
     );
-  }
+  },
 );
 
 Button.displayName = "Button";
