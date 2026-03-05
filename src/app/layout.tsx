@@ -48,7 +48,7 @@ export default async function RootLayout({
     <html lang="pl">
       <body className={`${mulish.variable} ${playfairDisplay.variable} antialiased font-sans`}>
         <QueryProvider>
-          <CartStoreProvider initialCart={mapCart(cart)}>
+          <CartStoreProvider initialCart={cart ? mapCart(cart) : null}>
             <AuthProvider initialUser={user}>
               {children}
               <AddToCartDrawer />

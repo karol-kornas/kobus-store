@@ -10,7 +10,7 @@ export async function wooFetchWithNonce<T>(
     _retry?: boolean;
   },
 ): Promise<{
-  data: T;
+  data: T | null;
   headers: Headers;
 }> {
   const { headers: cartHeaders } = await wooStoreFetch("/cart", {
@@ -25,7 +25,7 @@ export async function wooFetchWithNonce<T>(
   }
 
   try {
-    return await wooStoreFetch(path, {
+    return await wooStoreFetch<T>(path, {
       ...options,
       headers: {
         ...(options.headers ?? {}),
@@ -34,7 +34,7 @@ export async function wooFetchWithNonce<T>(
     });
   } catch (err: unknown) {
     if (err instanceof Error && err.message.includes("woocommerce_rest_invalid_nonce") && !options._retry) {
-      return wooFetchWithNonce(path, {
+      return wooFetchWithNonce<T>(path, {
         ...options,
         _retry: true,
       });

@@ -3,7 +3,6 @@ import { Cart } from "@/types/cart/cart";
 import { Product } from "@/types/product";
 import { normalizeCartPrice } from "@/utils/normalizeCartPrice";
 import { decode } from "html-entities";
-import { CheckoutFormValues } from "./schemas/checkout.schema";
 import {
   ApiCartShippingPackage,
   ApiCartShippingRate,
@@ -34,7 +33,7 @@ export function mapCart(apiCart: ApiCart): Cart {
     shipping_address: mapShippingAddressToForm(apiCart.shipping_address),
     billing_address: mapBillingAddressToForm(apiCart.billing_address),
     fees: apiCart.fees.map(mapCartFee),
-    coupons: apiCart.coupons.map(mapCartCoupon)
+    coupons: apiCart.coupons.map(mapCartCoupon),
   };
 }
 
@@ -206,6 +205,6 @@ export function mapCartCoupon(apiCoupon: ApiCartCoupon): CartCoupon {
       ...apiCoupon.totals,
       total_discount: normalizeCartPrice(apiCoupon.totals.total_discount),
       total_discount_tax: normalizeCartPrice(apiCoupon.totals.total_discount_tax),
-    }
+    },
   };
 }

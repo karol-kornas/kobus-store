@@ -22,6 +22,10 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify({ id, quantity }),
     });
 
+    if (!cart) {
+      return NextResponse.json({ error: "Cart not found" }, { status: 400 });
+    }
+
     let crossSells = cart.cross_sells ?? [];
 
     if (crossSells.length === 0) {

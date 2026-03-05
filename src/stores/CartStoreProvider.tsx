@@ -13,7 +13,7 @@ export function CartStoreProvider({
   initialCart,
   children,
 }: {
-  initialCart: Cart;
+  initialCart: Cart | null;
   children: React.ReactNode;
 }) {
   const [store] = useState(() => createCartStore(initialCart));

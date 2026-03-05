@@ -17,5 +17,9 @@ export async function getCheckoutServer(): Promise<Checkout> {
     cookies: cookieHeader,
   });
 
+  if (!data) {
+    throw new Error("Checkout is null");
+  }
+
   return data;
 }
