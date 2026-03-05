@@ -5,6 +5,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { Checkbox } from "@/components/ui/checkbox/Checkbox";
 import { useAuth } from "@/context/AuthContext";
 import {
+  useCart,
   useCartBillingAddress,
   useCartShippingAddress,
   useCartShippingRates,
@@ -43,7 +44,7 @@ export function CheckoutForm({ setCartFormKey }: Props) {
 
   const { phonePrefix, phone } = splitPhoneNumber(billingAddress?.phone);
 
-  console.log(phonePrefix);
+  const { needsShipping, needsPayment } = useCart();
 
   const form = useForm<CheckoutFormValues>({
     resolver: zodResolver(checkoutSchema),
@@ -143,13 +144,17 @@ export function CheckoutForm({ setCartFormKey }: Props) {
                 <CheckoutShippingAddress />
               </CheckoutStep>
 
-              <CheckoutStep title="Dostawa">
-                <ShippingMethods />
-              </CheckoutStep>
+              {needsShipping && (
+                <CheckoutStep title="Dostawa">
+                  <ShippingMethods />
+                </CheckoutStep>
+              )}
 
-              <CheckoutStep title="Płatność">
-                <PaymentMethods />
-              </CheckoutStep>
+              {needsPayment && (
+                <CheckoutStep title="Płatność">
+                  <PaymentMethods />
+                </CheckoutStep>
+              )}
 
               <CheckoutStep title="Zgody i oświadczenia">
                 <div className="mt-4">

@@ -1,5 +1,6 @@
 import { apiClient } from "@/lib/apiClient";
 import { ApiCart } from "@/types/cart/apiCart";
+import { ApiCartCoupon } from "@/types/cart/apiCartCoupon";
 import { CartMergeItem } from "@/types/cart/cartMergeItem";
 import { CartShippingAddress } from "@/types/cart/cartShippingAddress";
 
@@ -62,5 +63,20 @@ export type UpdateCustomerPayload = {
 
 export async function updateCustomer(data: UpdateCustomerPayload): Promise<ApiCart> {
   const res = await apiClient.post("/api/cart/update-customer", data);
+  return res.data;
+}
+
+export async function getCartCoupons(): Promise<ApiCartCoupon> {
+  const res = await apiClient.get<ApiCartCoupon>("/api/cart/coupons");
+  return res.data;
+}
+
+export async function addCartCoupon(code: string): Promise<ApiCartCoupon> {
+  const res = await apiClient.post<ApiCartCoupon>("/api/cart/coupons", { code });
+  return res.data;
+}
+
+export async function deleteCartCoupon(code: string): Promise<ApiCartCoupon> {
+  const res = await apiClient.delete<ApiCartCoupon>(`/api/cart/coupons/${code}`);
   return res.data;
 }

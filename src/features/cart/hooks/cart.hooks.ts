@@ -12,6 +12,9 @@ export function useCart() {
   const isDrawerOpen = useCartStore((s) => s.isDrawerOpen);
   const drawerItemKey = useCartStore((s) => s.drawerItemKey);
   const updatingItems = useCartStore((s) => s.updatingItems);
+  const coupons = useCartStore((s) => s.cart?.coupons ?? []);
+  const needsShipping = useCartStore((s) => s.cart?.needs_shipping);
+  const needsPayment = useCartStore((s) => s.cart?.needs_payment);
 
   const fetchCart = useCartStore((s) => s.fetchCart);
   const addItem = useCartStore((s) => s.addItem);
@@ -22,6 +25,8 @@ export function useCart() {
   const selectShippingRate = useCartStore((s) => s.selectShippingRate);
   const updateCustomer = useCartStore((s) => s.updateCustomer);
   const updatePaymentMethod = useCartStore((s) => s.updatePaymentMethod);
+  const addCoupon = useCartStore((s) => s.addCoupon);
+  const deleteCoupon = useCartStore((s) => s.deleteCoupon);
 
   return {
     cart,
@@ -32,6 +37,9 @@ export function useCart() {
     isDrawerOpen,
     drawerItemKey,
     updatingItems,
+    coupons,
+    needsShipping,
+    needsPayment,
     fetchCart,
     addItem,
     removeItem,
@@ -41,6 +49,8 @@ export function useCart() {
     selectShippingRate,
     updateCustomer,
     updatePaymentMethod,
+    addCoupon,
+    deleteCoupon,
   };
 }
 
@@ -70,7 +80,11 @@ export function useCartSummary() {
   const totals = useCartStore((s) => s.cart?.totals);
   const fees = useCartStore((s) => s.cart?.fees);
   const lineItems = useCartStore((s) => s.cart?.items);
+  const coupons = useCartStore((s) => s.cart?.coupons ?? []);
+
   const productsGross = (totals?.total_items || 0) + (totals?.total_items_tax || 0);
+  const regularProductsGross =
+    lineItems?.reduce((sum, item) => sum + Number(item.regular_price ?? item.price) * item.quantity, 0) ?? 0;
   const shippingGross = (totals?.total_shipping || 0) + (totals?.total_shipping_tax || 0);
   const feesGross = fees?.map((fee) => {
     return {
@@ -80,16 +94,28 @@ export function useCartSummary() {
     };
   });
 
-  console.log(lineItems);
-  const savings = calculateSavings(lineItems);
+  // oszczędności z promocji produktów
+  const productSavings = calculateSavings(lineItems);
+
+  // oszczędności z kuponów
+  const couponSavings = coupons.reduce((sum, coupon) => {
+    return sum + (coupon.totals?.total_discount || 0) + (coupon.totals?.total_discount_tax || 0);
+  }, 0);
+
+  // całkowite oszczędności = promocje + kupony
+  const totalSavings = productSavings + couponSavings;
+
   const totalGross = totals?.total_price || 0;
   const currency = totals?.currency_code;
 
   return {
     productsGross,
+    regularProductsGross,
     shippingGross,
     feesGross,
-    savings,
+    savings: totalSavings, // <-- teraz obejmuje promocje + kupony
+    productSavings, // opcjonalnie możesz też oddzielnie podawać
+    couponSavings, // np. do tooltipów
     totalGross,
     currency,
   };

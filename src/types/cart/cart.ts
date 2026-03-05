@@ -1,4 +1,5 @@
 import { CartBillingAddress } from "./cartBillingAddress";
+import { CartCoupon } from "./cartCoupon";
 import { CartFees } from "./cartFees";
 import { CartItem } from "./cartItem";
 import { CartShippingAddress } from "./cartShippingAddress";
@@ -18,4 +19,5 @@ export interface Cart {
   fees: CartFees[];
   needs_shipping: boolean;
   needs_payment: boolean;
+  coupons: CartCoupon[];
 }

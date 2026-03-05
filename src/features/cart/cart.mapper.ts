@@ -13,6 +13,8 @@ import {
 import { ApiCartShippingAddress, CartShippingAddress } from "@/types/cart/cartShippingAddress";
 import { ApiCartBillingAddress, CartBillingAddress } from "@/types/cart/cartBillingAddress";
 import { ApiCartFees, CartFees } from "@/types/cart/cartFees";
+import { ApiCartCoupon } from "@/types/cart/apiCartCoupon";
+import { CartCoupon } from "@/types/cart/cartCoupon";
 
 export function mapCart(apiCart: ApiCart): Cart {
   return {
@@ -32,6 +34,7 @@ export function mapCart(apiCart: ApiCart): Cart {
     shipping_address: mapShippingAddressToForm(apiCart.shipping_address),
     billing_address: mapBillingAddressToForm(apiCart.billing_address),
     fees: apiCart.fees.map(mapCartFee),
+    coupons: apiCart.coupons.map(mapCartCoupon)
   };
 }
 
@@ -193,5 +196,16 @@ export function mapCartFee(apiFee: ApiCartFees): CartFees {
       total: normalizeCartPrice(apiFee.totals.total),
       total_tax: normalizeCartPrice(apiFee.totals.total_tax),
     },
+  };
+}
+
+export function mapCartCoupon(apiCoupon: ApiCartCoupon): CartCoupon {
+  return {
+    ...apiCoupon,
+    totals: {
+      ...apiCoupon.totals,
+      total_discount: normalizeCartPrice(apiCoupon.totals.total_discount),
+      total_discount_tax: normalizeCartPrice(apiCoupon.totals.total_discount_tax),
+    }
   };
 }

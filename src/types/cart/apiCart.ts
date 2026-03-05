@@ -1,3 +1,4 @@
+import { ApiCartCoupon } from "./apiCartCoupon";
 import { ApiCartBillingAddress } from "./cartBillingAddress";
 import { ApiCartFees } from "./cartFees";
 import { ApiCartShippingAddress } from "./cartShippingAddress";
@@ -25,6 +26,7 @@ export type ApiCart = {
   fees: ApiCartFees[];
   needs_shipping: boolean;
   needs_payment: boolean;
+  coupons: ApiCartCoupon[];
 };
 
 export type ApiCartItem = {

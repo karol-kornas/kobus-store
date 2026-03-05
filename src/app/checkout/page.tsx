@@ -5,7 +5,6 @@ import { getCountriesStatesServer } from "@/features/countriesStates/countriesSt
 
 export default async function CheckoutPage() {
   const [checkout, countriesStates] = await Promise.all([getCheckoutServer(), getCountriesStatesServer()]);
-
   return (
     <CheckoutProvider initialCheckout={checkout} countriesStates={countriesStates}>
       <CheckoutFormWrap />

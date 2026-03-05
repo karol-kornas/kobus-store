@@ -6,6 +6,8 @@ import {
   updateCartItem,
   updateCustomer,
   UpdateCustomerPayload,
+  deleteCartCoupon,
+  addCartCoupon,
 } from "@/features/cart/cart.client";
 import { Cart } from "@/types/cart/cart";
 import { mapCart } from "@/features/cart/cart.mapper";
@@ -35,10 +37,12 @@ export type CartState = {
   updateCustomer: (payload: UpdateCustomerPayload) => Promise<Cart | undefined>;
   updatePaymentMethod: (payment_method: string) => Promise<Cart | undefined>;
   setSelectedPaymentMethod: (method: string) => void;
+  addCoupon: (code: string) => Promise<void>;
+  deleteCoupon: (code: string) => Promise<void>;
 };
 
 export const createCartStore = (initialCart: Cart | null) =>
-  createStore<CartState>((set) => ({
+  createStore<CartState>((set, get) => ({
     cart: initialCart,
     isMutating: false,
     isSyncing: false,
@@ -171,6 +175,33 @@ export const createCartStore = (initialCart: Cart | null) =>
         }
       } catch {
         set({ error: "Failed to update payment method" });
+      } finally {
+        set({ isMutating: false });
+      }
+    },
+    addCoupon: async (code: string) => {
+      set({ isMutating: true, error: null });
+      try {
+        await addCartCoupon(code);
+        await get().fetchCart();
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "Invalid or expired coupon";
+        set({ error: message });
+        throw new Error(message);
+      } finally {
+        set({ isMutating: false });
+      }
+    },
+
+    deleteCoupon: async (code: string) => {
+      set({ isMutating: true, error: null });
+      try {
+        await deleteCartCoupon(code);
+        await get().fetchCart();
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "Failed to delete coupon";
+        set({ error: message });
+        throw new Error(message);
       } finally {
         set({ isMutating: false });
       }
