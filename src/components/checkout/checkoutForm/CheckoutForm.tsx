@@ -24,6 +24,7 @@ import { useCheckoutContext } from "@/context/CheckoutProvider";
 import { splitPhoneNumber } from "@/utils/phone";
 import CartView from "@/components/cart/cartView/CartView";
 import { CheckoutStep } from "../checkoutStep/CheckoutStep";
+import { CheckoutLayout } from "@/components/layouts/checkoutLayout/CheckoutLayout";
 
 type Props = {
   setCartFormKey: Dispatch<SetStateAction<number>>;
@@ -135,47 +136,52 @@ export function CheckoutForm({ setCartFormKey }: Props) {
   return (
     <>
       <FormProvider {...form}>
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-          <div className="container max-sm:px-0 max-w-5xl grid lg:grid-cols-[540fr_325fr] gap-8">
-            <div className="flex flex-col gap-6">
-              <CheckoutStep title={user ? "Jesteś zalogowany jako" : "Podaj adres e-mail"}>
-                <CheckoutEmail setIsLoginOpen={setIsLoginOpen} />
-              </CheckoutStep>
-
-              <CheckoutStep title="Adres dostawy">
-                <CheckoutShippingAddress />
-              </CheckoutStep>
-
-              {needsShipping && (
-                <CheckoutStep title="Dostawa">
-                  <ShippingMethods />
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <CheckoutLayout
+            content={
+              <>
+                <CheckoutStep title={user ? "Jesteś zalogowany jako" : "Podaj adres e-mail"}>
+                  <CheckoutEmail setIsLoginOpen={setIsLoginOpen} />
                 </CheckoutStep>
-              )}
 
-              {needsPayment && (
-                <CheckoutStep title="Płatność">
-                  <PaymentMethods />
+                <CheckoutStep title="Dane odbiorcy">
+                  <CheckoutShippingAddress />
                 </CheckoutStep>
-              )}
 
-              <CheckoutStep title="Zgody i oświadczenia">
-                <div className="mt-4">
-                  <Checkbox
-                    id="accept_regulations"
-                    label="Oświadczam, że akceptuję regulamin sklepu i potwierdzam zapoznanie się z Polityką prywatności."
-                    required
-                    {...register("accept_regulations")}
-                  />
-                </div>
-              </CheckoutStep>
-            </div>
-            <div>
-              <CartView />
-            </div>
-          </div>
+                {needsShipping && (
+                  <CheckoutStep title="Dostawa">
+                    <ShippingMethods />
+                  </CheckoutStep>
+                )}
+
+                {needsPayment && (
+                  <CheckoutStep title="Płatność">
+                    <PaymentMethods />
+                  </CheckoutStep>
+                )}
+
+                <CheckoutStep title="Zgody i oświadczenia">
+                  <div className="mt-4">
+                    <Checkbox
+                      id="accept_regulations"
+                      label="Oświadczam, że akceptuję regulamin sklepu i potwierdzam zapoznanie się z Polityką prywatności."
+                      required
+                      {...register("accept_regulations")}
+                    />
+                  </div>
+                </CheckoutStep>
+              </>
+            }
+            side={<CartView />}
+          />
         </form>
       </FormProvider>
-      <ResponsiveModal open={isLoginOpen} onClose={() => setIsLoginOpen(false)} title="Logowanie">
+      <ResponsiveModal
+        open={isLoginOpen}
+        onClose={() => setIsLoginOpen(false)}
+        title="Logowanie"
+        className="md:w-xl"
+      >
         <LoginForm
           onSuccess={() => {
             setIsLoginOpen(false);

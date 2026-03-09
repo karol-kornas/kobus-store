@@ -95,7 +95,7 @@ export function CheckoutShippingAddress() {
           <Input
             id="phone"
             key={phonePrefix}
-            type="text"
+            type="tel"
             error={!!errors.shippingAddress?.phone}
             required
             {...(isPLPhone

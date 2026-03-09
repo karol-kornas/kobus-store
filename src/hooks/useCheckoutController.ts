@@ -32,28 +32,29 @@ export function useCheckoutController() {
   };
 
   function syncCheckoutWithCart(cart: Cart) {
-    const rates = cart.shipping_rates?.[0]?.shipping_rates ?? [];
-    const selectedRate = rates.find((r) => r.selected) ?? rates[0];
+    const selectedRate =
+      cart.shipping_rates?.[0]?.shipping_rates?.find((r) => r.selected) ??
+      cart.shipping_rates?.[0]?.shipping_rates?.[0];
 
     if (!selectedRate) return;
 
     form.setValue("shippingRateId", selectedRate.rate_id);
 
     const backendPayments = cart.payment_methods ?? [];
+
     const allowed = PAYMENT_METHODS_BY_SHIPPING[selectedRate.rate_id] ?? backendPayments;
 
     const available = backendPayments.filter((m) => allowed.includes(m));
 
     if (!available.length) return;
 
-    const currentPayment = selectedPaymentMethod ?? form.getValues("paymentMethod");
+    const currentPayment = selectedPaymentMethod ?? form.watch("paymentMethod");
 
-    if (!currentPayment || !available.includes(currentPayment)) {
-      const firstAvailable = available[0];
-      if (!firstAvailable) return;
+    const nextPayment = available.includes(currentPayment!) ? currentPayment : available[0];
 
-      form.setValue("paymentMethod", firstAvailable);
-      updatePaymentMethod(firstAvailable);
+    if (nextPayment && nextPayment !== currentPayment) {
+      form.setValue("paymentMethod", nextPayment);
+      updatePaymentMethod(nextPayment);
     }
   }
 

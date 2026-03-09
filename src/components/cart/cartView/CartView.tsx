@@ -130,7 +130,7 @@ export default function CartView() {
       <div className="text-center lg:text-right px-6 mt-4 text-sm leading-tight lg:ml-auto lg:max-w-67.5">
         Nie zwlekaj, produkty w koszyku nie są rezerwowane.
       </div>
-      <div className="text-center lg:text-right px-6 mt-4 text-sm leading-tight lg:ml-auto lg:max-w-67.5">
+      <div className="hidden lg:block text-center lg:text-right px-6 mt-4 text-sm leading-tight lg:ml-auto lg:max-w-67.5">
         Problem z zamówieniem? <br />
         Napisz mail <a href="mailto:sklep@pankobus.pl">sklep@pankobus.pl</a> <br />
         lub zadzwoń
