@@ -27,70 +27,85 @@ const POSTCODE_RULES: Record<string, RegExp> = {
   GB: /^[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}$/i,
 };
 
-export const checkoutSchema = z
-  .object({
-    email: z.email("Wpisz poprawny adres e-mail").transform((v) => v.toLowerCase()),
+export function createCheckoutSchema(needsShipping: boolean, needsPayment: boolean) {
+  return z
+    .object({
+      email: z.email("Wpisz poprawny adres e-mail").transform((v) => v.toLowerCase()),
 
-    shippingAddress: z
-      .object({
-        firstName: z.string().min(1, "Pole jest wymagane"),
-        lastName: z.string().min(1, "Pole jest wymagane"),
-        phonePrefix: z.string().optional(),
-        phone: z
-          .string()
-          .min(1, "Pole jest wymagane")
-          .transform((v) => v.replace(/\s+/g, ""))
-          .refine((v) => /^\d+$/.test(v), "Nieprawidłowy numer"),
-        country: baseAddressSchema.country,
-        state: z.string().optional(),
-        postcode: baseAddressSchema.postcode,
-        street: z
-          .string()
-          .min(1, "Pole jest wymagane")
-          .regex(/^(?=.*[A-Za-zĄąĆćĘęŁłŃńÓóŚśŻżŹź])(?=.*\d).+$/, "Brakuje ulicy lub numeru domu/mieszkania"),
+      shippingAddress: z
+        .object({
+          firstName: z.string().min(1, "Pole jest wymagane"),
+          lastName: z.string().min(1, "Pole jest wymagane"),
+          phonePrefix: z.string().optional(),
+          phone: z
+            .string()
+            .min(1, "Pole jest wymagane")
+            .transform((v) => v.replace(/\s+/g, ""))
+            .refine((v) => /^\d+$/.test(v), "Nieprawidłowy numer"),
 
-        city: z.string().min(1, "Pole jest wymagane"),
-      })
-      .superRefine((data, ctx) => {
-        const postcodeRule = POSTCODE_RULES[data.country];
+          country: baseAddressSchema.country,
+          state: z.string().optional(),
+          postcode: baseAddressSchema.postcode,
 
-        if (postcodeRule && !postcodeRule.test(data.postcode)) {
-          ctx.addIssue({
-            path: ["postcode"],
-            message: ERRORS.INVALID_POSTCODE,
-            code: "custom",
-          });
-        }
+          street: z
+            .string()
+            .min(1, "Pole jest wymagane")
+            .regex(
+              /^(?=.*[A-Za-zĄąĆćĘęŁłŃńÓóŚśŻżŹź])(?=.*\d).+$/,
+              "Brakuje ulicy lub numeru domu/mieszkania",
+            ),
 
-        if (data.phonePrefix === "+48") {
-          if (data.phone.length !== 9) {
+          city: z.string().min(1, "Pole jest wymagane"),
+        })
+        .superRefine((data, ctx) => {
+          const postcodeRule = POSTCODE_RULES[data.country];
+
+          if (postcodeRule && !postcodeRule.test(data.postcode)) {
             ctx.addIssue({
-              path: ["phone"],
-              message: ERRORS.INVALID_PHONE,
+              path: ["postcode"],
+              message: ERRORS.INVALID_POSTCODE,
               code: "custom",
             });
           }
-        } else {
-          if (data.phone.length < 9 || data.phone.length > 11) {
-            ctx.addIssue({
-              path: ["phone"],
-              message: ERRORS.INVALID_PHONE,
-              code: "custom",
-            });
+
+          if (data.phonePrefix === "+48") {
+            if (data.phone.length !== 9) {
+              ctx.addIssue({
+                path: ["phone"],
+                message: ERRORS.INVALID_PHONE,
+                code: "custom",
+              });
+            }
+          } else {
+            if (data.phone.length < 9 || data.phone.length > 11) {
+              ctx.addIssue({
+                path: ["phone"],
+                message: ERRORS.INVALID_PHONE,
+                code: "custom",
+              });
+            }
           }
-        }
-      })
-      .optional(),
+        }),
 
-    shippingRateId: z.string().min(1),
+      shippingRateId: needsShipping ? z.string().min(1) : z.string().optional(),
 
-    paczkomat_id: z.string().optional(),
-    paymentMethod: z.string().min(1),
-    accept_regulations: z.literal(true),
-  })
-  .refine((data) => data.shippingRateId !== PARCEL_LOCKER_RATE_ID || !!data.paczkomat_id, {
-    message: "Wybierz paczkomat",
-    path: ["paczkomat_id"],
-  });
+      paczkomat_id: z.string().optional(),
 
-export type CheckoutFormValues = z.infer<typeof checkoutSchema>;
+      paymentMethod: needsPayment ? z.string().min(1) : z.string().optional(),
+
+      accept_regulations: z.literal(true),
+    })
+    .refine(
+      (data) => {
+        if (!needsShipping) return true;
+
+        return data.shippingRateId !== PARCEL_LOCKER_RATE_ID || !!data.paczkomat_id;
+      },
+      {
+        message: "Wybierz paczkomat",
+        path: ["paczkomat_id"],
+      },
+    );
+}
+
+export type CheckoutFormValues = z.infer<ReturnType<typeof createCheckoutSchema>>;

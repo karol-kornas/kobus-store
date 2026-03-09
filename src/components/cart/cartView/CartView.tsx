@@ -27,8 +27,8 @@ export default function CartView() {
   if (!items.length) return <p>Koszyk pusty</p>;
 
   return (
-    <div>
-      <div className="">
+    <div className="lg:sticky lg:top-10">
+      <div className="bg-white rounded-lg shadow-[0_10px_15px_-3px_rgba(0,0,0,0.025),0_4px_6px_-4px_rgba(0,0,0,0.025)]">
         <div
           className="flex items-center justify-between cursor-pointer px-6 pt-4 pb-4 "
           onClick={() => setProductsOpen(!productsOpen)}
@@ -126,6 +126,17 @@ export default function CartView() {
             Zamawiam i płacę
           </Button>
         </div>
+      </div>
+      <div className="text-center lg:text-right px-6 mt-4 text-sm leading-tight lg:ml-auto lg:max-w-67.5">
+        Nie zwlekaj, produkty w koszyku nie są rezerwowane.
+      </div>
+      <div className="text-center lg:text-right px-6 mt-4 text-sm leading-tight lg:ml-auto lg:max-w-67.5">
+        Problem z zamówieniem? <br />
+        Napisz mail <a href="mailto:sklep@pankobus.pl">sklep@pankobus.pl</a> <br />
+        lub zadzwoń
+        <a href="tel:+48515734632">
+          +48 <strong>515 734 632</strong>
+        </a>
       </div>
     </div>
   );

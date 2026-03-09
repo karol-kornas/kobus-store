@@ -46,9 +46,14 @@ export function useCheckoutController() {
 
     if (!available.length) return;
 
-    if (!available.includes(selectedPaymentMethod || form.getValues("paymentMethod"))) {
-      form.setValue("paymentMethod", available[0]);
-      updatePaymentMethod(available[0]);
+    const currentPayment = selectedPaymentMethod ?? form.getValues("paymentMethod");
+
+    if (!currentPayment || !available.includes(currentPayment)) {
+      const firstAvailable = available[0];
+      if (!firstAvailable) return;
+
+      form.setValue("paymentMethod", firstAvailable);
+      updatePaymentMethod(firstAvailable);
     }
   }
 

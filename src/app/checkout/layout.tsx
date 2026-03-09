@@ -1,3 +1,4 @@
+import { CartFooter } from "@/components/cart/cartFooter/CartFooter";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 
@@ -39,6 +40,7 @@ export default async function ShopLayout({
         <main id="main-content" className="bg-cream">
           {children}
         </main>
+        <CartFooter />
       </div>
     </>
   );

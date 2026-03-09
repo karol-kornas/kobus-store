@@ -32,8 +32,6 @@ export function CheckoutShippingAddress() {
   const isPL = country === "PL";
   const isPLPhone = phonePrefix === "+48";
 
-  console.log(isPLPhone);
-
   return (
     <div className="mt-6 flex flex-col gap-5">
       <div className="grid grid-cols-2 gap-3 sm:gap-5">

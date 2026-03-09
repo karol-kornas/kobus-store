@@ -1,6 +1,6 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CheckoutFormValues, checkoutSchema } from "@/features/cart/schemas/checkout.schema";
+import { CheckoutFormValues, createCheckoutSchema } from "@/features/cart/schemas/checkout.schema";
 import { FormProvider, useForm } from "react-hook-form";
 import { Checkbox } from "@/components/ui/checkbox/Checkbox";
 import { useAuth } from "@/context/AuthContext";
@@ -46,8 +46,10 @@ export function CheckoutForm({ setCartFormKey }: Props) {
 
   const { needsShipping, needsPayment } = useCart();
 
+  const schema = createCheckoutSchema(needsShipping!, needsPayment!);
+
   const form = useForm<CheckoutFormValues>({
-    resolver: zodResolver(checkoutSchema),
+    resolver: zodResolver(schema),
     mode: "onTouched",
     reValidateMode: "onChange",
     defaultValues: {
@@ -103,7 +105,7 @@ export function CheckoutForm({ setCartFormKey }: Props) {
       },
       customer_note: "",
       create_account: false,
-      payment_method: toCheckoutPaymentMethod(data.paymentMethod) || "",
+      payment_method: data.paymentMethod ? toCheckoutPaymentMethod(data.paymentMethod) : "",
       payment_data: [],
       extensions: {
         "woocommerce-paczkomaty-inpost": {
@@ -168,9 +170,7 @@ export function CheckoutForm({ setCartFormKey }: Props) {
               </CheckoutStep>
             </div>
             <div>
-              <div className="lg:sticky lg:top-10 bg-white rounded-lg shadow-[0_10px_15px_-3px_rgba(0,0,0,0.025),0_4px_6px_-4px_rgba(0,0,0,0.025)]">
-                <CartView />
-              </div>
+              <CartView />
             </div>
           </div>
         </form>
