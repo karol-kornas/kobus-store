@@ -17,7 +17,7 @@ export function ProductCardInfo({ href, name, price, isOnSale, regularPrice }: P
       <div className="flex gap-2 font-semibold">
         {formatPrice(price)}
         {isOnSale && regularPrice && (
-          <span className="text-sm font-normal line-through">{formatPrice(regularPrice)} zł</span>
+          <span className="text-sm font-normal line-through">{formatPrice(regularPrice)}</span>
         )}
       </div>
     </Link>
