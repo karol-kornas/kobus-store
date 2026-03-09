@@ -7,7 +7,8 @@ export default function Loading() {
       content={
         <>
           <Skeleton className="w-full h-44 rounded-lg" />
-          <Skeleton className="w-full h-200 rounded-lg" />
+          <Skeleton className="w-full h-111 rounded-lg" />
+          <Skeleton className="w-full h-100 rounded-lg" />
         </>
       }
       side={
