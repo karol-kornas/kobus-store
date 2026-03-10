@@ -4,7 +4,7 @@ import Link from "next/link";
 export function CheckoutHeader() {
   return (
     <header>
-      <div className="container max-w-5xl py-8 grid lg:grid-cols-3 items-center justify-center">
+      <div className="py-8 grid lg:grid-cols-3 items-center justify-center">
         <Link href="/" className="hidden lg:inline-flex gap-0.5 font-semibold hover:opacity-90">
           <ChevronLeft />
           Wróć do sklepu

@@ -5,8 +5,7 @@ import { formatPrice } from "@/utils/formatPrice";
 import { X } from "lucide-react";
 
 export function CartCoupons() {
-  const { cart, coupons, deleteCoupon, isMutating } = useCart();
-  console.log(cart);
+  const { coupons, deleteCoupon, isMutating } = useCart();
   return (
     <div className="flex flex-col gap-1">
       {coupons.map((coupon) => {

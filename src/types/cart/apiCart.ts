@@ -33,6 +33,7 @@ export type ApiCartItem = {
   key: string;
   id: number;
   name: string;
+  permalink: string;
   quantity: number;
   prices: {
     price: string;

@@ -5,18 +5,19 @@ import { formatPrice } from "@/utils/formatPrice";
 import { CartItem } from "./CartItem";
 import { ChevronDown, ShoppingCart } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton/Skeleton";
-import { Button } from "@/components/ui/button/Button";
+import { Button, ButtonLink } from "@/components/ui/button/Button";
 import { FormError } from "@/components/ui/form/formError/FormError";
-import { useFormContext } from "react-hook-form";
 import { CheckoutFormValues } from "@/features/cart/schemas/checkout.schema";
 import { useState } from "react";
 import { CartCoupons } from "./cartCoupons";
 import { CouponForm } from "./CouponForm";
+import { useOptionalFormContext } from "@/hooks/useOptionalFormContext";
 
 export default function CartView() {
-  const {
-    formState: { errors, isSubmitting },
-  } = useFormContext<CheckoutFormValues>();
+  const form = useOptionalFormContext<CheckoutFormValues>();
+
+  const errors = form?.formState.errors;
+  const isSubmitting = form?.formState.isSubmitting ?? false;
   const { isMutating, coupons } = useCart();
   const items = useCartItems();
   const [productsOpen, setProductsOpen] = useState(false);
@@ -24,31 +25,35 @@ export default function CartView() {
   const { productsGross, shippingGross, feesGross, totalGross, currency, savings, regularProductsGross } =
     useCartSummary();
 
-  if (!items.length) return <p>Koszyk pusty</p>;
+  if (!items.length) return;
 
   return (
     <div className="lg:sticky lg:top-10">
       <div className="bg-white rounded-lg shadow-[0_10px_15px_-3px_rgba(0,0,0,0.025),0_4px_6px_-4px_rgba(0,0,0,0.025)]">
-        <div
-          className="flex items-center justify-between cursor-pointer px-6 pt-4 pb-4 "
-          onClick={() => setProductsOpen(!productsOpen)}
-        >
-          <h3 className="flex items-center gap-3 text-lg font-semibold">
-            <ShoppingCart width={24} height={24} /> Koszyk ({items.length})
-          </h3>
-          <ChevronDown className={`${productsOpen && "rotate-180"} transition-transform`} />
-        </div>
-        <div
-          className={`${productsOpen ? "block" : "hidden"} overflow-y-auto max-h-60.75 px-6 py-4 border-t border-neutral-200`}
-        >
-          <ul className="">
-            {items.map((item) => (
-              <li key={item.key}>
-                <CartItem item={item} />
-              </li>
-            ))}
-          </ul>
-        </div>
+        {form && (
+          <>
+            <div
+              className="flex items-center justify-between cursor-pointer px-6 pt-4 pb-4 border-b border-neutral-200"
+              onClick={() => setProductsOpen(!productsOpen)}
+            >
+              <h3 className="flex items-center gap-3 text-lg font-semibold">
+                <ShoppingCart width={24} height={24} /> Koszyk ({items.length})
+              </h3>
+              <ChevronDown className={`${productsOpen && "rotate-180"} transition-transform`} />
+            </div>
+            <div
+              className={`${productsOpen ? "block" : "hidden"} overflow-y-auto max-h-60.75 px-6 py-4 border-b border-neutral-200`}
+            >
+              <ul className="">
+                {items.map((item) => (
+                  <li key={item.key}>
+                    <CartItem item={item} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </>
+        )}
 
         <CouponForm />
 
@@ -115,16 +120,22 @@ export default function CartView() {
               <span className="text-lg">{formatPrice(totalGross, currency)}</span>
             )}
           </div>
-          <FormError message={errors.root?.message} variant="auth" />
-          <Button
-            className="w-full text-lg mt-4"
-            variant="green"
-            disabled={isMutating}
-            isLoading={isSubmitting}
-            type="submit"
-          >
-            Zamawiam i płacę
-          </Button>
+          {errors?.root?.message && <FormError message={errors.root.message} variant="auth" />}
+          {form ? (
+            <Button
+              className="w-full text-lg mt-4"
+              variant="green"
+              disabled={isMutating}
+              isLoading={isSubmitting}
+              type="submit"
+            >
+              Zamawiam i płacę
+            </Button>
+          ) : (
+            <ButtonLink href="/checkout" className="w-full text-lg mt-4" variant="green">
+              Przejdź do dostawy
+            </ButtonLink>
+          )}
         </div>
       </div>
       <div className="text-center lg:text-right px-6 mt-4 text-sm leading-tight lg:ml-auto lg:max-w-67.5">

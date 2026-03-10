@@ -36,7 +36,7 @@ export function HeaderActions() {
         <span className="sr-only">Ulubione</span>
       </Link>
       <Link
-        href="/checkout"
+        href="/cart"
         title="Koszyk"
         className="relative flex items-center justify-center transition-opacity hover:opacity-60"
       >

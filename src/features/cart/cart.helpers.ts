@@ -9,3 +9,8 @@ export function getGuestCartSnapshot(items: CartItem[] | null | undefined): Cart
     quantity: item.quantity,
   }));
 }
+
+export function extractSlugFromPermalink(url: string) {
+  const parts = url.split("/").filter(Boolean);
+  return parts[parts.length - 1];
+}

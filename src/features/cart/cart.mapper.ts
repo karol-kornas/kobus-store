@@ -14,6 +14,7 @@ import { ApiCartBillingAddress, CartBillingAddress } from "@/types/cart/cartBill
 import { ApiCartFees, CartFees } from "@/types/cart/cartFees";
 import { ApiCartCoupon } from "@/types/cart/apiCartCoupon";
 import { CartCoupon } from "@/types/cart/cartCoupon";
+import { extractSlugFromPermalink } from "./cart.helpers";
 
 export function mapCart(apiCart: ApiCart): Cart {
   return {
@@ -48,6 +49,7 @@ function mapCartItem(item: ApiCartItem) {
     key: item.key,
     id: item.id,
     name: decode(item.name),
+    slug: extractSlugFromPermalink(item.permalink),
     quantity: item.quantity,
     price: price,
     regular_price: regularPrice,

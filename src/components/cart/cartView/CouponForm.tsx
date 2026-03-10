@@ -34,7 +34,7 @@ export function CouponForm() {
   };
 
   return (
-    <div className="border-t border-neutral-200">
+    <div>
       <button
         type="button"
         onClick={() => setCouponOpen(!couponOpen)}

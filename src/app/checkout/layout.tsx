@@ -9,11 +9,13 @@ export default async function ShopLayout({
   return (
     <>
       <div className="bg-neutral-100 min-h-screen relative">
-        <CheckoutHeader />
+        <div className="container max-sm:px-0 max-w-5xl ">
+          <CheckoutHeader />
 
-        <main id="main-content">{children}</main>
+          <main id="main-content">{children}</main>
 
-        <CartFooter />
+          <CartFooter />
+        </div>
       </div>
     </>
   );

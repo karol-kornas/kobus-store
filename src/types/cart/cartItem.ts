@@ -2,6 +2,7 @@ export type CartItem = {
   key: string;
   id: number;
   name: string;
+  slug: string;
   quantity: number;
   images: {
     id: number;
