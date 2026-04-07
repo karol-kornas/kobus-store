@@ -1,25 +1,20 @@
 "use client";
 
-import { CrossSellItem } from "@/components/cart/addToCartDrawer/CrossSellItem";
 import { CartItem } from "@/components/cart/cartView/CartItem";
 import CartView from "@/components/cart/cartView/CartView";
-import { useCart, useCartCrossSells, useCartItems } from "@/features/cart/hooks/cart.hooks";
+import { useCartItems } from "@/features/cart/hooks/cart.hooks";
 import { pluralize } from "@/utils/pluralize";
-import { Navigation, Pagination } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
+
 import "swiper/css";
 import "swiper/css/pagination";
 import { ShoppingBag } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button/Button";
 import { SpecialOffer } from "@/components/cart/cartView/SpecialOffer";
 import { AdditionalServices } from "@/components/cart/additionalServices/AdditionalServices";
+import { CrossSells } from "@/components/cart/crossSells/crossSells";
 
 export default function CartPage() {
-  const { cart } = useCart();
   const items = useCartItems();
-  const crossSellsFromStore = useCartCrossSells();
-
-  console.log(cart);
 
   if (!items.length)
     return (
@@ -50,7 +45,7 @@ export default function CartPage() {
           Przewidywany czas dostawy <strong>1-2 dni</strong>
         </div>
       </div>
-      <div className="grid lg:grid-cols-[540fr_325fr] gap-8">
+      <div className="grid lg:grid-cols-[540fr_325fr] gap-8 min-h-[49.5vh]">
         <div>
           <div className="">
             <ul className="flex flex-col gap-2">
@@ -68,52 +63,7 @@ export default function CartPage() {
           <CartView />
         </div>
       </div>
-
-      <section className="rounded-lg bg-white px-3 py-6 sm:px-6 shadow-[0_10px_15px_-3px_rgba(0,0,0,0.025),0_4px_6px_-4px_rgba(0,0,0,0.025)] mt-10">
-        <h3 className={`font-display text-[1.25rem] sm:text-[1.625rem] font-semibold`}>
-          Te rzeczy też moga ci się spodobać:
-        </h3>
-        <Swiper
-          className="mt-6"
-          style={
-            {
-              "--swiper-pagination-color": "var(--foreground)",
-              "--swiper-pagination-bullet-inactive-color": "var(--foreground)",
-              "--swiper-pagination-bullet-width": "0.75rem",
-              "--swiper-pagination-bullet-height": "0.75rem",
-              "--swiper-pagination-bottom": "2rem",
-            } as React.CSSProperties
-          }
-          modules={[Navigation, Pagination]}
-          spaceBetween={24}
-          slidesPerView={1.25}
-          slidesPerGroup={1}
-          speed={700}
-          pagination={{ el: ".swiper-pagination", clickable: true }}
-          breakpoints={{
-            640: {
-              slidesPerView: 1.75,
-            },
-            768: {
-              slidesPerView: 2,
-              slidesPerGroup: 2,
-            },
-            1024: {
-              slidesPerView: 3,
-              slidesPerGroup: 3,
-            },
-          }}
-        >
-          {crossSellsFromStore.map((product) => {
-            return (
-              <SwiperSlide key={product.id}>
-                <CrossSellItem key={product.id} product={product} />
-              </SwiperSlide>
-            );
-          })}
-          <div className="swiper-pagination static! w-full! flex justify-center mt-8"></div>
-        </Swiper>
-      </section>
+      <CrossSells />
     </>
   );
 }

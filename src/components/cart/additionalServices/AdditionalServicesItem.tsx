@@ -18,7 +18,7 @@ export function AdditionalServicesItem({ item, index }: Props) {
 
   return (
     <article
-      className={`${index == 1 ? "border-[#80bd00] border-2 text-[#80bd00]" : ""} flex w-[48%] lg:w-[32%] xl:w-full gap-3 flex-col p-4 items-center text-center 
+      className={`${index == 1 ? "border-[#80bd00] border-2 text-[#80bd00]" : ""} flex w-[calc(50%-0.25rem)] sm:w-[calc(33.33%-0.35rem)] xl:w-full gap-3 flex-col p-4 items-center text-center 
       bg-white rounded-lg shadow-[0_10px_15px_-3px_rgba(0,0,0,0.025),0_4px_6px_-4px_rgba(0,0,0,0.025)]`}
     >
       {image && (
@@ -32,7 +32,7 @@ export function AdditionalServicesItem({ item, index }: Props) {
           sizes="40px"
         />
       )}
-      <div className="font-bold leading-tight text-[0.875rem] uppercase">{item.name}</div>
+      <div className="font-bold leading-tight text-[0.875rem] uppercase max-w-27.5">{item.name}</div>
       <div className="mt-auto">
         <div className="flex justify-center gap-2 font-semibold">
           {formatPrice(item.price)}
