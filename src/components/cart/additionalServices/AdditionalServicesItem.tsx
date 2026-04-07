@@ -51,6 +51,9 @@ export function AdditionalServicesItem({ item, index }: Props) {
             await addItem(item.id, 1);
             setIsAdding(false);
             setIsAdded(true);
+            setTimeout(() => {
+              setIsAdded(false);
+            }, 3000);
           }}
         >
           {isAdded ? "Dodano!" : "Dodaj"} <span className="sr-only">do koszyka</span>
