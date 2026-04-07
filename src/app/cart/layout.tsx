@@ -19,7 +19,7 @@ export default async function CartLayout({
       <Header menu={menu} />
       <div id="mobile-menu-portal-root"></div>
       <main id="main-content" className="bg-neutral-100">
-        <div className="container max-sm:px-0 max-w-7xl">
+        <div className="container max-sm:px-1 max-w-7xl">
           {children}
           <CartFooter />
         </div>

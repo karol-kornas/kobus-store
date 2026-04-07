@@ -44,10 +44,10 @@ export default function CartView() {
             <div
               className={`${productsOpen ? "block" : "hidden"} overflow-y-auto max-h-60.75 px-6 py-4 border-b border-neutral-200`}
             >
-              <ul className="">
+              <ul className="flex flex-col gap-3">
                 {items.map((item) => (
                   <li key={item.key}>
-                    <CartItem item={item} />
+                    <CartItem item={item} withoutPadding={true} />
                   </li>
                 ))}
               </ul>

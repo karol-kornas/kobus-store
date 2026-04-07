@@ -1,5 +1,6 @@
 import { useCartStore } from "@/stores/CartStoreProvider";
 import { CartItem } from "@/types/cart/cartItem";
+import { removeFromCart } from "../cart.client";
 
 const EMPTY_ARRAY: [] = [];
 
@@ -154,4 +155,22 @@ function calculateSavings(lineItems?: CartItem[]) {
 
     return sum;
   }, 0);
+}
+
+export function useReplaceCartItem() {
+  const { addItem } = useCart();
+
+  return async function replaceCartItem(oldKey: string, newProductId: number) {
+    try {
+      // await removeItem(oldKey);
+      await removeFromCart(oldKey);
+
+      await addItem(newProductId, 1);
+
+      // // 4️⃣ refetch koszyka (opcjonalnie, jeśli add/remove nie odświeża w pełni)
+      // await fetchCart();
+    } catch (err) {
+      console.error("Błąd przy zamianie produktu:", err);
+    }
+  };
 }

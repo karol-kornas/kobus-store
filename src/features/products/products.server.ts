@@ -74,7 +74,7 @@ export async function getProductsByCategory(categoryId: number, options: GetProd
       max_price: options.max_price,
       ...sort,
     },
-    { revalidate: 300 },
+    { revalidate: 0 },
   );
 
   return {

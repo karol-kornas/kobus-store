@@ -11,6 +11,8 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { ShoppingBag } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button/Button";
+import { SpecialOffer } from "@/components/cart/cartView/SpecialOffer";
+import { AdditionalServices } from "@/components/cart/additionalServices/AdditionalServices";
 
 export default function CartPage() {
   const { cart } = useCart();
@@ -21,7 +23,7 @@ export default function CartPage() {
 
   if (!items.length)
     return (
-      <div className="gap-3 py-6 flex flex-col items-center">
+      <div className="gap-3 py-6 flex flex-col justify-center items-center min-h-[58vh]">
         <div className="flex items-center justify-center size-20 rounded-full bg-neutral-200">
           <ShoppingBag size="42" />
         </div>
@@ -53,14 +55,13 @@ export default function CartPage() {
           <div className="">
             <ul className="flex flex-col gap-2">
               {items.map((item) => (
-                <li
-                  key={item.key}
-                  className="rounded-lg bg-white px-3 py-6 sm:px-6 shadow-[0_10px_15px_-3px_rgba(0,0,0,0.025),0_4px_6px_-4px_rgba(0,0,0,0.025)]"
-                >
+                <li key={item.key}>
                   <CartItem item={item} />
+                  <SpecialOffer parentItem={item} />
                 </li>
               ))}
             </ul>
+            <AdditionalServices />
           </div>
         </div>
         <div>

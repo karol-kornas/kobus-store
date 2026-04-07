@@ -33,6 +33,8 @@ export type Product = {
   featured: boolean;
   stock_status: string;
   availability: Availability;
+  special_products: number[];
+  special_description: string;
 };
 
 export type Availability = {

@@ -55,6 +55,7 @@ export type ApiCartItem = {
     line_total: string;
   };
   on_sale: boolean;
+  special_products?: []
 };
 
 export type ApiCrossSellItem = {

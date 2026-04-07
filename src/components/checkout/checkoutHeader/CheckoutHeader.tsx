@@ -5,9 +5,9 @@ export function CheckoutHeader() {
   return (
     <header>
       <div className="py-8 grid lg:grid-cols-3 items-center justify-center">
-        <Link href="/" className="hidden lg:inline-flex gap-0.5 font-semibold hover:opacity-90">
+        <Link href="/cart" className="hidden lg:inline-flex gap-0.5 font-semibold hover:opacity-90">
           <ChevronLeft />
-          Wróć do sklepu
+          Wróć do koszyka
         </Link>
         <div className="m-auto">
           <Link href="/">

@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Spinner } from "../spinner/Spinner";
 
 const buttonVariants = cva(
-  "relative shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1),0_4px_6px_-4px_rgba(0,0,0,0.1)] inline-flex items-center justify-center font-bold transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none cursor-pointer",
+  "relative shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1),0_4px_6px_-4px_rgba(0,0,0,0.1)] inline-flex items-center justify-center font-bold transition-colors focus:outline-none focus:ring-1 disabled:opacity-50 disabled:pointer-events-none cursor-pointer",
   {
     variants: {
       variant: {
@@ -19,7 +19,7 @@ const buttonVariants = cva(
         white: "bg-white border border-white text-[#262626] hover:bg-transparent hover:text-white",
         special:
           "bg-[#fa5453] border border-[#fa5453] text-white hover:bg-white hover:text-[#fa5453] focus:ring-neutral-500",
-        green: "bg-[#87c500] text-white",
+        green: "bg-[#87c500] text-white hover:bg-[#7db600] focus:ring-[#87c500]",
       },
       size: {
         xs: "h-6 px-3 text-xs",

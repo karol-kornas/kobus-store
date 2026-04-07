@@ -90,3 +90,7 @@ input::placeholder {
 input:focus::placeholder {
   opacity: 1;
 }
+
+.filter-green {
+  filter: brightness(0) saturate(100%) invert(83%) sepia(14%) saturate(6427%) hue-rotate(29deg) brightness(84%) contrast(101%);
+}

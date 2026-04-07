@@ -66,6 +66,7 @@ function mapCartItem(item: ApiCartItem) {
       line_total: normalizeCartPrice(item.totals.line_total),
     },
     on_sale: isOnSale,
+    special_products: item.special_products
   };
 }
 
