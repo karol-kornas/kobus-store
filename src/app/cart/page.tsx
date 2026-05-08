@@ -42,7 +42,7 @@ export default function CartPage() {
           </span>
         </h1>
         <div className="text-[0.875rem]">
-          Przewidywany czas dostawy <strong>1-2 dni</strong>
+          Przewidywany czas dostawy <strong>1-2 dni </strong>
         </div>
       </div>
       <div className="grid lg:grid-cols-[540fr_325fr] gap-8 min-h-[49.5vh]">
