@@ -22,7 +22,6 @@ export function getProductLabels(product: Product): ProductLabel[] {
   //   ];
   // }
 
-  // 2️⃣ NORMALNE LABELKI (tylko gdy produkt dostępny)
   const labels: ProductLabel[] = [];
 
   if (product.on_sale) {

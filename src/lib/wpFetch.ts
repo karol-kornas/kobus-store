@@ -1,12 +1,4 @@
-const WP_API_URL = process.env.WP_API_URL;
-
-console.log("ENV:", {
-  WP_API_URL: process.env.WP_API_URL,
-});
-
-if (!WP_API_URL) {
-  throw new Error("WP_API_URL is missing");
-}
+const WP_API_URL = process.env.WP_API_URL!;
 
 export async function wpFetch<T>(
   endpoint: string,

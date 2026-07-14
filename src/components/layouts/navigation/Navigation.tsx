@@ -56,7 +56,7 @@ export function Navigation({ items, classNav }: Props) {
                 className={`relative w-full xl:w-auto justify-between px-4 xl:px-0 py-3 hover:after:scale-x-100 after:transition-transform 
                     after:scale-x-0 after:block after:w-full after:h-px after:bg-current after:absolute after:bottom-0 after:left-0 
                     flex gap-0.5 items-center text-[1.0625rem] uppercase transition-opacity hover:opacity-60 ${
-                      item.title == "Sale" && "text-red-600"
+                      item.title == "Prezenty 🎁" && "text-red-600 font-bold"
                     }`}
               >
                 {item.title}

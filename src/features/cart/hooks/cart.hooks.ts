@@ -1,6 +1,7 @@
 import { useCartStore } from "@/stores/CartStoreProvider";
 import { CartItem } from "@/types/cart/cartItem";
 import { removeFromCart } from "../cart.client";
+import { money } from "@/utils/money";
 
 const EMPTY_ARRAY: [] = [];
 
@@ -83,28 +84,28 @@ export function useCartSummary() {
   const lineItems = useCartStore((s) => s.cart?.items);
   const coupons = useCartStore((s) => s.cart?.coupons ?? []);
 
-  const productsGross = (totals?.total_items || 0) + (totals?.total_items_tax || 0);
-  const regularProductsGross =
-    lineItems?.reduce((sum, item) => sum + Number(item.regular_price ?? item.price) * item.quantity, 0) ?? 0;
-  const shippingGross = (totals?.total_shipping || 0) + (totals?.total_shipping_tax || 0);
-  const feesGross = fees?.map((fee) => {
-    return {
-      key: fee.key,
-      name: fee.name,
-      feeGross: (fee.totals.total || 0) + (fee.totals.total_tax || 0),
-    };
-  });
+  const productsGross = money.add(totals?.total_items || 0, totals?.total_items_tax || 0);
 
-  // oszczędności z promocji produktów
+  const regularProductsGross =
+    lineItems?.reduce((sum, item) => sum + (item.regular_price ?? item.price ?? 0) * item.quantity, 0) ?? 0;
+
+  const shippingGross = money.add(totals?.total_shipping || 0, totals?.total_shipping_tax || 0);
+
+  const feesGross = fees?.map((fee) => ({
+    key: fee.key,
+    name: fee.name,
+    feeGross: money.add(fee.totals.total || 0, fee.totals.total_tax || 0),
+  }));
+
   const productSavings = calculateSavings(lineItems);
 
-  // oszczędności z kuponów
-  const couponSavings = coupons.reduce((sum, coupon) => {
-    return sum + (coupon.totals?.total_discount || 0) + (coupon.totals?.total_discount_tax || 0);
-  }, 0);
+  const couponSavings = coupons.reduce(
+    (sum, coupon) =>
+      money.add(sum, money.add(coupon.totals?.total_discount || 0, coupon.totals?.total_discount_tax || 0)),
+    0,
+  );
 
-  // całkowite oszczędności = promocje + kupony
-  const totalSavings = productSavings + couponSavings;
+  const totalSavings = money.add(productSavings, couponSavings);
 
   const totalGross = totals?.total_price || 0;
   const currency = totals?.currency_code;
@@ -114,9 +115,9 @@ export function useCartSummary() {
     regularProductsGross,
     shippingGross,
     feesGross,
-    savings: totalSavings, // <-- teraz obejmuje promocje + kupony
-    productSavings, // opcjonalnie możesz też oddzielnie podawać
-    couponSavings, // np. do tooltipów
+    savings: totalSavings,
+    productSavings,
+    couponSavings,
     totalGross,
     currency,
   };
