@@ -16,11 +16,9 @@ export async function getProductsByCategoryLite({ categoryId, limit }: GetProduc
       limit,
     },
     {
-      revalidate: 0,
+      revalidate: 300,
     },
   );
-
-  console.log(data);
 
   return data;
 }
